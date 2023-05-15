@@ -10,6 +10,6 @@
 
 	<div>안뇽하세용</div>
 
-	<div><a href="../article/list">게시물 리스트</a></div>
+	<div><a href="../article/homeworklist">숙제 리스트</a></div>
 </body>
 </html>

@@ -5,6 +5,26 @@
 
 	<select id="getArticles" resultType="Article">
 		SELECT * FROM article
+		ORDER BY id DESC
+	</select>
+	
+	<insert id="doHomeworkWrite">
+		INSERT INTO article
+		SET regDate = NOW(),
+		updateDate = NOW(),
+		memberId = 2,
+		boardId = 2,
+		title = #{title},
+		`body` = #{body};
+	</insert>
+	
+	<select id="getLastId" resultType="Int">
+		SELECT LAST_INSERT_ID();
+	</select>
+	
+	<select id="getArticleById" resultType="Article">
+		SELECT * FROM article
+		WHERE id = #{id}
 	</select>
 
 

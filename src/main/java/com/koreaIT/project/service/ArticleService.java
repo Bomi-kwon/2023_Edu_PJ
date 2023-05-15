@@ -19,4 +19,16 @@ public class ArticleService {
 		return articleRepository.getArticles();
 	}
 
+	public void doHomeworkWrite(String title, String body) {
+		articleRepository.doHomeworkWrite(title, body);
+	}
+
+	public int getLastId() {
+		return articleRepository.getLastId();
+	}
+
+	public Article getArticleById(int id) {
+		return articleRepository.getArticleById(id);
+	}
+
 }

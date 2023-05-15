@@ -11,4 +11,10 @@ public interface ArticleRepository {
 
 	public List<Article> getArticles();
 
+	public void doHomeworkWrite(String title, String body);
+
+	public int getLastId();
+
+	public Article getArticleById(int id);
+
 }

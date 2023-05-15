@@ -14,4 +14,6 @@ public class ProjectHomeController {
 	public String redirect() {
 		return "redirect:/project/home/main";
 	}
+	
+	
 }

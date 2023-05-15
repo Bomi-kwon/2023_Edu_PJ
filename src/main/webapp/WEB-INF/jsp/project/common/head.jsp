@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>게시물 리스트</title>
+<title>${pageTitle }</title>
 <!-- 테일윈드 불러오기 -->
 <!-- 노말라이즈, 라이브러리 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.7/tailwind.min.css" />
@@ -18,11 +18,38 @@
 <!-- 토스트 UI 에디터 코어 -->
 <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+
 </head>
 <body>
-	<c:forEach var="article" items="${articles }">
-		<div>제목 : ${article.title }</div>
-		<div>내용 : ${article.body }</div>
-	</c:forEach>
-</body>
-</html>
+
+<script>
+$('')
+	function appear_2() {
+		alert('버튼 눌림');
+		$('')
+	}
+</script>
+
+<div class="h-20 flex container mx-auto text-xl">
+	
+	<ul class="w-full bg-red-100 flex">
+		<li><a href="/"><i class="fa-solid fa-infinity"></i></a></li>
+	  <li>
+	    <a><i class="fa-solid fa-bars"></i></a>
+	    <ul class="bg-base-100 hidden">
+	      <li><a>과제</a></li>
+	      <li><a>성적</a></li>
+	      <li><a>알림장</a></li>
+	    </ul>
+	  </li>
+	  
+	  <li class="flex-grow"><a></a></li>
+	   <li>
+	    <a><i class="fa-regular fa-user"></i></a>
+	    <ul class="bg-base-100 hidden">
+	      <li><a>로그아웃</a></li>
+	      <li><a>마이페이지</a></li>
+	    </ul>
+	  </li>
+	</ul>
+</div>
