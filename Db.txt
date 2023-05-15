@@ -1,0 +1,154 @@
+# DB 삭제/생성/사용
+DROP DATABASE IF EXISTS Edu_PJ;
+CREATE DATABASE Edu_PJ;
+USE Edu_PJ;
+
+# article 테이블 생성
+CREATE TABLE article(
+id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+regDate DATETIME NOT NULL,
+updateDate DATETIME NOT NULL,
+memberId INT UNSIGNED NOT NULL,
+boardId INT UNSIGNED NOT NULL,
+title VARCHAR(100) NOT NULL,
+`body` TEXT NOT NULL,
+hit INT UNSIGNED NOT NULL DEFAULT 0
+);
+
+# member 테이블 생성
+CREATE TABLE `member`(
+	id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	regDate DATETIME NOT NULL,
+	updateDate DATETIME NOT NULL,
+	loginID VARCHAR(20) NOT NULL UNIQUE,
+	loginPW VARCHAR(100) NOT NULL,
+	`authLevel` SMALLINT UNSIGNED NOT NULL DEFAULT 3 COMMENT '권한 레벨 (선생님=1, 학생=2, 학부모=3)',
+	`name` VARCHAR(20) NOT NULL,
+	cellphoneNum VARCHAR(20) NOT NULL,
+	email VARCHAR(50) NOT NULL,
+	delStatus TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '탈퇴여부 (탈퇴 전 = 0, 탈퇴 후 = 1)',
+	delData DATETIME COMMENT '탈퇴 날짜'
+);
+
+#board 테이블 생성
+CREATE TABLE board (
+	id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	`code` VARCHAR(20) NOT NULL UNIQUE COMMENT 'notice(알림장), homework(숙제), score(성적),  ...',
+	`name` VARCHAR(20) NOT NULL UNIQUE COMMENT '게시판 이름'
+);
+
+#reactionPoint 테이블 생성
+CREATE TABLE reactionPoint(
+	id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	regDate DATETIME NOT NULL,
+	memberId INT UNSIGNED NOT NULL,
+	relTypecode VARCHAR(20) NOT NULL COMMENT 'article(게시물), reply(댓글), ...',
+	relId INT UNSIGNED NOT NULL COMMENT '데이터의 번호',
+	`point` SMALLINT NOT NULL DEFAULT 1 COMMENT '좋아요(+1)'
+);
+
+#reply 테이블 생성
+CREATE TABLE reply (
+	id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	regDate DATETIME NOT NULL,
+	updateDate DATETIME NOT NULL,
+	replymemberId INT UNSIGNED NOT NULL,
+	relTypecode VARCHAR(20) NOT NULL COMMENT 'article(게시물), reply(댓글), ...',
+	relId INT UNSIGNED NOT NULL COMMENT '데이터의 번호',
+	replybody TEXT NOT NULL
+);
+
+# 테이블 구조 확인
+DESC article;
+DESC `member`;
+DESC board;
+DESC reactionPoint;
+DESC reply;
+
+# article 테스트 데이터
+INSERT INTO article
+SET regDate = NOW(),
+updateDate = NOW(),
+memberId = 1,
+boardId = 1,
+title = '기말고사기간 공지 안내',
+`body` = '공지 내용~~';
+
+INSERT INTO article
+SET regDate = NOW(),
+updateDate = NOW(),
+memberId = 1,
+boardId = 1,
+title = '여름방학 안내',
+`body` = '공지 내용~~';
+
+INSERT INTO article
+SET regDate = NOW(),
+updateDate = NOW(),
+memberId = 1,
+boardId = 2,
+title = '5/15 수상 월수금반 숙제',
+`body` = '나머지 정리까지 풀어오세요.';
+
+# member 테스트 데이터
+INSERT INTO `member`
+SET regDate = NOW(),
+updateDate = NOW(),
+loginID = 'admin',
+loginPW = 'admin',
+`authLevel` = 1,
+`name` = '원장',
+cellphoneNum = '010-0000-0000',
+email = 'kingteacher@naver.com';
+
+INSERT INTO `member`
+SET regDate = NOW(),
+updateDate = NOW(),
+loginID = 'teacher1',
+loginPW = 'teacher1',
+`authLevel` = 1,
+`name` = '권보미',
+cellphoneNum = '010-1111-1111',
+email = 'mathlover@gmail.com';
+
+INSERT INTO `member`
+SET regDate = NOW(),
+updateDate = NOW(),
+loginID = 'student1',
+loginPW = 'student1',
+`authLevel` = 2,
+`name` = '김유경',
+cellphoneNum = '010-2222-2222',
+email = 'Ukyoung@naver.com';
+
+INSERT INTO `member`
+SET regDate = NOW(),
+updateDate = NOW(),
+loginID = 'parent1',
+loginPW = 'parent1',
+`authLevel` = 3,
+`name` = '김유경맘',
+cellphoneNum = '010-3333-3333',
+email = 'Ukmom@naver.com';
+
+# board 테스트 데이터
+INSERT INTO board
+SET `code` = 'notice',
+`name` = '알림장';
+
+INSERT INTO board
+SET `code` = 'homework',
+`name` = '숙제';
+
+INSERT INTO board
+SET `code` = 'score',
+`name` = '성적';
+
+SELECT *
+FROM article;
+
+SELECT *
+FROM `member`;
+
+SELECT *
+FROM board;
