@@ -23,5 +23,10 @@
 		SELECT * FROM `member`
 		WHERE loginID = #{loginID}
 	</select>
+	
+	<select id="getMemberById" resultType="Member">
+		SELECT * FROM `member`
+		WHERE id = #{id}
+	</select>
 
 </mapper>

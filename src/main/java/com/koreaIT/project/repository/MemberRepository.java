@@ -15,6 +15,8 @@ public interface MemberRepository {
 
 	Member getMemberByLoginID(String loginID);
 
+	Member getMemberById(int id);
+
 	
 
 }

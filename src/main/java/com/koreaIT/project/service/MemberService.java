@@ -27,6 +27,10 @@ public class MemberService {
 		return memberRepository.getMemberByLoginID(loginID);
 	}
 
+	public Member getMemberById(int id) {
+		return memberRepository.getMemberById(id);
+	}
+
 	
 
 }

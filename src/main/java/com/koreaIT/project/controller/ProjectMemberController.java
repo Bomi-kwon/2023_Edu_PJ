@@ -2,6 +2,7 @@ package com.koreaIT.project.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,13 +11,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.koreaIT.project.service.MemberService;
 import com.koreaIT.project.util.Util;
 import com.koreaIT.project.vo.Member;
+import com.koreaIT.project.vo.Rq;
 
 @Controller
 public class ProjectMemberController {
-	MemberService memberService;
+	private MemberService memberService;
+	private Rq rq;
 	
-	public ProjectMemberController(MemberService memberService) {
+	@Autowired
+	public ProjectMemberController(MemberService memberService, Rq rq) {
 		this.memberService = memberService;
+		this.rq = rq;
 	}
 	
 	@RequestMapping("/project/member/memberlist")
@@ -68,6 +73,12 @@ public class ProjectMemberController {
 	
 	@RequestMapping("/project/member/memberlogin")
 	public String memberlogin() {
+		
+		if(rq.getLoginedMember() != null) {
+			return Util.jsReplace("이미 로그인된 상태입니다.", "/");
+		}
+		
+		
 		return "project/member/memberlogin";
 	}
 	
@@ -75,21 +86,42 @@ public class ProjectMemberController {
 	@ResponseBody
 	public String doMemberLogin(String loginID, String loginPW) {
 		
-		if(loginID == null) {
+		if(Util.empty(loginID)) {
 			return Util.jsHistoryBack("로그인 아이디를 입력하세요.");
 		}
 		
-		if(loginPW == null) {
+		if(Util.empty(loginPW)) {
 			return Util.jsHistoryBack("로그인 비밀번호를 입력하세요.");
 		}
 		
 		Member member = memberService.getMemberByLoginID(loginID);
 		
+		if (member == null) {
+			return Util.jsHistoryBack(Util.f("%s는 존재하지 않는 아이디입니다.",loginID));
+		}
+		
 		if(!member.getLoginPW().equals(loginPW)) {
 			return Util.jsHistoryBack("비밀번호가 일치하지 않습니다.");
 		}
 		
+		rq.login(member);
+		
+		
 		return Util.jsReplace(Util.f("%s님, 로그인되었습니다.", member.getName()), "/");
+	}
+	
+	@RequestMapping("/project/member/doMemberLogout")
+	@ResponseBody
+	public String doMemberLogout() {
+		
+		if(rq.getLoginedMember() == null) {
+			return Util.jsReplace("이미 로그아웃된 상태입니다.", "/");
+		}
+
+		rq.logout();
+		
+		
+		return Util.jsReplace("로그아웃되었습니다.", "/");
 	}
 
 	
