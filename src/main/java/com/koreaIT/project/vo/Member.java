@@ -7,18 +7,18 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Article {
+public class Member {
 
 	private int id;
 	private String regDate;
 	private String updateDate;
-	private int memberId;
-	private int boardId;
-	private String title;
-	private String body;
-	private int hit;
+	private String loginID;
+	private String loginPW;
+	private int authLevel;
+	private String name;
+	private String cellphoneNum;
+	private String email;
+	private int delStatus;
+	private String delData;
 	
-	public String getForPrintBody() {
-		return this.body.replaceAll("\n", "<br />");
-	}
 }

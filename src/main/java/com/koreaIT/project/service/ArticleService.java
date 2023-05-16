@@ -31,4 +31,12 @@ public class ArticleService {
 		return articleRepository.getArticleById(id);
 	}
 
+	public void doHomeworkDelete(int id) {
+		articleRepository.doHomeworkDelete(id);
+	}
+
+	public void doHomeworkModify(int id, String title, String body) {
+		articleRepository.doHomeworkModify(id, title, body);
+	}
+
 }

@@ -1,34 +1,34 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:set var="pageTitle" value="${board.name } 게시판" />
+<c:set var="pageTitle" value="로그인" />
 
 <%@ include file="../common/head.jsp" %>
 
 <section class="mt-8 mx-auto text-xl">
 	<div class="container mx-auto px-3">
-			<form action="doHomeworkWrite" >
+			<form action="doMemberLogin" >
 				<div class="table-box-type-1 overflow-x-auto">
-				<div>과제 등록</div>
+				<div>회원 가입</div>
 						<table border="1" class="mx-auto able w-full bg-gray-100">
 						<colgroup>
-							<col width="100"/>
-							<col width="700"/>
+							<col width="200"/>
+							<col width="600"/>
 						</colgroup>
 						<tr>
-							<th>제목</th>
-							<td><input class="input input-bordered input-success w-full" type="text" name="title" placeholder="제목을 입력해주세요."/></td>
+							<th>로그인 아이디</th>
+							<td><input class="input input-bordered input-success w-full" type="text" name="loginID" 
+							placeholder="로그인 아이디를 입력해주세요."/></td>
 						</tr>
 						<tr>
-							<th>내용</th>
-							<td>
-								<textarea class="textarea textarea-success w-full" name="body" placeholder="내용을 입력해주세요."></textarea>
-							</td>
+							<th>로그인 비밀번호</th>
+							<td><input class="input input-bordered input-success w-full" type="text" name="loginPW" 
+							placeholder="로그인 비밀번호를 입력해주세요."/></td>
 						</tr>
 					</table>
 				</div>
 				<div class="flex justify-end">
-					<button class="btn btn-success mr-2">작성</button>
+					<button class="btn btn-success mr-2">로그인</button>
 					<button class="btn btn-success" type="button" onclick="history.back();">뒤로</button>
 				</div>
 			</form>

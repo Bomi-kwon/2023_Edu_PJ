@@ -26,6 +26,19 @@
 		SELECT * FROM article
 		WHERE id = #{id}
 	</select>
+	
+	<delete id="doHomeworkDelete">
+		DELETE FROM article
+		WHERE id = #{id}
+	</delete>
+	
+	<update id="doHomeworkModify">
+		UPDATE article
+		SET updateDate = NOW(),
+		title = #{title},
+		`body` = #{body}
+		WHERE id = #{id}
+	</update>
 
 
 </mapper>

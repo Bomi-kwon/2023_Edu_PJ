@@ -17,4 +17,8 @@ public interface ArticleRepository {
 
 	public Article getArticleById(int id);
 
+	public void doHomeworkDelete(int id);
+
+	public void doHomeworkModify(int id, String title, String body);
+
 }
