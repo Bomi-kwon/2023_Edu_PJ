@@ -19,41 +19,140 @@
 <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
 
-
 <link rel="stylesheet" href="/resource/common.css" />
+<script src="/resource/common.js" defer="defer"></script>
 </head>
 <body>
 
-<script>
-$('')
-	function appear_2() {
-		alert('버튼 눌림');
-		$('')
-	}
-</script>
 
-<div class="h-20 flex container mx-auto text-xl">
-	
-	<ul class="w-full bg-red-100 flex">
-		<li><a href="/"><i class="fa-solid fa-infinity"></i></a></li>
-	  <li>
-	    <a><i class="fa-solid fa-bars"></i></a>
-	    <ul class="bg-base-100 hidden">
-	      <li><a>과제</a></li>
-	      <li><a>성적</a></li>
-	      <li><a>알림장</a></li>
-	    </ul>
-	  </li>
-	  
-	  <li class="flex-grow"><a></a></li>
-	   <li>
-	    <a><i class="fa-regular fa-user"></i></a>
-	    <ul class="bg-base-100 hidden">
-	      <li><a>로그아웃</a></li>
-	      <li><a>마이페이지</a></li>
-	    </ul>
-	  </li>
-	</ul>
+<div class="top-bar h-20 flex px-3 mx-auto container text-2xl">
+  <div class="logo flex items-center">
+    <a href="/"><img src="https://www.dshw.co.kr/DESIGN/nimg/common/logo_dshw_202111.png" alt=""></a>
+  </div>
+  <div class="empty flex-grow"></div>
+  <div class="menu-box-1">
+    <ul class="flex items-center h-full">
+      <li><a href="#">브랜드소개</a>
+        <ul>
+          <li><a href="#">브랜드소개</a></li>
+          <li><a href="#">퀀텀라이브러리</a></li>
+        </ul>
+      </li>
+      <li><a href="#">All NEW 대성</a>
+        <ul>
+          <li><a href="#">All NEW 학습 콘텐츠<span>N</span></a></li>
+          <li><a href="#">All NEW 강사진<span>N</span></a></li>
+          <li><a href="#">All NEW 공간<span>N</span></a></li>
+        </ul>
+      </li>
+      <li><a href="#">대입결과</a>
+        <ul>
+          <li><a href="#">대입결과</a></li>
+          <li><a href="#">명예의 전당</a></li>
+          <li><a href="#">2021 수능/대입결과</a></li>
+        </ul>
+      </li>
+      <li><a href="#">설명회</a>
+        <ul>
+          <li><a href="#">설명회</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">모집프로그램</a>
+        <ul>
+          <li><a href="#">N수 정규 시즌<span>N</span></a></li>
+          <li><a href="#">N수 시즌 Zero<span>N</span></a></li>
+          <li><a href="#">재학생 윈터스쿨</a></li>
+          <li><a href="#">N수 반수 시즌</a></li>
+        </ul>
+      </li>
+      <li><a href="#" class="d_member"><span><em>디멤버</em> 재원생 전용</span></a></li>
+    </ul>
+  </div>
+  <div class="empty flex-grow"></div>
+  <div class="menu-box-2">
+    <ul class="h-full flex items-center">
+      <li><a href="#">출제진 모집</a></li>
+      <li><a href="#">대성학원 전체보기</a></li>
+    </ul>
+  </div>
+  <div class="menu-button flex self-center">
+    <i></i>
+    <i></i>
+    <i></i>
+  </div>
+  <div class="menu-box-3">
+    <ul class="h-full flex items-start justify-around">
+      <li class="">
+        <a href="#" class="">브랜드소개</a>
+        <ul>
+          <li><a href="#">브랜드소개</a></li>
+          <li><a href="#">퀀텀라이브러리</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#" class="">ALL NEW 대성</a>
+        <ul>
+          <li><a href="#">ALL NEW 학습 콘텐츠<span>N</span></a></li>
+          <li><a href="#">ALL NEW 강사진<span>N</span></a></li>
+          <li><a href="#">ALL NEW 공간<span>N</span></a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">대입결과</a>
+        <ul>
+          <li><a href="#">대입결과</a></li>
+          <li><a href="#">명예의 전당</a></li>
+          <li><a href="#">2021 수능/대입결과</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">설명회</a>
+        <ul>
+          <li><a href="#">설명회</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">모집프로그램</a>
+        <ul>
+          <li><a href="#">N수 정규 시즌<span>N</span></a></li>
+          <li><a href="#">N수 시즌 ZERO<span>N</span></a></li>
+          <li><a href="#">재학생 윈터스쿨</a></li>
+          <li><a href="#">N수 반수 시즌</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</div>
+
+
+
+
+
+<div>
+	<div class="h-20 flex container mx-auto text-2xl bg-red-50">
+		<a href="/" class="px-3 flex items-center"><span><i class="fa-solid fa-house"></i></span></a>
+		<a href="/" class="px-3 flex items-center"><span><i class="fa-solid fa-bars"></i></span></a>
+		<div class="flex-grow"></div>
+		<ul class="flex">
+			<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/homeworklist"><span>숙제</span></a></li>
+			<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/homeworklist"><span>성적</span></a></li>
+			<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/homeworklist"><span>알림장</span></a></li>
+			<c:if test="${rq.getLoginedMember() == null }">
+				<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/member/memberlogin"><span>로그인</span></a></li>
+				<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/member/memberjoin"><span>회원가입</span></a></li>
+			</c:if>
+			<c:if test="${rq.getLoginedMember() != null }">
+				<c:if test="${rq.getLoginedMember().getAuthLevel() == 1 }">
+					<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/member/memberlist"><span>회원명단</span></a></li>
+				</c:if>
+			</c:if>
+			<c:if test="${rq.getLoginedMember() != null }">
+				<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/member/memberprofile"><span>마이페이지</span></a></li>
+				<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/member/doMemberLogout"><span>로그아웃</span></a></li>
+			</c:if>
+		</ul>
+	</div>
 </div>
 
 <section class="my-3 text-2xl">

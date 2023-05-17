@@ -10,6 +10,7 @@
 	  <table class="table w-full">
 	    <thead>
 	      <tr>
+	      	<th>회원구분</th>
 	        <th>가입날짜</th>
 	        <th>로그인 아이디</th>
 	        <th>이름</th>
@@ -21,6 +22,7 @@
 		<c:forEach var="member" items="${members }">
 	    <tbody>
 	      <tr>
+	      	<td>${member.authLevel }</td>
 	        <td>${member.regDate }</td>
 	        <td>${member.loginID }</td>
 	        <td>${member.name }</td>

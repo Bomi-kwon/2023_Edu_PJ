@@ -117,11 +117,17 @@ public class ProjectMemberController {
 		if(rq.getLoginedMember() == null) {
 			return Util.jsReplace("이미 로그아웃된 상태입니다.", "/");
 		}
-
 		rq.logout();
-		
-		
 		return Util.jsReplace("로그아웃되었습니다.", "/");
+	}
+	
+	@RequestMapping("/project/member/memberprofile")
+	public String memberprofile(Model model) {
+		
+		Member member = memberService.getMemberById(rq.getLoginedMember().getId());
+		model.addAttribute("member", member);
+		
+		return "project/member/memberprofile";
 	}
 
 	
