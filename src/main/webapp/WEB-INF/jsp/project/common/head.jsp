@@ -25,135 +25,83 @@
 <body>
 
 
-<div class="top-bar h-20 flex px-3 mx-auto container text-2xl">
+<div class="top-bar flex justify-between px-3 mx-auto container text-2xl">
   <div class="logo flex items-center">
-    <a href="/"><img src="https://www.dshw.co.kr/DESIGN/nimg/common/logo_dshw_202111.png" alt=""></a>
+    <a href="/" class="px-3 flex items-center"><span><i class="fa-solid fa-house"></i></span></a>
   </div>
-  <div class="empty flex-grow"></div>
-  <div class="menu-box-1">
-    <ul class="flex items-center h-full">
-      <li><a href="#">브랜드소개</a>
+  <div class="menu-box-1 w-96 px-5">
+    <ul class="flex justify-around items-center h-full">
+      <li><a href="#">수업관리</a>
         <ul>
-          <li><a href="#">브랜드소개</a></li>
-          <li><a href="#">퀀텀라이브러리</a></li>
+          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>출결</span></a></li>
+          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/homeworklist"><span>숙제</span></a></li>
+          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>성적</span></a></li>
         </ul>
       </li>
-      <li><a href="#">All NEW 대성</a>
+      <li><a href="#">커뮤니티</a>
         <ul>
-          <li><a href="#">All NEW 학습 콘텐츠<span>N</span></a></li>
-          <li><a href="#">All NEW 강사진<span>N</span></a></li>
-          <li><a href="#">All NEW 공간<span>N</span></a></li>
+          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>알림장</span></a></li>
+          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>메세지 발송</span></a></li>
         </ul>
       </li>
-      <li><a href="#">대입결과</a>
+      <li><a href="#">인터넷강의</a>
         <ul>
-          <li><a href="#">대입결과</a></li>
-          <li><a href="#">명예의 전당</a></li>
-          <li><a href="#">2021 수능/대입결과</a></li>
+          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>수강신청</span></a></li>
+          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>실시간 강의</span></a></li>
+          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>수학인강</span></a></li>
         </ul>
       </li>
-      <li><a href="#">설명회</a>
-        <ul>
-          <li><a href="#">설명회</a></li>
-        </ul>
-      </li>
-      <li>
-        <a href="#">모집프로그램</a>
-        <ul>
-          <li><a href="#">N수 정규 시즌<span>N</span></a></li>
-          <li><a href="#">N수 시즌 Zero<span>N</span></a></li>
-          <li><a href="#">재학생 윈터스쿨</a></li>
-          <li><a href="#">N수 반수 시즌</a></li>
-        </ul>
-      </li>
-      <li><a href="#" class="d_member"><span><em>디멤버</em> 재원생 전용</span></a></li>
     </ul>
   </div>
-  <div class="empty flex-grow"></div>
-  <div class="menu-box-2">
-    <ul class="h-full flex items-center">
-      <li><a href="#">출제진 모집</a></li>
-      <li><a href="#">대성학원 전체보기</a></li>
+  
+  <div class="menu-box-2 mx-5 w-60">
+    <ul class="h-full flex items-center w-full">
+	    <c:if test="${rq.getLoginedMember() == null }">
+			<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/member/memberlogin"><span>로그인</span></a></li>
+			<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/member/memberjoin"><span>회원가입</span></a></li>
+		</c:if>
+		<c:if test="${rq.getLoginedMember() != null }">
+			<c:if test="${rq.getLoginedMember().getAuthLevel() == 1 }">
+				<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/member/memberlist"><span>회원명단</span></a></li>
+			</c:if>
+		</c:if>
+		<c:if test="${rq.getLoginedMember() != null }">
+			<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/member/memberprofile"><span>마이페이지</span></a></li>
+			<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/member/doMemberLogout"><span>로그아웃</span></a></li>
+		</c:if>
     </ul>
   </div>
-  <div class="menu-button flex self-center">
-    <i></i>
-    <i></i>
-    <i></i>
+ 
+  <div class="menu-button h-full w-12 flex items-center text-4xl">
+    <i class="fa-solid fa-bars"></i>
   </div>
+  
   <div class="menu-box-3">
     <ul class="h-full flex items-start justify-around">
-      <li class="">
-        <a href="#" class="">브랜드소개</a>
+      <li><a href="#">수업관리</a>
         <ul>
-          <li><a href="#">브랜드소개</a></li>
-          <li><a href="#">퀀텀라이브러리</a></li>
+          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>출결</span></a></li>
+          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/homeworklist"><span>숙제</span></a></li>
+          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>성적</span></a></li>
         </ul>
       </li>
-      <li>
-        <a href="#" class="">ALL NEW 대성</a>
+      <li><a href="#">커뮤니티</a>
         <ul>
-          <li><a href="#">ALL NEW 학습 콘텐츠<span>N</span></a></li>
-          <li><a href="#">ALL NEW 강사진<span>N</span></a></li>
-          <li><a href="#">ALL NEW 공간<span>N</span></a></li>
+          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>알림장</span></a></li>
+          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>메세지 발송</span></a></li>
         </ul>
       </li>
-      <li>
-        <a href="#">대입결과</a>
+      <li><a href="#">인터넷강의</a>
         <ul>
-          <li><a href="#">대입결과</a></li>
-          <li><a href="#">명예의 전당</a></li>
-          <li><a href="#">2021 수능/대입결과</a></li>
-        </ul>
-      </li>
-      <li>
-        <a href="#">설명회</a>
-        <ul>
-          <li><a href="#">설명회</a></li>
-        </ul>
-      </li>
-      <li>
-        <a href="#">모집프로그램</a>
-        <ul>
-          <li><a href="#">N수 정규 시즌<span>N</span></a></li>
-          <li><a href="#">N수 시즌 ZERO<span>N</span></a></li>
-          <li><a href="#">재학생 윈터스쿨</a></li>
-          <li><a href="#">N수 반수 시즌</a></li>
+          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>수강신청</span></a></li>
+          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>실시간 강의</span></a></li>
+          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>수학인강</span></a></li>
         </ul>
       </li>
     </ul>
   </div>
 </div>
 
-
-
-
-
-<div>
-	<div class="h-20 flex container mx-auto text-2xl bg-red-50">
-		<a href="/" class="px-3 flex items-center"><span><i class="fa-solid fa-house"></i></span></a>
-		<a href="/" class="px-3 flex items-center"><span><i class="fa-solid fa-bars"></i></span></a>
-		<div class="flex-grow"></div>
-		<ul class="flex">
-			<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/homeworklist"><span>숙제</span></a></li>
-			<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/homeworklist"><span>성적</span></a></li>
-			<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/homeworklist"><span>알림장</span></a></li>
-			<c:if test="${rq.getLoginedMember() == null }">
-				<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/member/memberlogin"><span>로그인</span></a></li>
-				<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/member/memberjoin"><span>회원가입</span></a></li>
-			</c:if>
-			<c:if test="${rq.getLoginedMember() != null }">
-				<c:if test="${rq.getLoginedMember().getAuthLevel() == 1 }">
-					<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/member/memberlist"><span>회원명단</span></a></li>
-				</c:if>
-			</c:if>
-			<c:if test="${rq.getLoginedMember() != null }">
-				<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/member/memberprofile"><span>마이페이지</span></a></li>
-				<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/member/doMemberLogout"><span>로그아웃</span></a></li>
-			</c:if>
-		</ul>
-	</div>
-</div>
 
 <section class="my-3 text-2xl">
 		<div class="container mx-auto px-3">
