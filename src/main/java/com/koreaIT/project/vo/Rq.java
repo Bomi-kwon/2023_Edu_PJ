@@ -72,6 +72,14 @@ public class Rq {
 			}
 	}
 	
+	public String jsReturnOnView(String msg, boolean isHistoryBack) {
+		
+		req.setAttribute("msg", msg);
+		req.setAttribute("isHistoryBack", isHistoryBack);
+		
+		return "project/common/js";
+	}
+	
 	
 	
 }

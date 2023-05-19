@@ -14,6 +14,7 @@
 	        <th>가입날짜</th>
 	        <th>로그인 아이디</th>
 	        <th>이름</th>
+	        <th>수강하는 반</th>
 	        <th>휴대전화</th>
 	        <th>이메일</th>
 	      </tr>
@@ -26,6 +27,7 @@
 	        <td>${member.regDate }</td>
 	        <td>${member.loginID }</td>
 	        <td>${member.name }</td>
+	        <td>${member.classId }</td>
 	        <td>${member.cellphoneNum }</td>
 	        <td>${member.email }</td>
 	      </tr>

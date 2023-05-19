@@ -5,6 +5,7 @@
 
 	<select id="getArticles" resultType="Article">
 		SELECT * FROM article
+		WHERE boardId = #{boardId}
 		ORDER BY id DESC
 	</select>
 	

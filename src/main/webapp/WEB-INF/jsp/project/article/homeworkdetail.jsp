@@ -23,7 +23,7 @@
 				</tr>
 				<tr>
 					<th>우리반</th>
-					<td colspan="5">수상월수금반</td>
+					<td colspan="5">${article.classId }</td>
 				</tr>
 				<tr>
 					<th>작성자</th>
@@ -31,7 +31,7 @@
 					<th>작성일</th>
 					<td>${article.updateDate }</td>
 					<th>제출일</th>
-					<td>이번주 금요일</td>
+					<td>${article.deadLine }</td>
 				</tr>
 				<tr>
 					<td colspan="6">
@@ -46,7 +46,7 @@
 			</table>
 		</div>
 		<div class="flex justify-end">
-			<a href="homeworklist" class="btn btn-success mr-2" >목록</a>
+			<a href="list" class="btn btn-success mr-2" >목록</a>
 			<a href="homeworkmodify?id=${article.id }" class="btn btn-success mr-2" >수정</a>
 			<a href="doHomeworkDelete?id=${article.id }" class="btn btn-success mr-2" 
 			onclick="if(confirm('정말 삭제하시겠습니까?')==false) return false;">삭제</a>

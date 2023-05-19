@@ -18,6 +18,7 @@
 	        <th>과제제목</th>
 	        <th>수신대상자</th>
 	        <th>등록일</th>
+	        <th>제출기한</th>
 	        <th>작성자</th>
 	        <th>과제검사</th>
 	      </tr>
@@ -34,20 +35,21 @@
 	        </th>
 	        <td>
 	          <div class="flex items-center space-x-3">
+	            <!-- 
 	            <div class="avatar">
 	              <div class="mask mask-squircle w-12 h-12">
 	                <img src="/tailwind-css-component-profile-2@56w.png" alt="Avatar Tailwind CSS Component" />
 	              </div>
 	            </div>
+	             -->
 	            <div>
 	              <div class="font-bold"><a href="homeworkdetail?id=${article.id }">${article.title }</a></div>
 	            </div>
 	          </div>
 	        </td>
-	        <td>
-	          수상하월수금반
-	        </td>
+	        <td>${article.classId }</td>
 	        <td>${article.regDate }</td>
+	        <td>${article.deadLine }</td>
 	        <td>${article.memberId }</td>
 	        <td>과제검사</td>
 	      </tr>

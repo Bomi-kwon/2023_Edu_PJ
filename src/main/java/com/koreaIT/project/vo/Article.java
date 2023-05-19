@@ -17,6 +17,8 @@ public class Article {
 	private String title;
 	private String body;
 	private int hit;
+	private int classId;
+	private String deadLine;
 	
 	public String getForPrintBody() {
 		return this.body.replaceAll("\n", "<br />");

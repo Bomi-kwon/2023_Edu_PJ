@@ -9,7 +9,7 @@ import com.koreaIT.project.vo.Article;
 @Mapper
 public interface ArticleRepository {
 
-	public List<Article> getArticles();
+	public List<Article> getArticles(int boardId);
 
 	public void doHomeworkWrite(String title, String body);
 

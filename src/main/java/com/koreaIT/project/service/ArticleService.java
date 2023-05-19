@@ -15,8 +15,8 @@ public class ArticleService {
 		this.articleRepository = articleRepository;
 	}
 
-	public List<Article> getArticles() {
-		return articleRepository.getArticles();
+	public List<Article> getArticles(int boardId) {
+		return articleRepository.getArticles(boardId);
 	}
 
 	public void doHomeworkWrite(String title, String body) {

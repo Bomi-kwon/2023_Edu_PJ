@@ -3,7 +3,12 @@ DROP DATABASE IF EXISTS Edu_PJ;
 CREATE DATABASE Edu_PJ;
 USE Edu_PJ;
 
+USE SB_AM;
+
 # article 테이블 생성
+# truncate table article;
+# drop table article;
+
 CREATE TABLE article(
 id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
 regDate DATETIME NOT NULL,
@@ -12,10 +17,15 @@ memberId INT UNSIGNED NOT NULL,
 boardId INT UNSIGNED NOT NULL,
 title VARCHAR(100) NOT NULL,
 `body` TEXT NOT NULL,
-hit INT UNSIGNED NOT NULL DEFAULT 0
+hit INT UNSIGNED NOT NULL DEFAULT 0,
+classId INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '전체공개는 0',
+deadLine DATETIME 
 );
 
 # member 테이블 생성
+# truncate table `member`;
+# drop table `member`;
+
 CREATE TABLE `member`(
 	id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	regDate DATETIME NOT NULL,
@@ -27,14 +37,41 @@ CREATE TABLE `member`(
 	cellphoneNum VARCHAR(20) NOT NULL,
 	email VARCHAR(50) NOT NULL,
 	delStatus TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '탈퇴여부 (탈퇴 전 = 0, 탈퇴 후 = 1)',
-	delData DATETIME COMMENT '탈퇴 날짜'
+	delData DATETIME COMMENT '탈퇴 날짜',
+	classId INT UNSIGNED NOT NULL DEFAULT 0
 );
 
 #board 테이블 생성
+# truncate table board;
+# drop table board;
+
 CREATE TABLE board (
 	id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	`code` VARCHAR(20) NOT NULL UNIQUE COMMENT 'notice(알림장), homework(숙제), score(성적),  ...',
 	`name` VARCHAR(20) NOT NULL UNIQUE COMMENT '게시판 이름'
+);
+
+# class 테이블 생성
+# truncate table class;
+# drop table class;
+
+CREATE TABLE class (
+	id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	grade VARCHAR(20) NOT NULL UNIQUE COMMENT 'elementary(초등), middel(중등), high(고등)',
+	className VARCHAR(20) NOT NULL UNIQUE COMMENT '반 이름',
+	classDay VARCHAR(20) NOT NULL UNIQUE COMMENT '월수금, 화목토, 토일, ...'
+);
+
+# score 테이블 생성
+# truncate table score;
+# drop table score;
+
+CREATE TABLE score (
+	id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	memberId INT UNSIGNED NOT NULL,
+	score INT UNSIGNED NOT NULL,
+	classId INT UNSIGNED NOT NULL DEFAULT 0,
+	testDate DATETIME NOT NULL
 );
 
 #reactionPoint 테이블 생성
@@ -62,6 +99,8 @@ CREATE TABLE reply (
 DESC article;
 DESC `member`;
 DESC board;
+DESC class;
+DESC score;
 DESC reactionPoint;
 DESC reply;
 
@@ -72,7 +111,8 @@ updateDate = NOW(),
 memberId = 1,
 boardId = 1,
 title = '기말고사기간 공지 안내',
-`body` = '공지 내용~~';
+`body` = '공지 내용~~',
+classId = 0;
 
 INSERT INTO article
 SET regDate = NOW(),
@@ -80,7 +120,8 @@ updateDate = NOW(),
 memberId = 1,
 boardId = 1,
 title = '여름방학 안내',
-`body` = '공지 내용~~';
+`body` = '공지 내용~~',
+classId = 0;
 
 INSERT INTO article
 SET regDate = NOW(),
@@ -88,7 +129,9 @@ updateDate = NOW(),
 memberId = 1,
 boardId = 2,
 title = '5/15 수상 월수금반 숙제',
-`body` = '나머지 정리까지 풀어오세요.';
+`body` = '나머지 정리까지 풀어오세요.',
+classId = 1,
+deadLine = DATE_ADD(NOW(), INTERVAL 2 DAY);
 
 # member 테스트 데이터
 INSERT INTO `member`
@@ -119,7 +162,8 @@ loginPW = 'student1',
 `authLevel` = 2,
 `name` = '김유경',
 cellphoneNum = '010-2222-2222',
-email = 'Ukyoung@naver.com';
+email = 'Ukyoung@naver.com',
+classId = 1;
 
 INSERT INTO `member`
 SET regDate = NOW(),
@@ -129,7 +173,8 @@ loginPW = 'parent1',
 `authLevel` = 3,
 `name` = '김유경맘',
 cellphoneNum = '010-3333-3333',
-email = 'Ukmom@naver.com';
+email = 'Ukmom@naver.com',
+classId = 1;
 
 # board 테스트 데이터
 INSERT INTO board
@@ -144,6 +189,19 @@ INSERT INTO board
 SET `code` = 'score',
 `name` = '성적';
 
+# class 테스트 데이터
+INSERT INTO class
+SET grade = 'middle',
+className = '수상심화반',
+classDay = '월수금';
+
+# score 테스트 데이터
+INSERT INTO score
+SET memberId = 3,
+score = 90,
+classId = 1,
+testDate = NOW();
+
 SELECT *
 FROM article;
 
@@ -152,3 +210,9 @@ FROM `member`;
 
 SELECT *
 FROM board;
+
+SELECT *
+FROM class;
+
+SELECT *
+FROM score;

@@ -5,27 +5,43 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.koreaIT.project.service.ArticleService;
+import com.koreaIT.project.service.BoardService;
 import com.koreaIT.project.util.Util;
 import com.koreaIT.project.vo.Article;
+import com.koreaIT.project.vo.Board;
+import com.koreaIT.project.vo.Rq;
 
 @Controller
 public class ProjectArticleController {
 	ArticleService articleService;
+	BoardService boardService;
+	Rq rq;
 	
-	public ProjectArticleController(ArticleService articleService) {
+	public ProjectArticleController(ArticleService articleService, BoardService boardService, Rq rq) {
 		this.articleService = articleService;
+		this.boardService = boardService;
+		this.rq = rq;
 	}
 
-	@RequestMapping("/project/article/homeworklist")
-	public String showList(Model model) {
+	@RequestMapping("/project/article/list")
+	public String showList(Model model, @RequestParam(defaultValue = "2") int boardId) {
 		
-		List<Article> articles = articleService.getArticles();
+		Board board = boardService.getBoardById(boardId);
+		
+		if(board == null) {
+			return rq.jsReturnOnView("존재하지 않는 게시판입니다.", true);
+		}
+		
+		List<Article> articles = articleService.getArticles(boardId);
+		
+		model.addAttribute("board", board);
 		model.addAttribute("articles", articles);
 		
-		return "project/article/homeworklist";
+		return "project/article/list";
 	}
 	
 	@RequestMapping("/project/article/homeworkwrite")
@@ -49,7 +65,7 @@ public class ProjectArticleController {
 		articleService.doHomeworkWrite(title, body);
 		int id = articleService.getLastId();
 		
-		return Util.jsReplace(Util.f("%d번 숙제가 등록되었습니다.",id), "homeworklist");
+		return Util.jsReplace(Util.f("%d번 숙제가 등록되었습니다.",id), "list");
 	}
 	
 	@RequestMapping("/project/article/homeworkdetail")
@@ -73,7 +89,7 @@ public class ProjectArticleController {
 		
 		articleService.doHomeworkDelete(id);
 		
-		return Util.jsReplace(Util.f("%d번 게시물을 삭제했습니다.", id),"homeworklist");
+		return Util.jsReplace(Util.f("%d번 게시물을 삭제했습니다.", id),"list");
 	}
 	
 	@RequestMapping("/project/article/homeworkmodify")

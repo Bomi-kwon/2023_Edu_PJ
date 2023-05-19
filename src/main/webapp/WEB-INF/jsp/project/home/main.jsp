@@ -8,9 +8,8 @@
 	<section class="mt-8 mx-auto text-xl">
 		<div class="container mx-auto px-3">
 	
-			<div><a href="../article/homeworklist">숙제 리스트</a></div>
+			<div><a href="../article/list">숙제 리스트</a></div>
 			<div><a href="../member/memberlist">회원 리스트</a></div>
-			
 			
 			<c:if test="${rq.getLoginedMember() == null }">
 			    <div><a href="../member/memberlogin">로그인</a></div>
