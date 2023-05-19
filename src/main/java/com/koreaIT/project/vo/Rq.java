@@ -61,11 +61,13 @@ public class Rq {
 				msg = "";
 			}
 				resp.getWriter().append(Util.f("""
-							const msg = '%s'.trim();
-							if (msg.length > 0) {
-								alert(msg);
-							}
-							history.back();
+							<script>
+								const msg = '%s'.trim();
+								if (msg.length > 0) {
+									alert(msg);
+								}
+								history.back();
+							</script>
 						""", msg));
 			} catch (IOException e) {
 				e.printStackTrace();

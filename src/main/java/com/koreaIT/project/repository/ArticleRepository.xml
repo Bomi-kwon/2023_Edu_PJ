@@ -9,7 +9,7 @@
 		ORDER BY id DESC
 	</select>
 	
-	<insert id="doHomeworkWrite">
+	<insert id="doWrite">
 		INSERT INTO article
 		SET regDate = NOW(),
 		updateDate = NOW(),

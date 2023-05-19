@@ -19,8 +19,8 @@ public class ArticleService {
 		return articleRepository.getArticles(boardId);
 	}
 
-	public void doHomeworkWrite(String title, String body) {
-		articleRepository.doHomeworkWrite(title, body);
+	public void doWrite(String title, String body) {
+		articleRepository.doWrite(title, body);
 	}
 
 	public int getLastId() {

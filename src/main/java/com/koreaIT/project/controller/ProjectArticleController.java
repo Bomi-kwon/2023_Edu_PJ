@@ -10,20 +10,24 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.koreaIT.project.service.ArticleService;
 import com.koreaIT.project.service.BoardService;
+import com.koreaIT.project.service.ScoreService;
 import com.koreaIT.project.util.Util;
 import com.koreaIT.project.vo.Article;
 import com.koreaIT.project.vo.Board;
 import com.koreaIT.project.vo.Rq;
+import com.koreaIT.project.vo.Score;
 
 @Controller
 public class ProjectArticleController {
 	ArticleService articleService;
 	BoardService boardService;
+	ScoreService scoreService;
 	Rq rq;
 	
-	public ProjectArticleController(ArticleService articleService, BoardService boardService, Rq rq) {
+	public ProjectArticleController(ArticleService articleService, BoardService boardService, ScoreService scoreService, Rq rq) {
 		this.articleService = articleService;
 		this.boardService = boardService;
+		this.scoreService = scoreService;
 		this.rq = rq;
 	}
 
@@ -44,15 +48,17 @@ public class ProjectArticleController {
 		return "project/article/list";
 	}
 	
-	@RequestMapping("/project/article/homeworkwrite")
-	public String homeworkwrite() {
+	@RequestMapping("/project/article/write")
+	public String write(Model model, int boardId) {
 		
-		return "project/article/homeworkwrite";
+		model.addAttribute("boardId", boardId);
+		
+		return "project/article/write";
 	}
 	
-	@RequestMapping("/project/article/doHomeworkWrite")
+	@RequestMapping("/project/article/doWrite")
 	@ResponseBody
-	public String doHomeworkWrite(String title, String body) {
+	public String doWrite(String title, String body) {
 		
 		if(title == null) {
 			return Util.jsHistoryBack("제목을 입력해주세요");
@@ -62,10 +68,10 @@ public class ProjectArticleController {
 			return Util.jsHistoryBack("내용을 입력해주세요");
 		}
 		
-		articleService.doHomeworkWrite(title, body);
+		articleService.doWrite(title, body);
 		int id = articleService.getLastId();
 		
-		return Util.jsReplace(Util.f("%d번 숙제가 등록되었습니다.",id), "list");
+		return Util.jsReplace(Util.f("%d번 게시물이 등록되었습니다.",id), "list");
 	}
 	
 	@RequestMapping("/project/article/homeworkdetail")
@@ -123,6 +129,32 @@ public class ProjectArticleController {
 		
 		articleService.doHomeworkModify(id, title, body);
 		
-		return Util.jsReplace(Util.f("%d번 숙제를 수정하였습니다.",id), Util.f("homeworkdetail?id=%d", id));
+		return Util.jsReplace(Util.f("%d번 게시물을 수정하였습니다.",id), Util.f("homeworkdetail?id=%d", id));
+	}
+	
+	@RequestMapping("/project/article/scorelist")
+	public String scorelist(Model model) {
+		
+		int boardId = 3;
+		
+		List<Article> articles = articleService.getArticles(boardId);
+		
+		model.addAttribute("articles", articles);
+		
+		return "project/article/scorelist";
+	}
+	
+	@RequestMapping("/project/article/scoredetail")
+	public String scoredetail(int relId, Model model) {
+		
+		List<Score> scores = scoreService.getScoresByRelId(relId);
+		
+		Article article = articleService.getArticleById(relId);
+		
+		model.addAttribute("scores", scores);
+		model.addAttribute("article",article);
+		
+		
+		return "project/article/scoredetail";
 	}
 }

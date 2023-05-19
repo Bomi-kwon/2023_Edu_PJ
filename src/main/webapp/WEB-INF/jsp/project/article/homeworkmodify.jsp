@@ -41,6 +41,14 @@
 						</td>
 					</tr>
 					<tr>
+						<th>이미지</th>
+						<td></td>
+					</tr>
+					<tr>
+						<th>첨부파일</th>
+						<td></td>
+					</tr>
+					<tr>
 						<td colspan="6">
 							<div>2명 확인</div>
 						</td>

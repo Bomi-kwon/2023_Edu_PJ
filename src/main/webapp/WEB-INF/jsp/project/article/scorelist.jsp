@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:set var="pageTitle" value="${board.name } 게시판" />
+<c:set var="pageTitle" value="점수 게시판" />
 
 <%@ include file="../common/head.jsp" %>
 
@@ -16,14 +16,12 @@
 	            <input type="checkbox" class="checkbox" />
 	          </label>
 	        </th>
-	        <th>제목</th>
-	        <th>수신대상자</th>
-        	<th>등록일</th>
+	        <th>시험명</th>
+	        <th>시험대상반</th>
+	        <th>시험일자</th>
 	        <th>작성자</th>
-	        <c:if test="${board.id == 2 }">
-		        <th>제출기한</th>
-		        <th>과제검사</th>
-	        </c:if>
+	        <th>응시현황</th>
+	        <th>평가방식</th>
 	      </tr>
 	    </thead>
 	    
@@ -38,32 +36,23 @@
 	        </th>
 	        <td>
 	          <div class="flex items-center space-x-3">
-	            <!-- 
-	            <div class="avatar">
-	              <div class="mask mask-squircle w-12 h-12">
-	                <img src="/tailwind-css-component-profile-2@56w.png" alt="Avatar Tailwind CSS Component" />
-	              </div>
-	            </div>
-	             -->
 	            <div>
-	              <div class="font-bold"><a href="homeworkdetail?id=${article.id }">${article.title }</a></div>
+	              <div class="font-bold"><a href="scoredetail?relId=${article.id }">${article.title }</a></div>
 	            </div>
 	          </div>
 	        </td>
 	        <td>${article.classId }</td>
-        	<td>${article.regDate }</td>
+	        <td>${article.regDate }</td>
 	        <td>${article.memberId }</td>
-	        <c:if test="${board.id == 2 }">
-		        <td>${article.deadLine }</td>
-		        <td>과제검사</td>
-	        </c:if>
+	        <td>2/4</td>
+	        <td>만점기준:100점</td>
 	      </tr>
 	    </tbody>
 		</c:forEach>
 	  </table>
 	  </div>
 	<div class="flex justify-end">
-		<a href="write?boardId=${board.id }" class="btn btn-success" >글 쓰기</a>
+		<a href="scorewrite" class="btn btn-success" >성적 입력</a>
 	</div>
 	</div>
 </section>

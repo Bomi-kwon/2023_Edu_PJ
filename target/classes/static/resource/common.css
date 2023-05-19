@@ -16,10 +16,18 @@ html > body {
 	width: 100%;
 }
 
-.table-box-type-1 > table th, .table-box-type-1 > table td {
+.table-box-type-1 > table th {
 	border:1px solid black;
 	padding: 10px;
 	text-align: center;
+	max-width: 500px;
+	z-index: 0;
+}
+
+.table-box-type-1 > table td {
+	border:1px solid black;
+	padding: 10px;
+	text-align: left;
 	max-width: 500px;
 }
 

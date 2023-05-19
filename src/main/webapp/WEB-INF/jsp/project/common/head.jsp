@@ -35,7 +35,7 @@
         <ul>
           <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>출결</span></a></li>
           <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/list?boardId=2"><span>숙제</span></a></li>
-          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>성적</span></a></li>
+          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/scorelist"><span>성적</span></a></li>
         </ul>
       </li>
       <li><a href="#">커뮤니티</a>
