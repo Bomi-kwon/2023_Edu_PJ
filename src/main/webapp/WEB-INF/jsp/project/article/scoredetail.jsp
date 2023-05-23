@@ -82,7 +82,7 @@
 		<div class="flex justify-end">
 			<a href="scorelist" class="btn btn-success mr-2" >목록</a>
 			<a href="scoremodify?id=${article.id }" class="btn btn-success mr-2" >수정</a>
-			<a href="doScoreDelete?id=${article.id }" class="btn btn-success mr-2" 
+			<a href="doHomeworkDelete?id=${article.id }&boardId=3" class="btn btn-success mr-2" 
 			onclick="if(confirm('정말 삭제하시겠습니까?')==false) return false;">삭제</a>
 		</div>
 	</div>

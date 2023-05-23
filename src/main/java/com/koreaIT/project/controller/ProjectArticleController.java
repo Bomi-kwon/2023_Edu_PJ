@@ -102,7 +102,7 @@ public class ProjectArticleController {
 	
 	@RequestMapping("/project/article/doHomeworkDelete")
 	@ResponseBody
-	public String doHomeworkDelete(int id) {
+	public String doHomeworkDelete(int id, int boardId) {
 		
 		Article article = articleService.getArticleById(id);
 		if(article == null) {
@@ -111,7 +111,7 @@ public class ProjectArticleController {
 		
 		articleService.doHomeworkDelete(id);
 		
-		return Util.jsReplace(Util.f("%d번 게시물을 삭제했습니다.", id),"list");
+		return Util.jsReplace(Util.f("%d번 게시물을 삭제했습니다.", id),Util.f("list?boardId=%d", boardId));
 	}
 	
 	@RequestMapping("/project/article/homeworkmodify")
@@ -191,6 +191,21 @@ public class ProjectArticleController {
 		return "project/article/scorewrite";
 	}
 	
+	@RequestMapping("/project/article/score")
+	public String score(Model model, String title, int classId, String regDate) {
+		
+		articleService.doWrite(rq.getLoginedMember().getId(), title, classId, regDate, ".", 3);
+		
+		Article article = articleService.getArticleById(articleService.getLastId());
+		
+		List<Member> members = memberService.getStudentsByClass(classId);
+		
+		model.addAttribute("article", article);
+		model.addAttribute("members", members);
+		
+		return "project/article/score";
+	}
+	
 	@RequestMapping("/project/article/getStudentsByClass")
 	@ResponseBody
 	public ResultData getStudentsByClass(int classId) {
@@ -204,9 +219,9 @@ public class ProjectArticleController {
 		return ResultData.from("S-1", "선택한 반에 맞는 학생 리스트를 가져왔습니다", "members", members);
 	}
 	
-	@RequestMapping("/project/article/doScoreWrite")
+	@RequestMapping("/project/article/doWriteScoreArticle")
 	@ResponseBody
-	public String doScoreWrite(String title, int classId, String deadLine, String body, int boardId) {
+	public String doWriteScoreArticle(String title, int classId, String deadLine, String body, int boardId) {
 		
 		
 		

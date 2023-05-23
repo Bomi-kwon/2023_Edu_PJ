@@ -22,4 +22,6 @@ public class Member {
 	private String delData;
 	private String classId;
 	
+	private String groupName;
+	
 }

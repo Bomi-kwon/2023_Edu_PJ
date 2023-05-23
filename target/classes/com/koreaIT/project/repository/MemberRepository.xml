@@ -30,8 +30,10 @@
 	</select>
 	
 	<select id="getStudentsByClass" resultType="Member">
-		SELECT *
-		FROM `member`
+		SELECT M.*, G.groupName
+		FROM `member` AS M
+		INNER JOIN `group` AS G
+		ON M.classId = G.id
 		WHERE classId = #{classId}
 		AND authLevel = 2;
 	</select>

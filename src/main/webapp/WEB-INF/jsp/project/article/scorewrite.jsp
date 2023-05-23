@@ -23,63 +23,12 @@
 		}, 'json');
 	}
 	
-	function getMembersByClass() {
-		let classId = $('#group option:selected').val();
-		
-		$('#scoretable').html(`<thead>
-			      <tr>
-		        <th>
-		          <label>
-		            <input type="checkbox" class="checkbox" />
-		          </label>
-		        </th>
-		        <th>원생명</th>
-		        <th>총점</th>
-		        <th>응시여부</th>
-		        <th>교사의견</th>
-		      </tr>
-		    </thead>`);
-		console.log(classId);
-		$.get('getStudentsByClass', {
-			classId : classId
-		}, function(data) {
-			console.log(data);
-			for(var i = 0; i < data.data1.length; i++) {
-				let memberName = data.data1[i].name;
-				let memberId = data.data1[i].id;
-				$('#scoretable').append(`<tbody>
-						<input type="hidden" name="memberId" value="`+memberId+`"/>
-					      <tr>
-					        <th>
-					          <label>
-					            <input type="checkbox" class="checkbox" />
-					          </label>
-					        </th>
-					        <td>`+memberName+`</td>
-					        <td><input class="input input-bordered input-success w-full" type="text" name="score"/></td>
-					        <td>응시</td>
-					        <td>-</td>
-					      </tr>
-					    </tbody>
-					    `);
-			}
-			
-			$('#scoretable').append(`<div class="flex justify-end"><button class="btn btn-success mr-2">작성</button></div>`);
-		}, 'json');
-		
-		$( "form" ).submit(function( event ) {
-			  console.log( $( this ).serializeArray() );
-			  event.preventDefault();
-			});
-	}
-	
-	
 </script>
 
 
 <section class="mt-8 mx-auto text-xl">
 	<div class="container mx-auto px-3">
-			<form action="doScoreWrite" >
+			<form action="score" >
 				<input type="hidden" name="boardId" value="3"/>
 				<div class="table-box-type-1 overflow-x-auto">
 				<div>성적 입력</div>
@@ -119,17 +68,10 @@
 					</table>
 				</div>
 				<div class="flex justify-end">
-					<button class="btn btn-success mr-2" onclick="getMembersByClass(); return false;">성적 입력</button>
+					<button class="btn btn-success mr-2" onclick="getMembersByClass(); return false;">성적 입력하기</button>
 					<button class="btn btn-success" type="button" onclick="history.back();">뒤로</button>
 				</div>
-			
-				<div class="table-box-type-1 mt-5">
-					<table class="table w-full" id="scoretable">
-				  </table>
-	  		</div>
 			</form>
-			
-			
 		</div>
 </section>
 
