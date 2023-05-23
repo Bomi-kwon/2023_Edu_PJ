@@ -13,10 +13,12 @@
 		INSERT INTO article
 		SET regDate = NOW(),
 		updateDate = NOW(),
-		memberId = 2,
-		boardId = 2,
+		memberId = #{loginedMemberId},
+		boardId = #{boardId},
 		title = #{title},
-		`body` = #{body};
+		`body` = #{body},
+		classId = #{classId},
+		deadLine = #{deadLine};
 	</insert>
 	
 	<select id="getLastId" resultType="Int">

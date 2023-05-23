@@ -51,10 +51,10 @@
 	          </div>
 	        </td>
 	        <td>${article.classId }</td>
-        	<td>${article.regDate }</td>
+        	<td>${article.regDate.substring(0,10) }</td>
 	        <td>${article.memberId }</td>
 	        <c:if test="${board.id == 2 }">
-		        <td>${article.deadLine }</td>
+		        <td>${article.deadLine.substring(0,10) }</td>
 		        <td>과제검사</td>
 	        </c:if>
 	      </tr>

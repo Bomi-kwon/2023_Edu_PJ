@@ -19,7 +19,7 @@ title VARCHAR(100) NOT NULL,
 `body` TEXT NOT NULL,
 hit INT UNSIGNED NOT NULL DEFAULT 0,
 classId INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '전체공개는 0',
-deadLine DATETIME 
+deadLine DATETIME
 );
 
 # member 테이블 생성
@@ -51,15 +51,15 @@ CREATE TABLE board (
 	`name` VARCHAR(20) NOT NULL UNIQUE COMMENT '게시판 이름'
 );
 
-# class 테이블 생성
-# truncate table class;
-# drop table class;
+# group 테이블 생성
+# truncate table group;
+# drop table group;
 
-CREATE TABLE class (
+CREATE TABLE `group` (
 	id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	grade VARCHAR(20) NOT NULL UNIQUE COMMENT 'elementary(초등), middel(중등), high(고등)',
-	className VARCHAR(20) NOT NULL UNIQUE COMMENT '반 이름',
-	classDay VARCHAR(20) NOT NULL UNIQUE COMMENT '월수금, 화목토, 토일, ...'
+	grade VARCHAR(20) NOT NULL COMMENT 'elementary(초등), middel(중등), high(고등)',
+	groupName VARCHAR(20) NOT NULL COMMENT '반 이름',
+	groupDay VARCHAR(20) NOT NULL COMMENT '월수금, 화목토, 토일, ...'
 );
 
 # score 테이블 생성
@@ -71,7 +71,7 @@ CREATE TABLE score (
 	memberId INT UNSIGNED NOT NULL,
 	score INT UNSIGNED NOT NULL,
 	classId INT UNSIGNED NOT NULL DEFAULT 0,
-	testDate DATETIME NOT NULL
+	relId INT UNSIGNED NOT NULL COMMENT '몇번째 게시물인지'
 );
 
 #reactionPoint 테이블 생성
@@ -99,7 +99,7 @@ CREATE TABLE reply (
 DESC article;
 DESC `member`;
 DESC board;
-DESC class;
+DESC `group`;
 DESC score;
 DESC reactionPoint;
 DESC reply;
@@ -132,6 +132,24 @@ title = '5/15 수상 월수금반 숙제',
 `body` = '나머지 정리까지 풀어오세요.',
 classId = 1,
 deadLine = DATE_ADD(NOW(), INTERVAL 2 DAY);
+
+INSERT INTO article
+SET regDate = NOW(),
+updateDate = NOW(),
+memberId = 2,
+boardId = 3,
+title = '수상 심화반 총괄테스트',
+`body` = '점수~~!!',
+classId = 1;
+
+INSERT INTO article
+SET regDate = NOW(),
+updateDate = NOW(),
+memberId = 2,
+boardId = 3,
+title = '수1 기본반 총괄테스트',
+`body` = '점수~~!!',
+classId = 2;
 
 # member 테스트 데이터
 INSERT INTO `member`
@@ -189,21 +207,48 @@ INSERT INTO board
 SET `code` = 'score',
 `name` = '성적';
 
-# class 테스트 데이터
-INSERT INTO class
+# group 테스트 데이터
+INSERT INTO `group`
 SET grade = 'middle',
-className = '수상심화반',
-classDay = '월수금';
+groupName = '수상심화반',
+groupDay = '월수금';
+
+INSERT INTO `group`
+SET grade = 'middle',
+groupName = '중 3-2반',
+groupDay = '월수금';
+
+INSERT INTO `group`
+SET grade = 'high',
+groupName = '수1기본반',
+groupDay = '토일';
+
+INSERT INTO `group`
+SET grade = 'high',
+groupName = '수2기본반',
+groupDay = '토일';
+
+INSERT INTO `group`
+SET grade = 'high',
+groupName = '수1심화반',
+groupDay = '토일';
 
 # score 테스트 데이터
 INSERT INTO score
 SET memberId = 3,
 score = 90,
 classId = 1,
-testDate = NOW();
+relId = 5;
+
+INSERT INTO score
+SET memberId = 5,
+score = 72,
+classId = 1,
+relId = 5;
 
 SELECT *
 FROM article;
+
 
 SELECT *
 FROM `member`;
@@ -212,7 +257,7 @@ SELECT *
 FROM board;
 
 SELECT *
-FROM class;
+FROM `group`;
 
 SELECT *
 FROM score;

@@ -6,6 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>${pageTitle }</title>
+<!-- 파비콘 불러오기 -->
+<link rel="shortcut icon" href="/resource/images/favicon.ico" />
 <!-- 테일윈드 불러오기 -->
 <!-- 노말라이즈, 라이브러리 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.7/tailwind.min.css" />
@@ -34,6 +36,7 @@
       <li><a href="#">수업관리</a>
         <ul>
           <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>출결</span></a></li>
+          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/member/membergroup"><span>반 관리</span></a></li>
           <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/list?boardId=2"><span>숙제</span></a></li>
           <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/scorelist"><span>성적</span></a></li>
         </ul>
@@ -87,6 +90,7 @@
       <li><a href="#">수업관리</a>
         <ul>
           <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>출결</span></a></li>
+          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/member/membergroup"><span>반 관리</span></a></li>
           <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/list?boardId=2"><span>숙제</span></a></li>
           <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>성적</span></a></li>
         </ul>

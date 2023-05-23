@@ -31,6 +31,10 @@ public class MemberService {
 		return memberRepository.getMemberById(id);
 	}
 
+	public List<Member> getStudentsByClass(int classId) {
+		return memberRepository.getStudentsByClass(classId);
+	}
+
 	
 
 }

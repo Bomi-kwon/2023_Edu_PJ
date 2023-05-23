@@ -17,6 +17,8 @@ public interface MemberRepository {
 
 	Member getMemberById(int id);
 
+	List<Member> getStudentsByClass(int classId);
+
 	
 
 }

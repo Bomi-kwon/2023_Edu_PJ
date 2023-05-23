@@ -10,24 +10,34 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.koreaIT.project.service.ArticleService;
 import com.koreaIT.project.service.BoardService;
+import com.koreaIT.project.service.GroupService;
+import com.koreaIT.project.service.MemberService;
 import com.koreaIT.project.service.ScoreService;
 import com.koreaIT.project.util.Util;
 import com.koreaIT.project.vo.Article;
 import com.koreaIT.project.vo.Board;
+import com.koreaIT.project.vo.Group;
+import com.koreaIT.project.vo.Member;
+import com.koreaIT.project.vo.ResultData;
 import com.koreaIT.project.vo.Rq;
 import com.koreaIT.project.vo.Score;
 
 @Controller
 public class ProjectArticleController {
 	ArticleService articleService;
+	MemberService memberService;
 	BoardService boardService;
 	ScoreService scoreService;
+	GroupService groupService;
 	Rq rq;
 	
-	public ProjectArticleController(ArticleService articleService, BoardService boardService, ScoreService scoreService, Rq rq) {
+	public ProjectArticleController(ArticleService articleService, MemberService memberService,
+			BoardService boardService, ScoreService scoreService, GroupService groupService, Rq rq) {
 		this.articleService = articleService;
+		this.memberService = memberService;
 		this.boardService = boardService;
 		this.scoreService = scoreService;
+		this.groupService = groupService;
 		this.rq = rq;
 	}
 
@@ -58,7 +68,7 @@ public class ProjectArticleController {
 	
 	@RequestMapping("/project/article/doWrite")
 	@ResponseBody
-	public String doWrite(String title, String body) {
+	public String doWrite(String title, int classId, String deadLine, String body, int boardId) {
 		
 		if(title == null) {
 			return Util.jsHistoryBack("제목을 입력해주세요");
@@ -68,10 +78,16 @@ public class ProjectArticleController {
 			return Util.jsHistoryBack("내용을 입력해주세요");
 		}
 		
-		articleService.doWrite(title, body);
+		if(boardId == 2 ) {
+			if(deadLine == null) {
+				return Util.jsHistoryBack("제출 기한을 입력해주세요");
+			}
+		}
+		
+		articleService.doWrite(rq.getLoginedMember().getId(),title, classId, deadLine, body, boardId);
 		int id = articleService.getLastId();
 		
-		return Util.jsReplace(Util.f("%d번 게시물이 등록되었습니다.",id), "list");
+		return Util.jsReplace(Util.f("%d번 게시물이 등록되었습니다.",id), Util.f("list?boardId=%d", boardId));
 	}
 	
 	@RequestMapping("/project/article/homeworkdetail")
@@ -156,5 +172,44 @@ public class ProjectArticleController {
 		
 		
 		return "project/article/scoredetail";
+	}
+	
+	@RequestMapping("/project/article/setSelectBox")
+	@ResponseBody
+	public ResultData setSelectBox(String grade) {
+		List<Group> groups = groupService.getGroupsByGrade(grade);
+		
+		if(groups == null) {
+			return ResultData.from("F-1", "선택한 학년에 맞는 반이 없습니다");
+		}
+		
+		return ResultData.from("S-1", "선택한 학년에 맞는 반을 가져왔습니다", "groups", groups);
+	}
+	
+	@RequestMapping("/project/article/scorewrite")
+	public String scorewrite() {
+		return "project/article/scorewrite";
+	}
+	
+	@RequestMapping("/project/article/getStudentsByClass")
+	@ResponseBody
+	public ResultData getStudentsByClass(int classId) {
+		
+		List<Member> members = memberService.getStudentsByClass(classId);
+		
+		if(members == null) {
+			return ResultData.from("F-1", "선택한 반에는 학생이 없습니다.");
+		}
+		
+		return ResultData.from("S-1", "선택한 반에 맞는 학생 리스트를 가져왔습니다", "members", members);
+	}
+	
+	@RequestMapping("/project/article/doScoreWrite")
+	@ResponseBody
+	public String doScoreWrite(String title, int classId, String deadLine, String body, int boardId) {
+		
+		
+		
+		return null;
 	}
 }

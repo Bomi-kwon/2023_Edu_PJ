@@ -8,19 +8,24 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.koreaIT.project.service.GroupService;
 import com.koreaIT.project.service.MemberService;
 import com.koreaIT.project.util.Util;
+import com.koreaIT.project.vo.Group;
 import com.koreaIT.project.vo.Member;
 import com.koreaIT.project.vo.Rq;
 
 @Controller
 public class ProjectMemberController {
 	private MemberService memberService;
+	private GroupService groupService;
 	private Rq rq;
 	
 	@Autowired
-	public ProjectMemberController(MemberService memberService, Rq rq) {
+	public ProjectMemberController(MemberService memberService, Rq rq, 
+			GroupService groupService) {
 		this.memberService = memberService;
+		this.groupService = groupService;
 		this.rq = rq;
 	}
 	
@@ -128,6 +133,15 @@ public class ProjectMemberController {
 		model.addAttribute("member", member);
 		
 		return "project/member/memberprofile";
+	}
+	
+	@RequestMapping("/project/member/membergroup")
+	public String membergroup(Model model) {
+		
+		List<Group> groups = groupService.getgroups();
+		model.addAttribute("groups", groups);
+		
+		return "project/member/membergroup";
 	}
 
 	

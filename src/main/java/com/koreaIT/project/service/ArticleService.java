@@ -19,8 +19,8 @@ public class ArticleService {
 		return articleRepository.getArticles(boardId);
 	}
 
-	public void doWrite(String title, String body) {
-		articleRepository.doWrite(title, body);
+	public void doWrite(int loginedMemberId, String title, int classId, String deadLine, String body, int boardId) {
+		articleRepository.doWrite(loginedMemberId, title, classId, deadLine, body, boardId);
 	}
 
 	public int getLastId() {

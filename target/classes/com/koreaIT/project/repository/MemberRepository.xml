@@ -28,5 +28,12 @@
 		SELECT * FROM `member`
 		WHERE id = #{id}
 	</select>
+	
+	<select id="getStudentsByClass" resultType="Member">
+		SELECT *
+		FROM `member`
+		WHERE classId = #{classId}
+		AND authLevel = 2;
+	</select>
 
 </mapper>
