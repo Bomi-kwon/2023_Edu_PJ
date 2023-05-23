@@ -61,11 +61,19 @@
 					        <td>-</td>
 					      </tr>
 					    </tbody>
-					    <button class="btn btn-success mr-2">작성</button>
 					    `);
 			}
+			
+			$('#scoretable').append(`<div class="flex justify-end"><button class="btn btn-success mr-2">작성</button></div>`);
 		}, 'json');
+		
+		$( "form" ).submit(function( event ) {
+			  console.log( $( this ).serializeArray() );
+			  event.preventDefault();
+			});
 	}
+	
+	
 </script>
 
 
@@ -117,8 +125,6 @@
 			
 				<div class="table-box-type-1 mt-5">
 					<table class="table w-full" id="scoretable">
-				    
-				    
 				  </table>
 	  		</div>
 			</form>
