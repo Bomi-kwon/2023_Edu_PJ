@@ -38,15 +38,22 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer{
 		ir = registry.addInterceptor(needLoginInterceptor);
 		ir.addPathPatterns("/project/member/memberlist");
 		ir.addPathPatterns("/project/member/doMemberLogout");
+		ir.addPathPatterns("/project/member/memberprofile");
+		ir.addPathPatterns("/project/member/membergroup");
 		ir.addPathPatterns("/project/article/write");
 		ir.addPathPatterns("/project/article/doWrite");
 		ir.addPathPatterns("/project/article/doHomeworkDelete");
 		ir.addPathPatterns("/project/article/homeworkmodify");
 		ir.addPathPatterns("/project/article/doHomeworkModify");
+		ir.addPathPatterns("/project/article/setSelectBox");
+		ir.addPathPatterns("/project/article/scorewrite");
 		ir.addPathPatterns("/project/article/score");
+		ir.addPathPatterns("/project/article/getStudentsByClass");
+		ir.addPathPatterns("/project/article/doWriteScoreArticle");
 		
 		
 		ir = registry.addInterceptor(needLogoutInterceptor);
+		ir.addPathPatterns("/project/member/memberjoin");
 		ir.addPathPatterns("/project/member/doMemberJoin");
 		ir.addPathPatterns("/project/member/memberlogin");
 		ir.addPathPatterns("/project/member/doMemberLogin");
