@@ -71,7 +71,7 @@ public class ProjectMemberController {
 			return Util.jsHistoryBack("이메일을 입력하세요.");
 		}
 		
-		memberService.doMemberJoin(loginID, loginPW, name, cellphoneNum, email);
+		memberService.doMemberJoin(loginID, Util.sha256(loginPW), name, cellphoneNum, email);
 		
 		return Util.jsReplace(Util.f("%s님, 회원가입을 축하합니다.", name), "/");
 	}
@@ -82,7 +82,6 @@ public class ProjectMemberController {
 		if(rq.getLoginedMember() != null) {
 			return Util.jsReplace("이미 로그인된 상태입니다.", "/");
 		}
-		
 		
 		return "project/member/memberlogin";
 	}
@@ -105,7 +104,7 @@ public class ProjectMemberController {
 			return Util.jsHistoryBack(Util.f("%s는 존재하지 않는 아이디입니다.",loginID));
 		}
 		
-		if(!member.getLoginPW().equals(loginPW)) {
+		if(!member.getLoginPW().equals(Util.sha256(loginPW))) {
 			return Util.jsHistoryBack("비밀번호가 일치하지 않습니다.");
 		}
 		
