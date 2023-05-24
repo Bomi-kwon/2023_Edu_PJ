@@ -56,7 +56,7 @@
       </li>
       <li><a href="#">자율학습</a>
         <ul>
-          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>모의고사 시계</span></a></li>
+          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/home/timer"><span>모의고사 시계</span></a></li>
           <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>공부 인증</span></a></li>
         </ul>
       </li>
@@ -110,7 +110,7 @@
       </li>
       <li><a href="#">자율학습</a>
         <ul>
-          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>모의고사 시계</span></a></li>
+          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/home/timer"><span>모의고사 시계</span></a></li>
           <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>공부 인증</span></a></li>
         </ul>
       </li>

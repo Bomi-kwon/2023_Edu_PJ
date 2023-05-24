@@ -15,5 +15,10 @@ public class ProjectHomeController {
 		return "redirect:/project/home/main";
 	}
 	
+	@RequestMapping("/project/home/timer")
+	public String timer() {
+		return "project/home/timer";
+	}
+	
 	
 }
