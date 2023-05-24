@@ -15,7 +15,6 @@
 
 <section class="mt-8 mx-auto text-xl">
 	<div class="container mx-auto px-3">
-				<input type="hidden" name="boardId" value="3"/>
 				<div class="table-box-type-1 overflow-x-auto">
 				<div>성적 입력</div>
 						<table border="1" class="mx-auto able w-full bg-gray-100">
@@ -59,7 +58,9 @@
 					    
 					    <c:forEach var="member" items="${members }" varStatus="status">
 						    <tbody>
-							<input type="hidden" name="memberId" value="${member.id }"/>
+							<input type="hidden" name="scorelist[${status.index }].relId" value="${article.id }"/>
+							<input type="hidden" name="scorelist[${status.index }].classId" value="${article.classId }"/>
+							<input type="hidden" name="scorelist[${status.index }].memberId" value="${member.id }"/>
 						      <tr id="${status.count }">
 						        <th>
 						          <label>
@@ -67,7 +68,7 @@
 						          </label>
 						        </th>
 						        <td>${member.name }</td>
-						        <td><input class="input input-bordered input-success w-full" type="text" name="score"/></td>
+						        <td><input class="input input-bordered input-success w-full" type="text" name="scorelist[${status.index }].score"/></td>
 						        <td>
 						        	<select name="classId" class="select select-success w-full max-w-xs">
 										<option value="">응시</option>

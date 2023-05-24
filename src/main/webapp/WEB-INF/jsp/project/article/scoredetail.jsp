@@ -81,9 +81,11 @@
 		
 		<div class="flex justify-end">
 			<a href="scorelist" class="btn btn-success mr-2" >목록</a>
-			<a href="scoremodify?id=${article.id }" class="btn btn-success mr-2" >수정</a>
-			<a href="doHomeworkDelete?id=${article.id }&boardId=3" class="btn btn-success mr-2" 
-			onclick="if(confirm('정말 삭제하시겠습니까?')==false) return false;">삭제</a>
+			<c:if test="${rq.getLoginedMember().getId() == article.memberId }">
+				<a href="scoremodify?id=${article.id }" class="btn btn-success mr-2" >수정</a>
+				<a href="doHomeworkDelete?id=${article.id }&boardId=3" class="btn btn-success mr-2" 
+				onclick="if(confirm('정말 삭제하시겠습니까?')==false) return false;">삭제</a>
+			</c:if>
 		</div>
 	</div>
 </section>

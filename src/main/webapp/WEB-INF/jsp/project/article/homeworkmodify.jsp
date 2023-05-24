@@ -9,6 +9,8 @@
 	<div class="container mx-auto px-3">
 		<form action="doHomeworkModify">
 			<input type="hidden" name="id" value="${article.id }"/>
+			<input type="hidden" name="memberId" value="${article.memberId }"/>
+			<input type="hidden" name="boardId" value="${article.boardId }"/>
 			<div class="table-box-type-1">
 				<table class="mx-auto table w-full">
 					<colgroup>
@@ -58,7 +60,7 @@
 			<div class="flex justify-end">
 				<a class="btn btn-success mr-2" onclick="history.back();">뒤로</a>
 				<button class="btn btn-success mr-2" >수정</button>
-				<a href="doHomeworkDelete?id=${article.id }" class="btn btn-success mr-2" 
+				<a href="doHomeworkDelete?id=${article.id }&boardId=${article.boardId}&memberId=${article.memberId}" class="btn btn-success mr-2" 
 				onclick="if(confirm('정말 삭제하시겠습니까?')==false) return false;">삭제</a>
 			</div>
 		</form>

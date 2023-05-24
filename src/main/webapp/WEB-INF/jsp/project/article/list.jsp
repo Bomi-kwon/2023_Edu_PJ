@@ -62,9 +62,11 @@
 		</c:forEach>
 	  </table>
 	  </div>
+	  <c:if test="${rq.getLoginedMember().getAuthLevel() == 1 }">
 	<div class="flex justify-end">
 		<a href="write?boardId=${board.id }" class="btn btn-success" >글 쓰기</a>
 	</div>
+	</c:if>
 	</div>
 </section>
 	

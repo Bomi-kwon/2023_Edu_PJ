@@ -11,6 +11,7 @@ import com.koreaIT.project.vo.Rq;
 
 @Component
 public class NeedLoginInterceptor implements HandlerInterceptor{
+	
 	private Rq rq;
 	
 	@Autowired

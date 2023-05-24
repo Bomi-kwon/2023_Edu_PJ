@@ -51,9 +51,11 @@
 		</c:forEach>
 	  </table>
 	  </div>
+	  <c:if test="${rq.getLoginedMember().getAuthLevel() == 1 }">
 	<div class="flex justify-end">
 		<a href="scorewrite" class="btn btn-success" >성적 입력</a>
 	</div>
+	</c:if>
 	</div>
 </section>
 	

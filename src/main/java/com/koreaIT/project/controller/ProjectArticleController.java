@@ -21,6 +21,7 @@ import com.koreaIT.project.vo.Member;
 import com.koreaIT.project.vo.ResultData;
 import com.koreaIT.project.vo.Rq;
 import com.koreaIT.project.vo.Score;
+import com.koreaIT.project.vo.ScoreList;
 
 @Controller
 public class ProjectArticleController {
@@ -102,7 +103,11 @@ public class ProjectArticleController {
 	
 	@RequestMapping("/project/article/doHomeworkDelete")
 	@ResponseBody
-	public String doHomeworkDelete(int id, int boardId) {
+	public String doHomeworkDelete(int id, int boardId, int memberId) {
+		
+		if(rq.getLoginedMember().getId() != memberId) {
+			return Util.jsReplace("게시물 삭제 권한이 없습니다.",Util.f("list?boardId=%d", boardId));
+		}
 		
 		Article article = articleService.getArticleById(id);
 		if(article == null) {
@@ -115,7 +120,11 @@ public class ProjectArticleController {
 	}
 	
 	@RequestMapping("/project/article/homeworkmodify")
-	public String homeworkmodify(int id, Model model) {
+	public String homeworkmodify(Model model, int id, int memberId) {
+		
+		if(rq.getLoginedMember().getId() != memberId) {
+			return Util.jsHistoryBack("게시물 수정 권한이 없습니다.");
+		}
 		
 		Article article = articleService.getArticleById(id);
 		if(article == null) {
@@ -128,12 +137,17 @@ public class ProjectArticleController {
 	
 	@RequestMapping("/project/article/doHomeworkModify")
 	@ResponseBody
-	public String doHomeworkModify(int id, String title, String body) {
+	public String doHomeworkModify(int id, String title, String body, int memberId, int boardId) {
+		
+		if(rq.getLoginedMember().getId() != memberId) {
+			return Util.jsReplace("게시물 삭제 권한이 없습니다.",Util.f("list?boardId=%d", boardId));
+		}
 		
 		Article article = articleService.getArticleById(id);
 		if(article == null) {
 			return Util.f("%d번 게시물은 존재하지 않습니다.", id);
 		}
+		
 		
 		if(title == null) {
 			return Util.jsHistoryBack("제목을 입력해주세요");
@@ -221,10 +235,22 @@ public class ProjectArticleController {
 	
 	@RequestMapping("/project/article/doWriteScoreArticle")
 	@ResponseBody
-	public String doWriteScoreArticle(String title, int classId, String deadLine, String body, int boardId) {
+	public Object doWriteScoreArticle(ScoreList scorelist) {
+		
+		for(Score score : scorelist) {
+			
+		}
+		
+		for(int i = 0; i < scorelist.length(); i++) {
+			
+		}
+		
+		for(int i = 0; i < scorelist.size(); i++) {
+			
+		}
 		
 		
 		
-		return null;
+		return scorelist;
 	}
 }

@@ -24,8 +24,7 @@ public class Rq {
 	private HttpServletRequest req;
 	private HttpServletResponse resp;
 	private HttpSession httpSession;
-	public Rq(HttpServletRequest req, 
-	        HttpServletResponse resp, HttpSession httpSession) {
+	public Rq(HttpServletRequest req, HttpServletResponse resp) {
 	    this.req = req;
 	    this.resp = resp;
 	    this.httpSession = req.getSession();
