@@ -235,22 +235,16 @@ public class ProjectArticleController {
 	
 	@RequestMapping("/project/article/doWriteScoreArticle")
 	@ResponseBody
-	public Object doWriteScoreArticle(ScoreList scorelist) {
+	public String doWriteScoreArticle(ScoreList scorelist) {
 		
-		for(Score score : scorelist) {
-			
+		List<Score> scoreList = scorelist.getScorelist();
+		
+		for(Score score : scoreList) {
+			if(score != null) {
+				scoreService.insertScore(score.getMemberId(), score.getScore(), score.getClassId(), score.getRelId());
+			}
 		}
 		
-		for(int i = 0; i < scorelist.length(); i++) {
-			
-		}
-		
-		for(int i = 0; i < scorelist.size(); i++) {
-			
-		}
-		
-		
-		
-		return scorelist;
+		return Util.jsReplace("성적을 입력했습니다.", "scorelist");
 	}
 }

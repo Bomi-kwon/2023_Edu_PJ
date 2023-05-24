@@ -5,12 +5,6 @@
 
 <%@ include file="../common/head.jsp" %>
 
-<script>
-	
-	function serialize(form) {
-	  console.log( $( this ).serializeArray() );
-	}
-</script>
 
 
 <section class="mt-8 mx-auto text-xl">
@@ -40,7 +34,7 @@
 					<button class="btn btn-success" type="button" onclick="history.back();">뒤로</button>
 				</div>
 				
-				<form action="doWriteScoreArticle" onsubmit="serialize(this);">
+				<form action="doWriteScoreArticle">
 				<div class="table-box-type-1 mt-5">
 					<table class="table w-full" id="scoretable">
 						<thead>

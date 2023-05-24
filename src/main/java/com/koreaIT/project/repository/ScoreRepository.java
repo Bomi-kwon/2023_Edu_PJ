@@ -10,5 +10,7 @@ import com.koreaIT.project.vo.Score;
 public interface ScoreRepository {
 
 	List<Score> getScoresByRelId(int relId);
+
+	void insertScore(int memberId, int score, int classId, int relId);
 	
 }

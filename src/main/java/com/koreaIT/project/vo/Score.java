@@ -13,4 +13,5 @@ public class Score {
 	private int score;
 	private int classId;
 	private int relId;
+	
 }

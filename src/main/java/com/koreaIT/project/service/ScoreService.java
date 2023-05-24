@@ -19,4 +19,8 @@ public class ScoreService {
 		return scoreRepository.getScoresByRelId(relId);
 	}
 
+	public void insertScore(int memberId, int score, int classId, int relId) {
+		scoreRepository.insertScore(memberId, score, classId, relId);
+	}
+
 }
