@@ -41,9 +41,9 @@
 	            </div>
 	          </div>
 	        </td>
-	        <td>${article.classId }</td>
+	        <td>${article.groupName }</td>
 	        <td>${article.regDate }</td>
-	        <td>${article.memberId }</td>
+	        <td>${article.writerName }</td>
 	        <td>2/4</td>
 	        <td>만점기준:100점</td>
 	      </tr>

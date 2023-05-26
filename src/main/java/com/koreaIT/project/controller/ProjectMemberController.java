@@ -13,6 +13,7 @@ import com.koreaIT.project.service.MemberService;
 import com.koreaIT.project.util.Util;
 import com.koreaIT.project.vo.Group;
 import com.koreaIT.project.vo.Member;
+import com.koreaIT.project.vo.ResultData;
 import com.koreaIT.project.vo.Rq;
 
 @Controller
@@ -45,13 +46,17 @@ public class ProjectMemberController {
 	
 	@RequestMapping("/project/member/doMemberJoin")
 	@ResponseBody
-	public String doMemberJoin(String loginID, String loginPW, String loginPWCheck, String name, String cellphoneNum, String email) {
+	public String doMemberJoin(int authLevel, String loginID, String loginPW, String loginPWCheck, String name, String cellphoneNum, String email) {
 		
-		if(loginID == null) {
+		if(Util.empty(loginID)) {
 			return Util.jsHistoryBack("로그인 아이디를 입력하세요.");
 		}
 		
-		if(loginPW == null) {
+		if(Util.empty(loginPW)) {
+			return Util.jsHistoryBack("로그인 비밀번호를 입력하세요.");
+		}
+		
+		if(Util.empty(loginPWCheck)) {
 			return Util.jsHistoryBack("로그인 비밀번호를 입력하세요.");
 		}
 		
@@ -59,21 +64,21 @@ public class ProjectMemberController {
 			return Util.jsHistoryBack("비밀번호가 일치하지 않습니다.");
 		}
 		
-		if(name == null) {
+		if(Util.empty(name)) {
 			return Util.jsHistoryBack("이름을 입력하세요.");
 		}
 		
-		if(cellphoneNum == null) {
+		if(Util.empty(cellphoneNum)) {
 			return Util.jsHistoryBack("전화번호를 입력하세요.");
 		}
 		
-		if(email == null) {
+		if(Util.empty(email)) {
 			return Util.jsHistoryBack("이메일을 입력하세요.");
 		}
 		
-		memberService.doMemberJoin(loginID, Util.sha256(loginPW), name, cellphoneNum, email);
+		memberService.doMemberJoin(loginID, Util.sha256(loginPW), name, cellphoneNum, email, authLevel);
 		
-		return Util.jsReplace(Util.f("%s님, 회원가입을 축하합니다.", name), "/");
+		return Util.jsReplace(Util.f("%s님, 회원가입을 축하합니다.", name), "memberlogin");
 	}
 	
 	@RequestMapping("/project/member/memberlogin")
@@ -123,6 +128,16 @@ public class ProjectMemberController {
 		}
 		rq.logout();
 		return Util.jsReplace("로그아웃되었습니다.", "/");
+	}
+	
+	@RequestMapping("/project/member/doMemberDrop")
+	@ResponseBody
+	public String doMemberDrop(int id) {
+		
+		rq.logout();
+		memberService.doMemberDrop(id);
+		
+		return Util.jsReplace("탈퇴되었습니다.", "/");
 	}
 	
 	@RequestMapping("/project/member/memberprofile")
@@ -194,6 +209,19 @@ public class ProjectMemberController {
 		memberService.doPasswordModify(id, Util.sha256(loginPW));
 		
 		return Util.jsReplace("비밀번호를 수정하였습니다.", "/");
+	}
+	
+	@RequestMapping("/project/member/getMembersByAuthLevel")
+	@ResponseBody
+	public ResultData getMembersByAuthLevel(int authLevel) {
+		
+		List<Member> members = memberService.getMembersByAuthLevel(authLevel);
+		
+		if(members.isEmpty()) {
+			return ResultData.from("F-1", "회원이 없습니다");
+		}
+		
+		return ResultData.from("S-1", "선택한 등급에 맞는 반을 가져왔습니다", "members", members);
 	}
 	
 	

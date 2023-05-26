@@ -12,6 +12,7 @@
 		INSERT INTO `member`
 		SET regDate = NOW(),
 		updateDate = NOW(),
+		authLevel = #{authLevel},
 		loginID = #{loginID},
 		loginPW = #{loginPW},
 		`name` = #{name},
@@ -46,10 +47,21 @@
 		WHERE id = #{id}
 	</update>
 	
-		<update id="doPasswordModify">
+	<update id="doPasswordModify">
 		UPDATE `member`
 		SET loginPW = #{loginPW}
 		WHERE id = #{id}
 	</update>
+	
+	<delete id="doMemberDrop">
+		DELETE FROM `member`
+		WHERE id = #{id}
+	</delete>
+	
+	<select id="getMembersByAuthLevel" resultType="Member">
+		SELECT *
+		FROM `member`
+		WHERE authLevel = #{authLevel}
+	</select>
 
 </mapper>

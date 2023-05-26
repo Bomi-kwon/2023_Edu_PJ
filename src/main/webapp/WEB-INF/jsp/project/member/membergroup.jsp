@@ -23,7 +23,7 @@
 	        <td>${group.grade }</td>
 	      	<td>${group.groupName }</td>
 	        <td>${group.groupDay }</td>
-	        <td>8명</td>
+	        <td>${group.studentNum }명</td>
 	      </tr>
 	    </tbody>
 		</c:forEach>

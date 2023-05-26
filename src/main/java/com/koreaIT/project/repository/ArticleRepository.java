@@ -19,7 +19,7 @@ public interface ArticleRepository {
 
 	public void doHomeworkDelete(int id);
 
-	public void doHomeworkModify(int id, String title, String body);
+	public void doModify(int id, String title, String body);
 
 	public void doScoreArticleModify(int id, String title, int classId, String regDate);
 

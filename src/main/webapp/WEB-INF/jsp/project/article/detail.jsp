@@ -48,7 +48,7 @@
 		<div class="flex justify-end">
 			<a href="list" class="btn btn-success mr-2" >목록</a>
 			<c:if test="${rq.getLoginedMemberId() == article.memberId }">
-				<a href="homeworkmodify?id=${article.id }&memberId=${article.memberId}" class="btn btn-success mr-2" >수정</a>
+				<a href="modify?id=${article.id }&memberId=${article.memberId}" class="btn btn-success mr-2" >수정</a>
 				<a href="doHomeworkDelete?id=${article.id }&boardId=${article.boardId}&memberId=${article.memberId}" class="btn btn-success mr-2" 
 				onclick="if(confirm('정말 삭제하시겠습니까?')==false) return false;">삭제</a>
 			</c:if>

@@ -5,8 +5,36 @@
 
 <%@ include file="../common/head.jsp" %>
 
+<script>
+	function selectAuthLevel(authLevel) {
+		let authLevelVal = authLevel.value;
+		
+		$.get('getMembersByAuthLevel', {
+			authLevel : authLevelVal
+		}, function(data) {
+			console.log(data);
+			for(var i = 0; i < data.data1.length; i++) {
+				
+			}
+		
+		}, 'json');
+	}
+</script>
+
+
 <section class="mt-8 mx-auto text-xl">
 	<div class="container mx-auto px-3">
+	
+	<div class="mb-5">
+		<label for="">회원 구분 : </label>
+		<select name="authLevel" class="select select-success w-full max-w-xs" onchange="selectAuthLevel(this);">
+			<option value="0">전체</option>
+			<option value="1">선생님</option>
+			<option value="2">학생</option>
+			<option value="3">학부모</option>
+		</select>
+	</div>
+	
 	  <table class="table w-full">
 	    <thead>
 	      <tr>

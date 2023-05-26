@@ -39,6 +39,10 @@
 					<th>평균</th>
 					<td colspan="3">평균 : 84, 최고 : 90, 최저 : 72</td>
 				</tr>
+				<tr>
+					<th>교사의견</th>
+					<td colspan="3">${article.body }</td>
+				</tr>
 			</table>
 		</div>
 		
@@ -55,7 +59,6 @@
 	        <th>총점</th>
 	        <th>석차</th>
 	        <th>응시여부</th>
-	        <th>교사의견</th>
 	      </tr>
 	    </thead>
 	    
@@ -72,7 +75,6 @@
 	        <td>${score.score }</td>
 	        <td>1/2</td>
 	        <td>응시</td>
-	        <td>-</td>
 	      </tr>
 	    </tbody>
 		</c:forEach>

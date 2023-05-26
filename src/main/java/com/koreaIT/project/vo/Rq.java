@@ -54,10 +54,16 @@ public class Rq {
 	    httpSession.removeAttribute("loginedMemberId");
 	}
 
+	
+	//initRq() 속에는 함수 내용을 안 써줄 것임.
+	//함수 내용이 없어도 그냥 rq를 한번 써주기만 하면 스프링부트가 rq 객체 생성하기 때문. 
+	//그럼 그 뒤로는 그 생성한 객체를 가지고 여기저기서 rq속 함수를 쓸 수가 있는것임.
 	public void initRq() {
 		
 	}
 
+	
+	//@ResponseBody 없고 리턴해야되는 값 없이 오류메시지만 alert 해줄때
 	public void jsPrintHistoryBack(String msg) {
 		resp.setContentType("text/html; charset=UTF-8;");
 		
@@ -79,6 +85,7 @@ public class Rq {
 			}
 	}
 	
+	//@ResponseBody 없고 리턴해야되는 값 있고 common.jsp로 잠깐 창 열어서 오류메세지 보여준뒤 뒤로가기 할 때
 	public String jsReturnOnView(String msg, boolean isHistoryBack) {
 		
 		req.setAttribute("msg", msg);

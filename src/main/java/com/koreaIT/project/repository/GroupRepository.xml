@@ -4,7 +4,12 @@
 <mapper namespace="com.koreaIT.project.repository.GroupRepository">
 
 	<select id="getgroups" resultType="Group">
-		SELECT * FROM `group`;
+		SELECT G.*, COUNT(M.classId) AS studentNum
+		FROM `group` AS G
+		LEFT JOIN `member` AS M
+		ON G.id = M.classId
+		AND M.authLevel = 2
+		GROUP BY G.id;
 	</select>
 	
 	<select id="getGroupsByGrade" resultType="Group">

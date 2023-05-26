@@ -16,6 +16,14 @@
 							<col width="600"/>
 						</colgroup>
 						<tr>
+							<th>회원 구분</th>
+							<td>
+							<input type="radio" name="authLevel" value="1"/><span>선생님</span>
+							<input type="radio" name="authLevel" value="2" checked/><span>학생</span>
+							<input type="radio" name="authLevel" value="3"/><span>학부모</span>
+							</td>
+						</tr>
+						<tr>
 							<th>로그인 아이디</th>
 							<td><input class="input input-bordered input-success w-full" type="text" name="loginID" 
 							placeholder="로그인 아이디를 입력해주세요." /></td>

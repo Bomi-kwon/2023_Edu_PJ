@@ -43,8 +43,8 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer{
 		ir.addPathPatterns("/project/article/write");
 		ir.addPathPatterns("/project/article/doWrite");
 		ir.addPathPatterns("/project/article/doHomeworkDelete");
-		ir.addPathPatterns("/project/article/homeworkmodify");
-		ir.addPathPatterns("/project/article/doHomeworkModify");
+		ir.addPathPatterns("/project/article/modify");
+		ir.addPathPatterns("/project/article/doModify");
 		ir.addPathPatterns("/project/article/setSelectBox");
 		ir.addPathPatterns("/project/article/scorewrite");
 		ir.addPathPatterns("/project/article/score");

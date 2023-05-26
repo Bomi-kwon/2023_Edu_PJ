@@ -42,8 +42,8 @@
 		<div class="flex justify-end">
 			<a class="btn btn-success mr-2" onclick="history.back();">뒤로</a>
 			<a href="checkpassword?id=${member.id }" class="btn btn-success mr-2" >회원정보 수정</a>
-			<a href="memberdrop" class="btn btn-success mr-2" 
-			onclick="if(confirm('정말 삭제하시겠습니까?')==false) return false;">탈퇴</a>
+			<a href="doMemberDrop?id=${member.id }" class="btn btn-success mr-2" 
+			onclick="if(confirm('정말 탈퇴하시겠습니까?')==false) return false;">탈퇴</a>
 		</div>
 	</div>
 </section>

@@ -4,9 +4,14 @@
 <mapper namespace="com.koreaIT.project.repository.ArticleRepository">
 
 	<select id="getArticles" resultType="Article">
-		SELECT * FROM article
+		SELECT A.*, M.name AS writerName, IFNULL(G.groupName,'전체') AS groupName
+		FROM article AS A
+		INNER JOIN `member` AS M
+		ON A.memberId = M.id
+		LEFT JOIN `group` AS G
+		ON A.classId = G.id
 		WHERE boardId = #{boardId}
-		ORDER BY id DESC
+		ORDER BY A.id DESC;
 	</select>
 	
 	<insert id="doWrite">
@@ -35,7 +40,7 @@
 		WHERE id = #{id}
 	</delete>
 	
-	<update id="doHomeworkModify">
+	<update id="doModify">
 		UPDATE article
 		SET updateDate = NOW(),
 		title = #{title},

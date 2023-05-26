@@ -35,8 +35,8 @@ public class ArticleService {
 		articleRepository.doHomeworkDelete(id);
 	}
 
-	public void doHomeworkModify(int id, String title, String body) {
-		articleRepository.doHomeworkModify(id, title, body);
+	public void doModify(int id, String title, String body) {
+		articleRepository.doModify(id, title, body);
 	}
 
 	public void doScoreArticleModify(int id, String title, int classId, String regDate) {

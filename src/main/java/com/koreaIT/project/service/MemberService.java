@@ -19,8 +19,8 @@ public class MemberService {
 		return memberRepository.getMembers();
 	}
 
-	public void doMemberJoin(String loginID, String loginPW, String name, String cellphoneNum, String email) {
-		memberRepository.doMemberJoin(loginID, loginPW, name, cellphoneNum, email);
+	public void doMemberJoin(String loginID, String loginPW, String name, String cellphoneNum, String email, int authLevel) {
+		memberRepository.doMemberJoin(loginID, loginPW, name, cellphoneNum, email, authLevel);
 	}
 
 	public Member getMemberByLoginID(String loginID) {
@@ -41,6 +41,14 @@ public class MemberService {
 
 	public void doPasswordModify(int id, String loginPW) {
 		memberRepository.doPasswordModify(id, loginPW);
+	}
+
+	public void doMemberDrop(int id) {
+		memberRepository.doMemberDrop(id);
+	}
+
+	public List<Member> getMembersByAuthLevel(int authLevel) {
+		return memberRepository.getMembersByAuthLevel(authLevel);
 	}
 
 	

@@ -27,6 +27,10 @@
 							<th>시험일자</th>
 							<td>${article.deadLine.substring(0,10) }</td>
 						</tr>
+						<tr>
+							<th>교사의견</th>
+							<td>${article.body }</td>
+						</tr>
 					</table>
 				</div>
 				<div class="flex justify-end">
@@ -73,14 +77,6 @@
 						    </tbody>
 						    
 						</c:forEach>
-						<tr>
-						      	<td colspan="4">
-						      	<div class="flex flex-col">
-							      	<span class="mb-3">교사의견</span>
-							      	<textarea class="textarea textarea-success w-full" name="body" placeholder="내용을 입력해주세요.">${article.body }</textarea>
-						      	</div>
-						      	</td>
-						      </tr>
 				  </table>
 				  <button class="btn btn-success mr-2" onsubmit="check(this); return false;">작성</button>
 	  		</div>

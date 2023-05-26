@@ -7,6 +7,8 @@ public class Util {
 		return String.format(format, args);
 	}
 	
+	
+	//@ResponseBody 있고 리턴해야되고 페이지 다른걸로 바꿔줘야될 때
 	public static String jsReplace(String msg, String uri) {
 		if(msg == null) {
 			msg = "";
@@ -25,6 +27,8 @@ public class Util {
 				""", msg, uri);
 	}
 	
+	
+	//@ResponseBody 있고 오류메세지 리턴하고 뒤로가기 할 때
 	public static String jsHistoryBack(String msg) {
 		if(msg == null) {
 			msg = "";

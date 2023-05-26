@@ -71,16 +71,16 @@ public class ProjectArticleController {
 	@ResponseBody
 	public String doWrite(String title, int classId, String deadLine, String body, int boardId) {
 		
-		if(title == null) {
+		if(Util.empty(title)) {
 			return Util.jsHistoryBack("제목을 입력해주세요");
 		}
 		
-		if(body == null) {
+		if(Util.empty(body)) {
 			return Util.jsHistoryBack("내용을 입력해주세요");
 		}
 		
 		if(boardId == 2 ) {
-			if(deadLine == null) {
+			if(Util.empty(deadLine)) {
 				return Util.jsHistoryBack("제출 기한을 입력해주세요");
 			}
 		}
@@ -91,14 +91,14 @@ public class ProjectArticleController {
 		return Util.jsReplace(Util.f("%d번 게시물이 등록되었습니다.",id), Util.f("list?boardId=%d", boardId));
 	}
 	
-	@RequestMapping("/project/article/homeworkdetail")
-	public String homeworkdetail(int id, Model model) {
+	@RequestMapping("/project/article/detail")
+	public String detail(int id, Model model) {
 		
 		Article article = articleService.getArticleById(id);
 		
 		model.addAttribute("article",article);
 		
-		return "project/article/homeworkdetail";
+		return "project/article/detail";
 	}
 	
 	@RequestMapping("/project/article/doHomeworkDelete")
@@ -119,8 +119,8 @@ public class ProjectArticleController {
 		return Util.jsReplace(Util.f("%d번 게시물을 삭제했습니다.", id),Util.f("list?boardId=%d", boardId));
 	}
 	
-	@RequestMapping("/project/article/homeworkmodify")
-	public String homeworkmodify(Model model, int id, int memberId) {
+	@RequestMapping("/project/article/modify")
+	public String modify(Model model, int id, int memberId) {
 		
 		if(rq.getLoginedMemberId() != memberId) {
 			return Util.jsHistoryBack("게시물 수정 권한이 없습니다.");
@@ -132,12 +132,12 @@ public class ProjectArticleController {
 		}
 		model.addAttribute("article", article);
 		
-		return "project/article/homeworkmodify";
+		return "project/article/modify";
 	}
 	
-	@RequestMapping("/project/article/doHomeworkModify")
+	@RequestMapping("/project/article/doModify")
 	@ResponseBody
-	public String doHomeworkModify(int id, String title, String body, int memberId, int boardId) {
+	public String doModify(int id, String title, String body, int memberId, int boardId) {
 		
 		if(rq.getLoginedMemberId() != memberId) {
 			return Util.jsReplace("게시물 삭제 권한이 없습니다.",Util.f("list?boardId=%d", boardId));
@@ -148,18 +148,17 @@ public class ProjectArticleController {
 			return Util.f("%d번 게시물은 존재하지 않습니다.", id);
 		}
 		
-		
-		if(title == null) {
+		if(Util.empty(title)) {
 			return Util.jsHistoryBack("제목을 입력해주세요");
 		}
 		
-		if(body == null) {
+		if(Util.empty(body)) {
 			return Util.jsHistoryBack("내용을 입력해주세요");
 		}
 		
-		articleService.doHomeworkModify(id, title, body);
+		articleService.doModify(id, title, body);
 		
-		return Util.jsReplace(Util.f("%d번 게시물을 수정하였습니다.",id), Util.f("homeworkdetail?id=%d", id));
+		return Util.jsReplace(Util.f("%d번 게시물을 수정하였습니다.",id), Util.f("detail?id=%d", id));
 	}
 	
 	@RequestMapping("/project/article/scorelist")
@@ -193,7 +192,7 @@ public class ProjectArticleController {
 	public ResultData setSelectBox(String grade) {
 		List<Group> groups = groupService.getGroupsByGrade(grade);
 		
-		if(groups == null) {
+		if(groups.isEmpty()) {
 			return ResultData.from("F-1", "선택한 학년에 맞는 반이 없습니다");
 		}
 		
@@ -206,14 +205,18 @@ public class ProjectArticleController {
 	}
 	
 	@RequestMapping("/project/article/score")
-	public String score(Model model, String title, int classId, String regDate) {
+	public String score(Model model, String title, int classId, String regDate, String body) {
 		
-		//"." 은 내용이 NOT NULL이라서 일단 아무거나 넣어놓은것!!
-		articleService.doWrite(rq.getLoginedMemberId(), title, classId, regDate, ".", 3);
+		List<Member> members = memberService.getStudentsByClass(classId);
+		
+		if(members.isEmpty()) {
+			return rq.jsReturnOnView("이 반에는 학생이 없습니다.", true);
+		}
+		
+		articleService.doWrite(rq.getLoginedMemberId(), title, classId, regDate, body, 3);
 		
 		Article article = articleService.getArticleById(articleService.getLastId());
 		
-		List<Member> members = memberService.getStudentsByClass(classId);
 		
 		model.addAttribute("article", article);
 		model.addAttribute("members", members);
@@ -227,7 +230,7 @@ public class ProjectArticleController {
 		
 		List<Member> members = memberService.getStudentsByClass(classId);
 		
-		if(members == null) {
+		if(members.isEmpty()) {
 			return ResultData.from("F-1", "선택한 반에는 학생이 없습니다.");
 		}
 		

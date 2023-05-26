@@ -46,13 +46,13 @@
 	            </div>
 	             -->
 	            <div>
-	              <div class="font-bold"><a href="homeworkdetail?id=${article.id }">${article.title }</a></div>
+	              <div class="font-bold"><a href="detail?id=${article.id }">${article.title }</a></div>
 	            </div>
 	          </div>
 	        </td>
-	        <td>${article.classId }</td>
+	        <td>${article.groupName }</td>
         	<td>${article.regDate.substring(0,10) }</td>
-	        <td>${article.memberId }</td>
+	        <td>${article.writerName }</td>
 	        <c:if test="${board.id == 2 }">
 		        <td>${article.deadLine.substring(0,10) }</td>
 		        <td>과제검사</td>

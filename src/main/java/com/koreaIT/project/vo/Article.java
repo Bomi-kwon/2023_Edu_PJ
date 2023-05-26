@@ -20,6 +20,9 @@ public class Article {
 	private int classId;
 	private String deadLine;
 	
+	private String groupName;
+	private String writerName;
+	
 	public String getForPrintBody() {
 		return this.body.replaceAll("\n", "<br />");
 	}

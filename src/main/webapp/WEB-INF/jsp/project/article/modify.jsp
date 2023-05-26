@@ -7,7 +7,7 @@
 
 <section class="mt-8 mx-auto text-xl">
 	<div class="container mx-auto px-3">
-		<form action="doHomeworkModify">
+		<form action="doModify">
 			<input type="hidden" name="id" value="${article.id }"/>
 			<input type="hidden" name="memberId" value="${article.memberId }"/>
 			<input type="hidden" name="boardId" value="${article.boardId }"/>
@@ -44,11 +44,11 @@
 					</tr>
 					<tr>
 						<th>이미지</th>
-						<td></td>
+						<td colspan="5"></td>
 					</tr>
 					<tr>
 						<th>첨부파일</th>
-						<td></td>
+						<td colspan="5"></td>
 					</tr>
 					<tr>
 						<td colspan="6">
