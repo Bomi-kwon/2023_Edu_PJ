@@ -14,4 +14,6 @@ public class Score {
 	private int classId;
 	private int relId;
 	
+	private String name;
+	
 }

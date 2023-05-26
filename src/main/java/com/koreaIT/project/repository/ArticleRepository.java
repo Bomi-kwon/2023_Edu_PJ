@@ -21,4 +21,6 @@ public interface ArticleRepository {
 
 	public void doHomeworkModify(int id, String title, String body);
 
+	public void doScoreArticleModify(int id, String title, int classId, String regDate);
+
 }

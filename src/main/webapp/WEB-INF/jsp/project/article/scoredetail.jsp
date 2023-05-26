@@ -68,7 +68,7 @@
 	            <input type="checkbox" class="checkbox" />
 	          </label>
 	        </th>
-	        <td>${score.memberId }</td>
+	        <td>${score.name }</td>
 	        <td>${score.score }</td>
 	        <td>1/2</td>
 	        <td>응시</td>
@@ -82,8 +82,8 @@
 		<div class="flex justify-end">
 			<a href="scorelist" class="btn btn-success mr-2" >목록</a>
 			<c:if test="${rq.getLoginedMember().getId() == article.memberId }">
-				<a href="scoremodify?id=${article.id }" class="btn btn-success mr-2" >수정</a>
-				<a href="doHomeworkDelete?id=${article.id }&boardId=3" class="btn btn-success mr-2" 
+				<a href="scorearticlemodify?id=${article.id }" class="btn btn-success mr-2" >수정</a>
+				<a href="doScoreDelete?id=${article.id }&memberId=${article.memberId}" class="btn btn-success mr-2" 
 				onclick="if(confirm('정말 삭제하시겠습니까?')==false) return false;">삭제</a>
 			</c:if>
 		</div>

@@ -4,7 +4,10 @@
 <mapper namespace="com.koreaIT.project.repository.ScoreRepository">
 	
 	<select id="getScoresByRelId" resultType="Score">
-		SELECT * FROM score
+		SELECT S.*, M.name
+		FROM score AS S
+		INNER JOIN `member` AS M
+		ON S.memberId = M.id
 		WHERE relId = #{relId}
 	</select>
 	
@@ -15,5 +18,16 @@
 		classId = #{classId},
 		relId = #{relId};
 	</insert>
+	
+	<delete id="doScoreDelete" >
+		DELETE FROM score
+		WHERE relId = #{relId}
+	</delete>
+	
+	<update id="updateScore">
+		UPDATE score
+		SET score = ${score}
+		WHERE id = #{id}
+	</update>
 
 </mapper>

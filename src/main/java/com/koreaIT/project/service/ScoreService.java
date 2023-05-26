@@ -23,4 +23,12 @@ public class ScoreService {
 		scoreRepository.insertScore(memberId, score, classId, relId);
 	}
 
+	public void doScoreDelete(int relId) {
+		scoreRepository.doScoreDelete(relId);
+	}
+
+	public void updateScore(int id, int score) {
+		scoreRepository.updateScore(id, score);
+	}
+
 }

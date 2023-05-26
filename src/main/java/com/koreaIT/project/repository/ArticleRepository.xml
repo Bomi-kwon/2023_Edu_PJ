@@ -42,6 +42,14 @@
 		`body` = #{body}
 		WHERE id = #{id}
 	</update>
+	
+	<update id="doScoreArticleModify">
+		UPDATE article
+		SET regDate = #{regDate},
+		title = #{title},
+		classId = #{classId}
+		WHERE id = #{id}
+	</update>
 
 
 </mapper>

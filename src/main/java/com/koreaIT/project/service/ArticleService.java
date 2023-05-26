@@ -39,4 +39,8 @@ public class ArticleService {
 		articleRepository.doHomeworkModify(id, title, body);
 	}
 
+	public void doScoreArticleModify(int id, String title, int classId, String regDate) {
+		articleRepository.doScoreArticleModify(id, title, classId, regDate);
+	}
+
 }

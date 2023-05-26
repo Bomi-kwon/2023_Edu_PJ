@@ -12,5 +12,9 @@ public interface ScoreRepository {
 	List<Score> getScoresByRelId(int relId);
 
 	void insertScore(int memberId, int score, int classId, int relId);
+
+	void doScoreDelete(int relId);
+
+	void updateScore(int id, int score);
 	
 }

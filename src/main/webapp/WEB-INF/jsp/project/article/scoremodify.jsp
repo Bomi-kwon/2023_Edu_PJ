@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:set var="pageTitle" value="성적 입력" />
+<c:set var="pageTitle" value="성적 수정" />
 
 <%@ include file="../common/head.jsp" %>
 
@@ -33,7 +33,7 @@
 					<button class="btn btn-success" type="button" onclick="history.back();">뒤로</button>
 				</div>
 				
-				<form action="doWriteScoreArticle">
+				<form action="doModifyScoreArticle">
 				<div class="table-box-type-1 mt-5">
 					<table class="table w-full" id="scoretable">
 						<thead>
@@ -49,20 +49,19 @@
 					     	 </tr>
 					    </thead>
 					    
-					    <c:forEach var="member" items="${members }" varStatus="status">
+					    <c:forEach var="score" items="${scores }" varStatus="status">
 						    <tbody>
-							<input type="hidden" name="scorelist[${status.index }].relId" value="${article.id }"/>
-							<input type="hidden" name="scorelist[${status.index }].classId" value="${article.classId }"/>
-							<input type="hidden" name="scorelist[${status.index }].memberId" value="${member.id }"/>
+							<input type="hidden" name="scorelist[${status.index }].id" value="${score.id }"/>
+							<input type="hidden" name="scorelist[${status.index }].memberId" value="${score.memberId }"/>
 						      <tr id="${status.count }">
 						        <th>
 						          <label>
 						            <input type="checkbox" class="checkbox" />
 						          </label>
 						        </th>
-						        <td>${member.name }</td>
+						        <td>${score.name }</td>
 						        <td><input class="input input-bordered input-success w-full" type="text"
-						        name="scorelist[${status.index }].score" required/></td>
+						        name="scorelist[${status.index }].score" value="${score.score }" required/></td>
 						        <td>
 						        	<select name="classId" class="select select-success w-full max-w-xs">
 										<option value="">응시</option>
@@ -82,7 +81,7 @@
 						      	</td>
 						      </tr>
 				  </table>
-				  <button class="btn btn-success mr-2" onsubmit="check(this); return false;">작성</button>
+				  <button class="btn btn-success mr-2" onsubmit="check(this); return false;">수정하기</button>
 	  		</div>
 			</form>
 			

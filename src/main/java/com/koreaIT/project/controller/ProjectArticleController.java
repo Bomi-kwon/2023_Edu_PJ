@@ -200,14 +200,15 @@ public class ProjectArticleController {
 		return ResultData.from("S-1", "선택한 학년에 맞는 반을 가져왔습니다", "groups", groups);
 	}
 	
-	@RequestMapping("/project/article/scorewrite")
-	public String scorewrite() {
-		return "project/article/scorewrite";
+	@RequestMapping("/project/article/scorearticlewrite")
+	public String scorearticlewrite() {
+		return "project/article/scorearticlewrite";
 	}
 	
 	@RequestMapping("/project/article/score")
 	public String score(Model model, String title, int classId, String regDate) {
 		
+		//"." 은 내용이 NOT NULL이라서 일단 아무거나 넣어놓은것!!
 		articleService.doWrite(rq.getLoginedMember().getId(), title, classId, regDate, ".", 3);
 		
 		Article article = articleService.getArticleById(articleService.getLastId());
@@ -240,6 +241,7 @@ public class ProjectArticleController {
 		List<Score> scoreList = scorelist.getScorelist();
 		
 		for(Score score : scoreList) {
+			
 			if(score != null) {
 				scoreService.insertScore(score.getMemberId(), score.getScore(), score.getClassId(), score.getRelId());
 			}
@@ -247,4 +249,70 @@ public class ProjectArticleController {
 		
 		return Util.jsReplace("성적을 입력했습니다.", "scorelist");
 	}
+	
+	@RequestMapping("/project/article/doScoreDelete")
+	@ResponseBody
+	public String doScoreDelete(int id, int memberId) {
+		
+		if(rq.getLoginedMember().getId() != memberId) {
+			return Util.jsHistoryBack("성적 삭제 권한이 없습니다.");
+		}
+		
+		Article article = articleService.getArticleById(id);
+		
+		if(article == null) {
+			return Util.jsHistoryBack(Util.f("%d번 게시물은 존재하지 않습니다.", id));
+		}
+		
+		articleService.doHomeworkDelete(id);
+		scoreService.doScoreDelete(id);
+		
+		return Util.jsReplace(Util.f("%d번 게시물을 삭제했습니다.", id), "scorelist");
+	}
+	
+	@RequestMapping("/project/article/scorearticlemodify")
+	public String scorearticlemodify(Model model, int id) {
+		
+		Article article = articleService.getArticleById(id);
+		model.addAttribute("article", article);
+		
+		return "project/article/scorearticlemodify";
+	}
+	
+	@RequestMapping("/project/article/scoremodify")
+	public String scoremodify(Model model, int id, int memberId, String title, int classId, String regDate) {
+		
+		if(rq.getLoginedMember().getId() != memberId) {
+			rq.jsPrintHistoryBack("성적 게시물 수정 권한이 없습니다.");
+		}
+		
+		//"." 은 내용이 NOT NULL이라서 일단 아무거나 넣어놓은것!!
+		articleService.doScoreArticleModify(id, title, classId, regDate);
+		
+		Article article = articleService.getArticleById(id);
+		
+		List<Score> scores = scoreService.getScoresByRelId(id);
+		
+		model.addAttribute("article", article);
+		model.addAttribute("scores", scores);
+		
+		return "project/article/scoremodify";
+	}
+	
+	@RequestMapping("/project/article/doModifyScoreArticle")
+	@ResponseBody
+	public String doModifyScoreArticle(ScoreList scorelist) {
+		
+		List<Score> scoreList = scorelist.getScorelist();
+		
+		for(Score score : scoreList) {
+			
+			if(score != null) {
+				scoreService.updateScore(score.getId(), score.getScore());
+			}
+		}
+		
+		return Util.jsReplace("성적을 수정했습니다.", "scorelist");
+	}
+	
 }
