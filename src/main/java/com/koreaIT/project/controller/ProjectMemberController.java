@@ -152,4 +152,49 @@ public class ProjectMemberController {
 		return "project/member/checkpassword";
 	}
 	
+	@RequestMapping("/project/member/membermodify")
+	public String membermodify(Model model, int id, String loginPW) {
+		
+		Member member = memberService.getMemberById(id);
+		
+		if(!member.getLoginPW().equals(Util.sha256(loginPW))) {
+			return rq.jsReturnOnView("비밀번호가 일치하지 않습니다.", true);
+		}
+		
+		model.addAttribute("member", member);
+		
+		return "project/member/membermodify";
+	}
+	
+	@RequestMapping("/project/member/doMemberModify")
+	@ResponseBody
+	public String doMemberModify(int id, String name, String cellphoneNum, String email) {
+		
+		memberService.doMemberModify(id, name, cellphoneNum, email);
+		
+		return Util.jsReplace("회원정보를 수정하였습니다.", "memberprofile");
+	}
+	
+	@RequestMapping("/project/member/passwordmodify")
+	public String passwordmodify(Model model, int id) {
+		
+		Member member = memberService.getMemberById(id);
+		if (member == null) {
+			return rq.jsReturnOnView("존재하지 않는 회원입니다.", true);
+		}
+		model.addAttribute("member", member);
+		
+		return "project/member/passwordmodify";
+	}
+	
+	@RequestMapping("/project/member/doPasswordModify")
+	@ResponseBody
+	public String doPasswordModify(int id, String loginPW) {
+		
+		memberService.doPasswordModify(id, Util.sha256(loginPW));
+		
+		return Util.jsReplace("비밀번호를 수정하였습니다.", "/");
+	}
+	
+	
 }

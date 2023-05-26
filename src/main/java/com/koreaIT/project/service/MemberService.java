@@ -35,6 +35,14 @@ public class MemberService {
 		return memberRepository.getStudentsByClass(classId);
 	}
 
+	public void doMemberModify(int id, String name, String cellphoneNum, String email) {
+		memberRepository.doMemberModify(id, name, cellphoneNum, email);
+	}
+
+	public void doPasswordModify(int id, String loginPW) {
+		memberRepository.doPasswordModify(id, loginPW);
+	}
+
 	
 
 }

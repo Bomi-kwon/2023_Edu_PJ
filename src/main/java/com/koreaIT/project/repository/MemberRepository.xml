@@ -37,5 +37,19 @@
 		WHERE classId = #{classId}
 		AND authLevel = 2;
 	</select>
+	
+	<update id="doMemberModify">
+		UPDATE `member`
+		SET name = #{name},
+		cellphoneNum = #{cellphoneNum},
+		email = #{email}
+		WHERE id = #{id}
+	</update>
+	
+		<update id="doPasswordModify">
+		UPDATE `member`
+		SET loginPW = #{loginPW}
+		WHERE id = #{id}
+	</update>
 
 </mapper>

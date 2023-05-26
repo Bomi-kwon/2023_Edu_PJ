@@ -19,6 +19,10 @@ public interface MemberRepository {
 
 	List<Member> getStudentsByClass(int classId);
 
+	void doMemberModify(int id, String name, String cellphoneNum, String email);
+
+	void doPasswordModify(int id, String loginPW);
+
 	
 
 }
