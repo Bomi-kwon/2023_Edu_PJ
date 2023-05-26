@@ -85,7 +85,7 @@ public class ProjectArticleController {
 			}
 		}
 		
-		articleService.doWrite(rq.getLoginedMember().getId(),title, classId, deadLine, body, boardId);
+		articleService.doWrite(rq.getLoginedMemberId(),title, classId, deadLine, body, boardId);
 		int id = articleService.getLastId();
 		
 		return Util.jsReplace(Util.f("%d번 게시물이 등록되었습니다.",id), Util.f("list?boardId=%d", boardId));
@@ -105,7 +105,7 @@ public class ProjectArticleController {
 	@ResponseBody
 	public String doHomeworkDelete(int id, int boardId, int memberId) {
 		
-		if(rq.getLoginedMember().getId() != memberId) {
+		if(rq.getLoginedMemberId() != memberId) {
 			return Util.jsReplace("게시물 삭제 권한이 없습니다.",Util.f("list?boardId=%d", boardId));
 		}
 		
@@ -122,7 +122,7 @@ public class ProjectArticleController {
 	@RequestMapping("/project/article/homeworkmodify")
 	public String homeworkmodify(Model model, int id, int memberId) {
 		
-		if(rq.getLoginedMember().getId() != memberId) {
+		if(rq.getLoginedMemberId() != memberId) {
 			return Util.jsHistoryBack("게시물 수정 권한이 없습니다.");
 		}
 		
@@ -139,7 +139,7 @@ public class ProjectArticleController {
 	@ResponseBody
 	public String doHomeworkModify(int id, String title, String body, int memberId, int boardId) {
 		
-		if(rq.getLoginedMember().getId() != memberId) {
+		if(rq.getLoginedMemberId() != memberId) {
 			return Util.jsReplace("게시물 삭제 권한이 없습니다.",Util.f("list?boardId=%d", boardId));
 		}
 		
@@ -209,7 +209,7 @@ public class ProjectArticleController {
 	public String score(Model model, String title, int classId, String regDate) {
 		
 		//"." 은 내용이 NOT NULL이라서 일단 아무거나 넣어놓은것!!
-		articleService.doWrite(rq.getLoginedMember().getId(), title, classId, regDate, ".", 3);
+		articleService.doWrite(rq.getLoginedMemberId(), title, classId, regDate, ".", 3);
 		
 		Article article = articleService.getArticleById(articleService.getLastId());
 		
@@ -254,7 +254,7 @@ public class ProjectArticleController {
 	@ResponseBody
 	public String doScoreDelete(int id, int memberId) {
 		
-		if(rq.getLoginedMember().getId() != memberId) {
+		if(rq.getLoginedMemberId() != memberId) {
 			return Util.jsHistoryBack("성적 삭제 권한이 없습니다.");
 		}
 		
@@ -282,7 +282,7 @@ public class ProjectArticleController {
 	@RequestMapping("/project/article/scoremodify")
 	public String scoremodify(Model model, int id, int memberId, String title, int classId, String regDate) {
 		
-		if(rq.getLoginedMember().getId() != memberId) {
+		if(rq.getLoginedMemberId() != memberId) {
 			rq.jsPrintHistoryBack("성적 게시물 수정 권한이 없습니다.");
 		}
 		

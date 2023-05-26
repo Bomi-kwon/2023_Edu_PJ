@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
+import com.koreaIT.project.service.MemberService;
 import com.koreaIT.project.util.Util;
 
 import lombok.Getter;
@@ -19,33 +20,38 @@ import lombok.Getter;
 public class Rq {
 	
 	@Getter
+	private int loginedMemberId;
+	@Getter
 	private Member loginedMember;
 
 	private HttpServletRequest req;
 	private HttpServletResponse resp;
 	private HttpSession httpSession;
-	public Rq(HttpServletRequest req, HttpServletResponse resp) {
+	public Rq(HttpServletRequest req, HttpServletResponse resp, MemberService memberService) {
 	    this.req = req;
 	    this.resp = resp;
 	    this.httpSession = req.getSession();
 
+	    int loginedMemberId = 0;
 	    Member loginedMember = null;
 
-	    if(httpSession.getAttribute("loginedMember") != null) {
-	        loginedMember = (Member)httpSession.getAttribute("loginedMember");
+	    if(httpSession.getAttribute("loginedMemberId") != null) {
+	    	loginedMemberId = (int)httpSession.getAttribute("loginedMemberId");
+	    	loginedMember = memberService.getMemberById(loginedMemberId);
 	    }
 
+	    this.loginedMemberId = loginedMemberId;
 	    this.loginedMember = loginedMember;
 
 	    this.req.setAttribute("rq", this);
 	}
 
 	public void login(Member member) {
-	    httpSession.setAttribute("loginedMember", member);
+	    httpSession.setAttribute("loginedMemberId", member.getId());
 	}
 
 	public void logout() {
-	    httpSession.removeAttribute("loginedMember");
+	    httpSession.removeAttribute("loginedMemberId");
 	}
 
 	public void initRq() {

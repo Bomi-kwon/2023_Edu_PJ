@@ -79,7 +79,7 @@ public class ProjectMemberController {
 	@RequestMapping("/project/member/memberlogin")
 	public String memberlogin() {
 		
-		if(rq.getLoginedMember() != null) {
+		if(rq.getLoginedMemberId() != 0) {
 			return Util.jsReplace("이미 로그인된 상태입니다.", "/");
 		}
 		
@@ -118,7 +118,7 @@ public class ProjectMemberController {
 	@ResponseBody
 	public String doMemberLogout() {
 		
-		if(rq.getLoginedMember() == null) {
+		if(rq.getLoginedMemberId() == 0) {
 			return Util.jsReplace("이미 로그아웃된 상태입니다.", "/");
 		}
 		rq.logout();
@@ -128,7 +128,7 @@ public class ProjectMemberController {
 	@RequestMapping("/project/member/memberprofile")
 	public String memberprofile(Model model) {
 		
-		Member member = memberService.getMemberById(rq.getLoginedMember().getId());
+		Member member = memberService.getMemberById(rq.getLoginedMemberId());
 		model.addAttribute("member", member);
 		
 		return "project/member/memberprofile";
@@ -143,5 +143,13 @@ public class ProjectMemberController {
 		return "project/member/membergroup";
 	}
 
+	@RequestMapping("/project/member/checkpassword")
+	public String checkpassword(Model model, int id) {
+		
+		Member member = memberService.getMemberById(id);
+		model.addAttribute("member", member);
+		
+		return "project/member/checkpassword";
+	}
 	
 }

@@ -23,7 +23,7 @@ public class NeedLoginInterceptor implements HandlerInterceptor{
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		
-		if(rq.getLoginedMember() == null) {
+		if(rq.getLoginedMemberId() == 0) {
 			rq.jsPrintHistoryBack("로그인 후 이용해 주세요.");
 			return false;
 		}

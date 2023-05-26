@@ -34,16 +34,16 @@
   
 	  <div class="menu-box-2">
 	    <ul class="h-full flex items-center w-full">
-		    <c:if test="${rq.getLoginedMember() == null }">
+		    <c:if test="${rq.getLoginedMemberId() == 0 }">
 				<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/member/memberlogin"><span>로그인</span></a></li>
 				<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/member/memberjoin"><span>회원가입</span></a></li>
 			</c:if>
-			<c:if test="${rq.getLoginedMember() != null }">
+			<c:if test="${rq.getLoginedMemberId() != 0 }">
 				<c:if test="${rq.getLoginedMember().getAuthLevel() == 1 }">
 					<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/member/memberlist"><span>회원명단</span></a></li>
 				</c:if>
 			</c:if>
-			<c:if test="${rq.getLoginedMember() != null }">
+			<c:if test="${rq.getLoginedMemberId() != 0 }">
 				<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/member/memberprofile"><span>마이페이지</span></a></li>
 				<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/member/doMemberLogout"><span>로그아웃</span></a></li>
 			</c:if>
