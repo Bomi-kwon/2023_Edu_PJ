@@ -2,17 +2,28 @@ package com.koreaIT.project.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.koreaIT.project.repository.MemberRepository;
+import com.koreaIT.project.util.Util;
 import com.koreaIT.project.vo.Member;
+import com.koreaIT.project.vo.ResultData;
 
 @Service
 public class MemberService {
-	MemberRepository memberRepository;
+	
+	@Value("${custom.siteName}")
+	private String siteName;
+	@Value("${custom.siteMainUri}")
+	private String siteMainUri;
+	
+	private MemberRepository memberRepository;
+	private MailService mailService;
 
-	public MemberService(MemberRepository memberRepository) {
+	public MemberService(MemberRepository memberRepository, MailService mailService) {
 		this.memberRepository = memberRepository;
+		this.mailService = mailService;
 	}
 
 	public List<Member> getMembers() {
@@ -50,6 +61,33 @@ public class MemberService {
 	public List<Member> getMembersByAuthLevel(int authLevel) {
 		return memberRepository.getMembersByAuthLevel(authLevel);
 	}
+
+	public Member getMemberByNameAndEmail(String name, String email) {
+		return memberRepository.getMemberByNameAndEmail(name, email);
+	}
+
+	public ResultData notifyTempLoginPwByEmail(Member member) {
+		String title = "[" + siteName + "] 임시 패스워드 발송";
+		String tempPassword = Util.getTempPassword(8);
+		String body = "<h1>임시 패스워드 : " + tempPassword + "</h1>";
+		body += "<a style='font-size:2rem;' href=\"" + siteMainUri + "/project/member/memberlogin\" target=\"_blank\">로그인 하러가기</a>";
+
+		ResultData sendRd = mailService.send(member.getEmail(), title, body);
+
+		if (sendRd.isFail()) {
+			return sendRd;
+		}
+
+		setTempPassword(member, tempPassword);
+
+		return ResultData.from("S-1", "계정의 이메일주소로 임시 패스워드가 발송되었습니다");
+	}
+	
+	private void setTempPassword(Member member, String tempPassword) {
+		memberRepository.doPasswordModify(member.getId(), Util.sha256(tempPassword));
+	}
+	
+	
 
 	
 

@@ -9,7 +9,7 @@
 	<div class="container mx-auto px-3">
 			<form action="doMemberLogin" >
 				<div class="table-box-type-1 overflow-x-auto">
-				<div>회원 가입</div>
+				<div>로그인</div>
 						<table border="1" class="mx-auto able w-full bg-gray-100">
 						<colgroup>
 							<col width="200"/>
@@ -27,8 +27,9 @@
 						</tr>
 					</table>
 				</div>
-				<div class="flex justify-end">
+				<div class="flex justify-end mt-2">
 					<button class="btn btn-success mr-2">로그인</button>
+					<a class="btn btn-success mr-2" href="findLoginID">아이디/비밀번호 찾기</a>
 					<button class="btn btn-success" type="button" onclick="history.back();">뒤로</button>
 				</div>
 			</form>

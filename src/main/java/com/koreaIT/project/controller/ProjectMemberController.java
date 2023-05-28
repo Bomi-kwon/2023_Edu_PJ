@@ -224,5 +224,51 @@ public class ProjectMemberController {
 		return ResultData.from("S-1", "선택한 등급에 맞는 반을 가져왔습니다", "members", members);
 	}
 	
+	@RequestMapping("/project/member/findLoginID")
+	public String findLoginID() {
+		return "project/member/findLoginID";
+	}
+	
+	@RequestMapping("/project/member/doFindLoginID")
+	@ResponseBody
+	public String doFindLoginID(String name, String email) {
+		
+		Member member = memberService.getMemberByNameAndEmail(name, email);
+		
+		if(member == null) {
+			return Util.jsHistoryBack("존재하지 않는 회원정보입니다.");
+		}
+		
+		return Util.jsReplace(Util.f("회원님의 아이디는 %s 입니다.", member.getLoginID()), "memberlogin");
+	}
+	
+	@RequestMapping("/project/member/findLoginPW")
+	public String findLoginPW() {
+		return "project/member/findLoginPW";
+	}
+	
+	@RequestMapping("/project/member/doFindLoginPW")
+	@ResponseBody
+	public String doFindLoginPW(String name, String loginID, String email) {
+		
+		Member member = memberService.getMemberByLoginID(loginID);
+		
+		if(member == null) {
+			return Util.jsHistoryBack("존재하지 않는 아이디입니다.");
+		}
+		
+		if(!member.getName().equals(name)) {
+			return Util.jsHistoryBack("이름과 아이디 정보가 일치하지 않습니다.");
+		}
+		
+		if(!member.getEmail().equals(email)) {
+			return Util.jsHistoryBack("이름과 이메일 정보가 일치하지 않습니다.");
+		}
+		
+		ResultData notifyTempLoginPwByEmailRd = memberService.notifyTempLoginPwByEmail(member);
+		
+		return Util.jsReplace(notifyTempLoginPwByEmailRd.getMsg(), "memberlogin");
+	}
+	
 	
 }

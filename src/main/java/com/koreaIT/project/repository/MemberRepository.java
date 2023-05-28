@@ -27,6 +27,8 @@ public interface MemberRepository {
 
 	List<Member> getMembersByAuthLevel(int authLevel);
 
+	Member getMemberByNameAndEmail(String name, String email);
+
 	
 
 }
