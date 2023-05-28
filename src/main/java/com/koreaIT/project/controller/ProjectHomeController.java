@@ -20,5 +20,10 @@ public class ProjectHomeController {
 		return "project/home/timer";
 	}
 	
+	@RequestMapping("/project/home/map")
+	public String map() {
+		return "project/home/map";
+	}
+	
 	
 }
