@@ -54,11 +54,11 @@
 
 <section class="top-bar">
   <nav class="flex justify-around px-3 mx-auto container text-2xl h-full">
-	  <div class="menu-box-1">
+	  <div class="menu-box-1 h-full">
 	    <ul class="flex justify-between items-center h-full">
 	      <li><a href="#">학원안내</a>
 	        <ul>
-	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>반 안내</span></a></li>
+	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/member/membergroup"><span>반 안내</span></a></li>
 	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>선생님 소개</span></a></li>
 	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/home/map"><span>찾아오시는 길</span></a></li>
 	        </ul>
@@ -66,7 +66,6 @@
 	      <li><a href="#">수업관리</a>
 	        <ul>
 	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>출결</span></a></li>
-	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/member/membergroup"><span>반 관리</span></a></li>
 	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/list?boardId=2"><span>숙제</span></a></li>
 	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/scorelist"><span>성적</span></a></li>
 	        </ul>
@@ -103,7 +102,7 @@
     <ul class="h-full flex items-start justify-around">
       <li><a href="#">학원안내</a>
 	        <ul>
-	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>반 안내</span></a></li>
+	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/member/membergroup"><span>반 안내</span></a></li>
 	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>선생님 소개</span></a></li>
 	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>찾아오시는 길</span></a></li>
 	        </ul>
@@ -111,7 +110,6 @@
       <li><a href="#">수업관리</a>
         <ul>
           <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>출결</span></a></li>
-          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/member/membergroup"><span>반 관리</span></a></li>
           <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/list?boardId=2"><span>숙제</span></a></li>
           <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>성적</span></a></li>
         </ul>

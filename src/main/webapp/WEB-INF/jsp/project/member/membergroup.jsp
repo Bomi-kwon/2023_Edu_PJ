@@ -5,14 +5,71 @@
 
 <%@ include file="../common/head.jsp" %>
 
+<script>
+	function getGroupsByGrade(grade) {
+		$('#grouplisttable').html(`<thead>
+			      <tr>
+		        <th>대상 학년</th>
+		      	<th>반 이름</th>
+		        <th>수강 요일</th>
+		        <th>담당 선생님</th>
+		        <th>교재</th>
+		        <th>학생 수</th>
+		      </tr>
+		    </thead>`);
+		
+		let gradeVal = grade.value;
+		
+		$.get('getGroupsByGrade', {
+			grade : gradeVal
+		}, function(data) {
+			console.log(data);
+			for(var i = 0; i < data.data1.length; i++) {
+				let grade = data.data1[i].grade;
+				let groupName = data.data1[i].groupName;
+				let groupDay = data.data1[i].groupDay;
+				let teacherName = data.data1[i].teacherName;
+				let textbook = data.data1[i].textbook;
+				let studentNum = data.data1[i].studentNum;
+				
+				$('#grouplisttable').append(`<tbody>
+					      <tr>
+				        <td>`+grade+`</td>
+				      	<td>`+groupName+`</td>
+				        <td>`+groupDay+`</td>
+				        <td>`+teacherName+` 선생님</td>
+				        <td>`+textbook+`</td>
+				        <td>`+studentNum+`명</td>
+				      </tr>
+				    </tbody>`);
+			}
+		
+		}, 'json');
+	}
+</script>
+
+
 <section class="mt-8 mx-auto text-xl">
 	<div class="container mx-auto px-3">
-	  <table class="table w-full">
+	  <div class="mb-5">
+		<label for="">대상 학년 : </label>
+		<select name="grade" class="select select-success w-full max-w-xs" onchange="getGroupsByGrade(this);">
+			<option value="">전체</option>
+			<option value="elementary">초등</option>
+			<option value="middle">중등</option>
+			<option value="high">고등</option>
+		</select>
+	</div>
+	  
+	  <div class="table-box-type-1">
+	  <table class="table w-full" id="grouplisttable">
 	    <thead>
 	      <tr>
 	        <th>대상 학년</th>
 	      	<th>반 이름</th>
 	        <th>수강 요일</th>
+	        <th>담당 선생님</th>
+	        <th>교재</th>
 	        <th>학생 수</th>
 	      </tr>
 	    </thead>
@@ -23,11 +80,14 @@
 	        <td>${group.grade }</td>
 	      	<td>${group.groupName }</td>
 	        <td>${group.groupDay }</td>
+	        <td>${group.teacherName } 선생님</td>
+	        <td>${group.textbook }</td>
 	        <td>${group.studentNum }명</td>
 	      </tr>
 	    </tbody>
 		</c:forEach>
 	  </table>
+	  </div>
 	</div>
 </section>
 	

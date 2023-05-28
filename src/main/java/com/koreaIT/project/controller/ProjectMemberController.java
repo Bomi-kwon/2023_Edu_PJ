@@ -167,7 +167,7 @@ public class ProjectMemberController {
 	}
 	
 	
-	// 반 관리, 수업 리스트 (선생 입장)
+	// 반 안내, 반 리스트 (선생 입장)
 	
 	@RequestMapping("/project/member/membergroup")
 	public String membergroup(Model model) {
@@ -176,6 +176,22 @@ public class ProjectMemberController {
 		model.addAttribute("groups", groups);
 		
 		return "project/member/membergroup";
+	}
+	
+	
+	// 반 리스트에서 학년별로 반들 가져오기
+	
+	@RequestMapping("/project/member/getGroupsByGrade")
+	@ResponseBody
+	public ResultData getGroupsByGrade(String grade) {
+		
+		List<Group> groups = groupService.getGroupsByGrade(grade);
+		
+		if(groups.isEmpty()) {
+			return ResultData.from("F-1", "해당 학년에는 반이 없습니다.");
+		}
+		
+		return ResultData.from("S-1", "해당 학년의 반을 가져왔습니다", "groups", groups);
 	}
 	
 	
@@ -349,6 +365,7 @@ public class ProjectMemberController {
 		
 		return "project/member/groupregisterdetail";
 	}
+	
 	
 	
 }
