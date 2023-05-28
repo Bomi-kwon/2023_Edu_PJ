@@ -31,8 +31,8 @@ public class ArticleService {
 		return articleRepository.getArticleById(id);
 	}
 
-	public void doHomeworkDelete(int id) {
-		articleRepository.doHomeworkDelete(id);
+	public void doDelete(int id) {
+		articleRepository.doDelete(id);
 	}
 
 	public void doModify(int id, String title, String body) {

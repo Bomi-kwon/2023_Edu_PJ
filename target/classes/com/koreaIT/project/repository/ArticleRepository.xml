@@ -35,7 +35,7 @@
 		WHERE id = #{id}
 	</select>
 	
-	<delete id="doHomeworkDelete">
+	<delete id="doDelete">
 		DELETE FROM article
 		WHERE id = #{id}
 	</delete>

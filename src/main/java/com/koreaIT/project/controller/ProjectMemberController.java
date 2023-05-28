@@ -30,6 +30,8 @@ public class ProjectMemberController {
 		this.rq = rq;
 	}
 	
+	// 회원 명단
+	
 	@RequestMapping("/project/member/memberlist")
 	public String memberlist(Model model) {
 		
@@ -38,6 +40,9 @@ public class ProjectMemberController {
 		
 		return "project/member/memberlist";
 	}
+	
+	
+	//회원가입
 	
 	@RequestMapping("/project/member/memberjoin")
 	public String memberjoin() {
@@ -81,6 +86,9 @@ public class ProjectMemberController {
 		return Util.jsReplace(Util.f("%s님, 회원가입을 축하합니다.", name), "memberlogin");
 	}
 	
+	
+	// 회원 로그인
+	
 	@RequestMapping("/project/member/memberlogin")
 	public String memberlogin() {
 		
@@ -119,6 +127,9 @@ public class ProjectMemberController {
 		return Util.jsReplace(Util.f("%s님, 로그인되었습니다.", member.getName()), "/");
 	}
 	
+	
+	// 회원 로그아웃
+	
 	@RequestMapping("/project/member/doMemberLogout")
 	@ResponseBody
 	public String doMemberLogout() {
@@ -130,6 +141,9 @@ public class ProjectMemberController {
 		return Util.jsReplace("로그아웃되었습니다.", "/");
 	}
 	
+	
+	// 회원 탈퇴
+	
 	@RequestMapping("/project/member/doMemberDrop")
 	@ResponseBody
 	public String doMemberDrop(int id) {
@@ -140,6 +154,9 @@ public class ProjectMemberController {
 		return Util.jsReplace("탈퇴되었습니다.", "/");
 	}
 	
+	
+	// 회원 마이페이지
+	
 	@RequestMapping("/project/member/memberprofile")
 	public String memberprofile(Model model) {
 		
@@ -149,6 +166,9 @@ public class ProjectMemberController {
 		return "project/member/memberprofile";
 	}
 	
+	
+	// 반 관리, 수업 리스트 (선생 입장)
+	
 	@RequestMapping("/project/member/membergroup")
 	public String membergroup(Model model) {
 		
@@ -157,6 +177,9 @@ public class ProjectMemberController {
 		
 		return "project/member/membergroup";
 	}
+	
+	
+	// 회원 정보 수정 전 비밀번호 체크
 
 	@RequestMapping("/project/member/checkpassword")
 	public String checkpassword(Model model, int id) {
@@ -166,6 +189,8 @@ public class ProjectMemberController {
 		
 		return "project/member/checkpassword";
 	}
+	
+	// 회원 정보 수정
 	
 	@RequestMapping("/project/member/membermodify")
 	public String membermodify(Model model, int id, String loginPW) {
@@ -190,6 +215,9 @@ public class ProjectMemberController {
 		return Util.jsReplace("회원정보를 수정하였습니다.", "memberprofile");
 	}
 	
+	
+	// 회원 비밀번호 수정
+	
 	@RequestMapping("/project/member/passwordmodify")
 	public String passwordmodify(Model model, int id) {
 		
@@ -211,6 +239,9 @@ public class ProjectMemberController {
 		return Util.jsReplace("비밀번호를 수정하였습니다.", "/");
 	}
 	
+	
+	// 회원명단에서 선생/학생/학부모 별로 구분해서 보기
+	
 	@RequestMapping("/project/member/getMembersByAuthLevel")
 	@ResponseBody
 	public ResultData getMembersByAuthLevel(int authLevel) {
@@ -223,6 +254,9 @@ public class ProjectMemberController {
 		
 		return ResultData.from("S-1", "선택한 등급에 맞는 반을 가져왔습니다", "members", members);
 	}
+	
+	
+	// 회원 아이디 찾기
 	
 	@RequestMapping("/project/member/findLoginID")
 	public String findLoginID() {
@@ -241,6 +275,9 @@ public class ProjectMemberController {
 		
 		return Util.jsReplace(Util.f("회원님의 아이디는 %s 입니다.", member.getLoginID()), "memberlogin");
 	}
+	
+	
+	// 회원 비밀번호 찾기
 	
 	@RequestMapping("/project/member/findLoginPW")
 	public String findLoginPW() {
@@ -270,6 +307,8 @@ public class ProjectMemberController {
 		return Util.jsReplace(notifyTempLoginPwByEmailRd.getMsg(), "memberlogin");
 	}
 	
+	// 학생이 수강신청할 때
+	
 	@RequestMapping("/project/member/groupregistration")
 	public String groupregistration(Model model) {
 		
@@ -283,6 +322,9 @@ public class ProjectMemberController {
 		return "project/member/groupregistration";
 	}
 	
+	
+	// 선생님 별로 수강신청 반 구분
+	
 	@RequestMapping("/project/member/getGroupsByTeacherID")
 	@ResponseBody
 	public ResultData getGroupsByTeacherID(int groupTeacherId) {
@@ -295,6 +337,9 @@ public class ProjectMemberController {
 		
 		return ResultData.from("S-1", "해당 선생님이 수업하는 반을 가져왔습니다", "groups", groups);
 	}
+	
+	
+	// 수강신청 페이지 상세보기
 	
 	@RequestMapping("/project/member/groupregisterdetail")
 	public String groupregisterdetail(Model model, int id) {

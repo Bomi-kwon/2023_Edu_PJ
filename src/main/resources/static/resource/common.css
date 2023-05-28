@@ -84,6 +84,7 @@ html > body {
 }
 .menu-box-1>ul>li>a {
   padding: 18px 17px;
+  height: 100%;
 }
 .menu-box-1 > ul > li:hover >a {
   color: #00664F;

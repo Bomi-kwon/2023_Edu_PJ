@@ -42,6 +42,8 @@ public class ProjectArticleController {
 		this.rq = rq;
 	}
 
+	// 게시물 리스트
+	
 	@RequestMapping("/project/article/list")
 	public String showList(Model model, @RequestParam(defaultValue = "2") int boardId) {
 		
@@ -58,6 +60,9 @@ public class ProjectArticleController {
 		
 		return "project/article/list";
 	}
+	
+	
+	// 게시물 작성
 	
 	@RequestMapping("/project/article/write")
 	public String write(Model model, int boardId) {
@@ -91,6 +96,9 @@ public class ProjectArticleController {
 		return Util.jsReplace(Util.f("%d번 게시물이 등록되었습니다.",id), Util.f("list?boardId=%d", boardId));
 	}
 	
+	
+	// 게시물 상세보기
+	
 	@RequestMapping("/project/article/detail")
 	public String detail(int id, Model model) {
 		
@@ -101,9 +109,11 @@ public class ProjectArticleController {
 		return "project/article/detail";
 	}
 	
-	@RequestMapping("/project/article/doHomeworkDelete")
+	
+	// 게시물 삭제
+	@RequestMapping("/project/article/doDelete")
 	@ResponseBody
-	public String doHomeworkDelete(int id, int boardId, int memberId) {
+	public String doDelete(int id, int boardId, int memberId) {
 		
 		if(rq.getLoginedMemberId() != memberId) {
 			return Util.jsReplace("게시물 삭제 권한이 없습니다.",Util.f("list?boardId=%d", boardId));
@@ -114,10 +124,13 @@ public class ProjectArticleController {
 			return Util.f("%d번 게시물은 존재하지 않습니다.", id);
 		}
 		
-		articleService.doHomeworkDelete(id);
+		articleService.doDelete(id);
 		
 		return Util.jsReplace(Util.f("%d번 게시물을 삭제했습니다.", id),Util.f("list?boardId=%d", boardId));
 	}
+	
+	
+	// 게시물 수정
 	
 	@RequestMapping("/project/article/modify")
 	public String modify(Model model, int id, int memberId) {
@@ -161,6 +174,9 @@ public class ProjectArticleController {
 		return Util.jsReplace(Util.f("%d번 게시물을 수정하였습니다.",id), Util.f("detail?id=%d", id));
 	}
 	
+	
+	// 성적 게시물 리스트
+	
 	@RequestMapping("/project/article/scorelist")
 	public String scorelist(Model model) {
 		
@@ -172,6 +188,9 @@ public class ProjectArticleController {
 		
 		return "project/article/scorelist";
 	}
+	
+	
+	// 성적 게시물 디테일
 	
 	@RequestMapping("/project/article/scoredetail")
 	public String scoredetail(int relId, Model model) {
@@ -187,6 +206,9 @@ public class ProjectArticleController {
 		return "project/article/scoredetail";
 	}
 	
+	
+	// 성적 게시물 대상반 소분류
+	
 	@RequestMapping("/project/article/setSelectBox")
 	@ResponseBody
 	public ResultData setSelectBox(String grade) {
@@ -199,10 +221,16 @@ public class ProjectArticleController {
 		return ResultData.from("S-1", "선택한 학년에 맞는 반을 가져왔습니다", "groups", groups);
 	}
 	
+	
+	// 성적 '게시물' 작성
+	
 	@RequestMapping("/project/article/scorearticlewrite")
 	public String scorearticlewrite() {
 		return "project/article/scorearticlewrite";
 	}
+	
+	
+	// 성적 '점수' 작성
 	
 	@RequestMapping("/project/article/score")
 	public String score(Model model, String title, int classId, String regDate, String body) {
@@ -224,6 +252,9 @@ public class ProjectArticleController {
 		return "project/article/score";
 	}
 	
+	
+	// 성적 게시물에서 해당 반 학생 명단 가져오기
+	
 	@RequestMapping("/project/article/getStudentsByClass")
 	@ResponseBody
 	public ResultData getStudentsByClass(int classId) {
@@ -236,6 +267,9 @@ public class ProjectArticleController {
 		
 		return ResultData.from("S-1", "선택한 반에 맞는 학생 리스트를 가져왔습니다", "members", members);
 	}
+	
+	
+	// 성적 최종 작성
 	
 	@RequestMapping("/project/article/doWriteScoreArticle")
 	@ResponseBody
@@ -253,6 +287,9 @@ public class ProjectArticleController {
 		return Util.jsReplace("성적을 입력했습니다.", "scorelist");
 	}
 	
+	
+	// 성적 점수 + 게시물 삭제
+	
 	@RequestMapping("/project/article/doScoreDelete")
 	@ResponseBody
 	public String doScoreDelete(int id, int memberId) {
@@ -267,11 +304,13 @@ public class ProjectArticleController {
 			return Util.jsHistoryBack(Util.f("%d번 게시물은 존재하지 않습니다.", id));
 		}
 		
-		articleService.doHomeworkDelete(id);
+		articleService.doDelete(id);
 		scoreService.doScoreDelete(id);
 		
 		return Util.jsReplace(Util.f("%d번 게시물을 삭제했습니다.", id), "scorelist");
 	}
+	
+	// 성적 '게시물' 수정
 	
 	@RequestMapping("/project/article/scorearticlemodify")
 	public String scorearticlemodify(Model model, int id) {
@@ -282,6 +321,9 @@ public class ProjectArticleController {
 		return "project/article/scorearticlemodify";
 	}
 	
+	
+	//성적 '점수' 수정
+	
 	@RequestMapping("/project/article/scoremodify")
 	public String scoremodify(Model model, int id, int memberId, String title, int classId, String regDate) {
 		
@@ -289,7 +331,6 @@ public class ProjectArticleController {
 			rq.jsPrintHistoryBack("성적 게시물 수정 권한이 없습니다.");
 		}
 		
-		//"." 은 내용이 NOT NULL이라서 일단 아무거나 넣어놓은것!!
 		articleService.doScoreArticleModify(id, title, classId, regDate);
 		
 		Article article = articleService.getArticleById(id);
@@ -301,6 +342,9 @@ public class ProjectArticleController {
 		
 		return "project/article/scoremodify";
 	}
+	
+	
+	// 성적 최종 수정
 	
 	@RequestMapping("/project/article/doModifyScoreArticle")
 	@ResponseBody
