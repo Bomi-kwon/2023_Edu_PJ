@@ -13,6 +13,9 @@ public class Group {
 	private String grade;
 	private String groupName;
 	private String groupDay;
+	private String groupTeacherId;
+	private String textbook;
 	
 	private int studentNum;
+	private String teacherName;
 }

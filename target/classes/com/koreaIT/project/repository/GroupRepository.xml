@@ -16,5 +16,18 @@
 		SELECT * FROM `group`
 		WHERE grade = #{grade};
 	</select>
+	
+	<select id="getGroupsByTeacherID" resultType="Group">
+		SELECT * FROM `group`
+		WHERE groupTeacherId = #{groupTeacherId};
+	</select>
+	
+	<select id="getGroupById" resultType="Group">
+		SELECT G.* , M.name AS teacherName
+		FROM `group` AS G
+		LEFT JOIN `member` AS M
+		ON G.groupTeacherId = M.id
+		WHERE G.id = #{id};
+	</select>
 
 </mapper>

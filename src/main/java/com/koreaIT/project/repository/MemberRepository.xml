@@ -59,8 +59,10 @@
 	</delete>
 	
 	<select id="getMembersByAuthLevel" resultType="Member">
-		SELECT *
-		FROM `member`
+		SELECT M.*, IFNULL(G.groupName,'전체') AS groupName
+		FROM `member` AS M
+		LEFT JOIN `group` AS G
+		ON M.classId = G.id
 		WHERE authLevel = #{authLevel}
 	</select>
 	

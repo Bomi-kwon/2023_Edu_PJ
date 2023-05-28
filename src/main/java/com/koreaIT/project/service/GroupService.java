@@ -23,6 +23,14 @@ public class GroupService {
 		return groupRepository.getGroupsByGrade(grade);
 	}
 
+	public List<Group> getGroupsByTeacherID(int groupTeacherId) {
+		return groupRepository.getGroupsByTeacherID(groupTeacherId);
+	}
+
+	public Group getGroupById(int id) {
+		return groupRepository.getGroupById(id);
+	}
+
 
 
 }

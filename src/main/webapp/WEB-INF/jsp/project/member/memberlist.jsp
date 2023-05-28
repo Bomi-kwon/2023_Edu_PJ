@@ -7,6 +7,17 @@
 
 <script>
 	function selectAuthLevel(authLevel) {
+		$('#memberlisttable').html(`<thead>
+			      <tr>
+		        <th>가입날짜</th>
+		        <th>로그인 아이디</th>
+		        <th>이름</th>
+		        <th>수강하는 반</th>
+		        <th>휴대전화</th>
+		        <th>이메일</th>
+		      </tr>
+		    </thead>`);
+		
 		let authLevelVal = authLevel.value;
 		
 		$.get('getMembersByAuthLevel', {
@@ -14,7 +25,23 @@
 		}, function(data) {
 			console.log(data);
 			for(var i = 0; i < data.data1.length; i++) {
+				let regDate = data.data1[i].regDate;
+				let loginID = data.data1[i].loginID;
+				let name = data.data1[i].name;
+				let groupName = data.data1[i].groupName;
+				let cellphoneNum = data.data1[i].cellphoneNum;
+				let email = data.data1[i].email;
 				
+				$('#memberlisttable').append(`<tbody>
+					      <tr>
+				        <td>`+regDate+`</td>
+				        <td>`+loginID+`</td>
+				        <td>`+name+`</td>
+				        <td>`+groupName+`</td>
+				        <td>`+cellphoneNum+`</td>
+				        <td>`+email+`</td>
+				      </tr>
+				    </tbody>`);
 			}
 		
 		}, 'json');
@@ -35,10 +62,9 @@
 		</select>
 	</div>
 	
-	  <table class="table w-full">
+	  <table class="table w-full" id="memberlisttable">
 	    <thead>
 	      <tr>
-	      	<th>회원구분</th>
 	        <th>가입날짜</th>
 	        <th>로그인 아이디</th>
 	        <th>이름</th>
@@ -51,11 +77,10 @@
 		<c:forEach var="member" items="${members }">
 	    <tbody>
 	      <tr>
-	      	<td>${member.authLevel }</td>
 	        <td>${member.regDate }</td>
 	        <td>${member.loginID }</td>
 	        <td>${member.name }</td>
-	        <td>${member.classId }</td>
+	        <td>${member.groupName }</td>
 	        <td>${member.cellphoneNum }</td>
 	        <td>${member.email }</td>
 	      </tr>

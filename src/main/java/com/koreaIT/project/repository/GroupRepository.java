@@ -11,4 +11,8 @@ public interface GroupRepository {
 	public List<Group> getgroups();
 
 	public List<Group> getGroupsByGrade(String grade);
+
+	public List<Group> getGroupsByTeacherID(int groupTeacherId);
+
+	public Group getGroupById(int id);
 }

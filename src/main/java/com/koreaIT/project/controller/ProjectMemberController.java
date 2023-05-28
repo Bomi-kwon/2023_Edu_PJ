@@ -270,5 +270,40 @@ public class ProjectMemberController {
 		return Util.jsReplace(notifyTempLoginPwByEmailRd.getMsg(), "memberlogin");
 	}
 	
+	@RequestMapping("/project/member/groupregistration")
+	public String groupregistration(Model model) {
+		
+		if(rq.getLoginedMember().getAuthLevel() != 2) {
+			return rq.jsReturnOnView("학생 회원만 이용할 수 있는 탭입니다.", true);
+		}
+		
+		List<Member> teachers = memberService.getMembersByAuthLevel(1);
+		model.addAttribute("teachers",teachers);
+		
+		return "project/member/groupregistration";
+	}
+	
+	@RequestMapping("/project/member/getGroupsByTeacherID")
+	@ResponseBody
+	public ResultData getGroupsByTeacherID(int groupTeacherId) {
+		
+		List<Group> groups = groupService.getGroupsByTeacherID(groupTeacherId);
+		
+		if(groups.isEmpty()) {
+			return ResultData.from("F-1", "해당 선생님이 수업하는 반이 없습니다.");
+		}
+		
+		return ResultData.from("S-1", "해당 선생님이 수업하는 반을 가져왔습니다", "groups", groups);
+	}
+	
+	@RequestMapping("/project/member/groupregisterdetail")
+	public String groupregisterdetail(Model model, int id) {
+		
+		Group group = groupService.getGroupById(id);
+		model.addAttribute("group", group);
+		
+		return "project/member/groupregisterdetail";
+	}
+	
 	
 }
