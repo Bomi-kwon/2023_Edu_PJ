@@ -86,6 +86,7 @@ public class MemberService {
 	private void setTempPassword(Member member, String tempPassword) {
 		memberRepository.doPasswordModify(member.getId(), Util.sha256(tempPassword));
 	}
+
 	
 	
 

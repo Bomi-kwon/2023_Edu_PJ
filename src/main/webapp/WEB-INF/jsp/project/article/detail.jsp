@@ -46,6 +46,10 @@
 			</table>
 		</div>
 		<div class="flex justify-end">
+			<div id="hwChkFinishBtn_${article.id }">
+		        <a class="homeworkChk btn btn-success mr-2" 
+		        onclick="getStudentsByClass(${article.id},${article.classId});">과제검사</a>
+		        </div>
 			<a href="list" class="btn btn-success mr-2" >목록</a>
 			<c:if test="${rq.getLoginedMemberId() == article.memberId }">
 				<a href="modify?id=${article.id }&memberId=${article.memberId}" class="btn btn-success mr-2" >수정</a>
@@ -56,6 +60,72 @@
 	</div>
 </section>
 	
+<script>
+	function getStudentsByClass(relId,classId) {
+		
+		$.get('getStudentsByClass', {
+			classId : classId
+		}, function(data) {
+			
+			console.log(data);
+			if(data.data1 != null) {
+				
+				$('#hwChktable').html(`<thead>
+					      <tr>
+				        <th>이름</th>
+				        <th>숙제 완성도</th>
+				        <th>교사의견</th>
+				      </tr>
+				    </thead>`);
+				
+				for(var i = 0; i < data.data1.length; i++) {
+					let name = data.data1[i].name;
+					let memberId = data.data1[i].id;
+					
+					$('#hwChktable').append(`<tbody>
+							<input type="hidden" name="homeworklist[`+i+`].memberId" value="`+memberId+`"/>
+							<input type="hidden" name="homeworklist[`+i+`].classId" value="`+classId+`"/>
+							<input type="hidden" name="homeworklist[`+i+`].relId" value="`+relId+`"/>
+						      <tr>
+					        <td>`+name+`</td>
+					        <td><input class="input input-bordered input-success w-20" type="text"
+						        name="homeworklist[`+i+`].hwPerfection" required/> %</td>
+				        	<td>
+					        	<select name="homeworklist[`+i+`].hwMsg" class="select select-success w-full max-w-xs">
+									<option value="숙제가 완벽해요">숙제가 완벽해요</option>
+									<option value="숙제를 전혀 안 했어요">숙제를 전혀 안 했어요</option>
+									<option value="숙제를 안 가져왔어요">숙제를 안 가져왔어요</option>
+									<option value="숙제를 베꼈어요">숙제를 베꼈어요</option>
+									<option value="숙제를 찍었어요">숙제를 찍었어요</option>
+								</select>
+				        	</td>
+					      </tr>
+					    </tbody> `);
+				}
+			}
+			
+			
+		}, 'json');
+		
+	}
+	
+</script>
+	
+	
+ <!-- 과제검사 모달창 -->
+<div class="hwChkmodal-bg"></div>
+<form action="doHwCheck" onsubmit="hwChkFinish(this,${article.id}); return false;">
+	<div class="hwChkmodal">
+		<h1>과제검사</h1>
+		<a class="close-btn"><i class="fa-regular fa-circle-xmark"></i></a>
+		
+		<table class="table w-full" id="hwChktable">
+		
+  	 	 </table>
+  	 	 <div class="flex justify-end "><button class="btn btn-success">검사완료</button></div>
+		
+	</div>
+</form>
 	
 	
 	

@@ -8,3 +8,14 @@ $('.menu-button').click(function(){
 	}
 });
 
+$('.homeworkChk').click(function(){
+	$('.hwChkmodal-bg, .hwChkmodal').show();
+});
+$('.close-btn').click(function(){
+	$('.hwChkmodal-bg, .hwChkmodal').hide();
+	$('#hwChktable').html("");
+});
+$('.hwChkmodal-bg').click(function(){
+	$('.hwChkmodal-bg, .hwChkmodal').hide();
+	$('#hwChktable').html("");
+});

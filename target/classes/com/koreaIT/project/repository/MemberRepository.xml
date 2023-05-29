@@ -72,5 +72,6 @@
 		WHERE name = #{name}
 		AND email = #{email}
 	</select>
+	
 
 </mapper>

@@ -50,6 +50,7 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer{
 		ir.addPathPatterns("/project/member/groupregistration");
 		ir.addPathPatterns("/project/member/getGroupsByTeacherID");
 		ir.addPathPatterns("/project/member/groupregisterdetail");
+		ir.addPathPatterns("/project/member/getStudentsByClass");
 		ir.addPathPatterns("/project/article/write");
 		ir.addPathPatterns("/project/article/doWrite");
 		ir.addPathPatterns("/project/article/doDelete");
@@ -58,7 +59,6 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer{
 		ir.addPathPatterns("/project/article/setSelectBox");
 		ir.addPathPatterns("/project/article/scorearticlewrite");
 		ir.addPathPatterns("/project/article/score");
-		ir.addPathPatterns("/project/article/getStudentsByClass");
 		ir.addPathPatterns("/project/article/doWriteScoreArticle");
 		ir.addPathPatterns("/project/article/doScoreDelete");
 		ir.addPathPatterns("/project/article/scorearticlemodify");

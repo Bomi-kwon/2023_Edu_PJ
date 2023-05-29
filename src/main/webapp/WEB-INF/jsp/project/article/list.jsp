@@ -5,6 +5,7 @@
 
 <%@ include file="../common/head.jsp" %>
 
+
 <section class="mt-8 mx-auto text-xl">
 	<div class="container mx-auto px-3">
 	  <div class="table-box-type-1">
@@ -55,10 +56,11 @@
 	        <td>${article.writerName }</td>
 	        <c:if test="${board.id == 2 }">
 		        <td>${article.deadLine.substring(0,10) }</td>
-		        <td>과제검사</td>
+		        <td>미검사</td>
 	        </c:if>
 	      </tr>
-	    </tbody>
+	    </tbody> 
+	    
 		</c:forEach>
 	  </table>
 	  </div>
@@ -69,8 +71,7 @@
 	</c:if>
 	</div>
 </section>
-	
-	
-	
+
+
 	
 <%@ include file="../common/foot.jsp" %>

@@ -11,12 +11,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.koreaIT.project.service.ArticleService;
 import com.koreaIT.project.service.BoardService;
 import com.koreaIT.project.service.GroupService;
+import com.koreaIT.project.service.HomeworkService;
 import com.koreaIT.project.service.MemberService;
 import com.koreaIT.project.service.ScoreService;
 import com.koreaIT.project.util.Util;
 import com.koreaIT.project.vo.Article;
 import com.koreaIT.project.vo.Board;
 import com.koreaIT.project.vo.Group;
+import com.koreaIT.project.vo.Homework;
+import com.koreaIT.project.vo.HomeworkList;
 import com.koreaIT.project.vo.Member;
 import com.koreaIT.project.vo.ResultData;
 import com.koreaIT.project.vo.Rq;
@@ -29,15 +32,18 @@ public class ProjectArticleController {
 	MemberService memberService;
 	BoardService boardService;
 	ScoreService scoreService;
+	HomeworkService homeworkService;
 	GroupService groupService;
 	Rq rq;
 	
 	public ProjectArticleController(ArticleService articleService, MemberService memberService,
-			BoardService boardService, ScoreService scoreService, GroupService groupService, Rq rq) {
+			BoardService boardService, ScoreService scoreService, HomeworkService homeworkService,
+			GroupService groupService, Rq rq) {
 		this.articleService = articleService;
 		this.memberService = memberService;
 		this.boardService = boardService;
 		this.scoreService = scoreService;
+		this.homeworkService = homeworkService;
 		this.groupService = groupService;
 		this.rq = rq;
 	}
@@ -253,22 +259,6 @@ public class ProjectArticleController {
 	}
 	
 	
-	// 성적 게시물에서 해당 반 학생 명단 가져오기
-	
-	@RequestMapping("/project/article/getStudentsByClass")
-	@ResponseBody
-	public ResultData getStudentsByClass(int classId) {
-		
-		List<Member> members = memberService.getStudentsByClass(classId);
-		
-		if(members.isEmpty()) {
-			return ResultData.from("F-1", "선택한 반에는 학생이 없습니다.");
-		}
-		
-		return ResultData.from("S-1", "선택한 반에 맞는 학생 리스트를 가져왔습니다", "members", members);
-	}
-	
-	
 	// 성적 최종 작성
 	
 	@RequestMapping("/project/article/doWriteScoreArticle")
@@ -361,5 +351,46 @@ public class ProjectArticleController {
 		
 		return Util.jsReplace("성적을 수정했습니다.", "scorelist");
 	}
+	
+	
+	// 성적 게시물과 숙제검사 모달창에서 해당 반 학생 명단 가져오기
+	
+	@RequestMapping("/project/article/getStudentsByClass")
+	@ResponseBody
+	public ResultData getStudentsByClass(int classId) {
+		rq.jsReturnOnView("컨트롤러로 잘 넘어옴", true);
+		
+		List<Member> members = memberService.getStudentsByClass(classId);
+		
+		if(members.isEmpty()) {
+			return ResultData.from("F-1", "선택한 반에는 학생이 없습니다.");
+		}
+		
+		return ResultData.from("S-1", "선택한 반에 맞는 학생 리스트를 가져왔습니다", "members", members);
+	}
+
+	
+	// 숙제검사 최종 작성
+	
+	@RequestMapping("/project/article/doHwCheck")
+	@ResponseBody
+	public String doHwCheck(HomeworkList homeworklist) {
+		
+		List<Homework> homeworkList = homeworklist.getHomeworklist();
+		
+		for(Homework homework : homeworkList) {
+			
+			if(homework != null) {
+				homeworkService.insertHw(homework.getMemberId(), homework.getHwPerfection(), homework.getHwMsg(),
+						homework.getClassId(), homework.getRelId());
+			}
+		}
+		
+		return Util.jsReplace("숙제 검사를 완료했습니다.", "list?boardId=2");
+	}
+		
+		
+	
+	
 	
 }

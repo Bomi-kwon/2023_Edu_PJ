@@ -38,7 +38,8 @@ CREATE TABLE `member`(
 	email VARCHAR(50) NOT NULL,
 	delStatus TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '탈퇴여부 (탈퇴 전 = 0, 탈퇴 후 = 1)',
 	delData DATETIME COMMENT '탈퇴 날짜',
-	classId INT UNSIGNED NOT NULL DEFAULT 0
+	classId INT UNSIGNED NOT NULL DEFAULT 0,
+	babyId INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '학부모의 자녀 ID'
 );
 
 #board 테이블 생성
@@ -52,15 +53,18 @@ CREATE TABLE board (
 );
 
 # group 테이블 생성
-# truncate table group;
-# drop table group;
+# truncate table `group`;
+# drop table `group`;
 
 CREATE TABLE `group` (
 	id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	grade VARCHAR(20) NOT NULL COMMENT 'elementary(초등), middel(중등), high(고등)',
 	groupName VARCHAR(20) NOT NULL COMMENT '반 이름',
-	groupDay VARCHAR(20) NOT NULL COMMENT '월수금, 화목토, 토일, ...'
+	groupDay VARCHAR(20) NOT NULL COMMENT '월수금, 화목토, 토일, ...',
+	groupTeacherId INT UNSIGNED NOT NULL COMMENT '담당 선생님id',
+	textbook VARCHAR(20) NOT NULL COMMENT '책 이름'
 );
+
 
 # score 테이블 생성
 # truncate table score;
@@ -178,9 +182,9 @@ updateDate = NOW(),
 loginID = 'student1',
 loginPW = 'student1',
 `authLevel` = 2,
-`name` = '김유경',
+`name` = '신짱구',
 cellphoneNum = '010-2222-2222',
-email = 'Ukyoung@naver.com',
+email = 'jjang9@naver.com',
 classId = 1;
 
 INSERT INTO `member`
@@ -189,10 +193,34 @@ updateDate = NOW(),
 loginID = 'parent1',
 loginPW = 'parent1',
 `authLevel` = 3,
-`name` = '김유경맘',
+`name` = '신짱구맘',
 cellphoneNum = '010-3333-3333',
-email = 'Ukmom@naver.com',
+email = 'jjang9mom@gmail.com',
+classId = 1,
+babyId = 3;
+
+INSERT INTO `member`
+SET regDate = NOW(),
+updateDate = NOW(),
+loginID = 'student2',
+loginPW = 'student2',
+`authLevel` = 2,
+`name` = '김철수',
+cellphoneNum = '010-4444-4444',
+email = 'cheolwater@naver.com',
 classId = 1;
+
+INSERT INTO `member`
+SET regDate = NOW(),
+updateDate = NOW(),
+loginID = 'parent2',
+loginPW = 'parent2',
+`authLevel` = 3,
+`name` = '김철수맘',
+cellphoneNum = '010-5555-5555',
+email = 'cheolwatermom@gmail.com',
+classId = 1,
+babyId = 5;
 
 # board 테스트 데이터
 INSERT INTO board
@@ -211,27 +239,37 @@ SET `code` = 'score',
 INSERT INTO `group`
 SET grade = 'middle',
 groupName = '수상심화반',
-groupDay = '월수금';
+groupDay = '월수금',
+groupTeacherId = 1,
+textbook = '쎈 수상';
 
 INSERT INTO `group`
 SET grade = 'middle',
 groupName = '중 3-2반',
-groupDay = '월수금';
+groupDay = '월수금',
+groupTeacherId = 1,
+textbook = 'RPM 중3-2';
 
 INSERT INTO `group`
 SET grade = 'high',
 groupName = '수1기본반',
-groupDay = '토일';
+groupDay = '토일',
+groupTeacherId = 2,
+textbook = '쎈 수1';
 
 INSERT INTO `group`
 SET grade = 'high',
 groupName = '수2기본반',
-groupDay = '토일';
+groupDay = '토일',
+groupTeacherId = 2,
+textbook = '쎈 수2';
 
 INSERT INTO `group`
 SET grade = 'high',
 groupName = '수1심화반',
-groupDay = '토일';
+groupDay = '토일',
+groupTeacherId = 2,
+textbook = '내신고쟁이 수1';
 
 # score 테스트 데이터
 INSERT INTO score
@@ -247,8 +285,8 @@ classId = 1,
 relId = 5;
 
 SELECT *
-FROM article;
-
+FROM article
+ORDER BY id DESC;
 
 SELECT *
 FROM `member`;
@@ -260,4 +298,19 @@ SELECT *
 FROM `group`;
 
 SELECT *
-FROM score;
+FROM score
+ORDER BY id DESC;
+
+WITH GS AS(
+	SELECT G.*, COUNT(M.classId) AS studentNum
+	FROM `group` AS G
+	LEFT JOIN `member` AS M
+	ON G.id = M.classId
+	AND M.authLevel = 2
+	GROUP BY G.id
+	)
+SELECT GS.*, T.name AS teacherName
+FROM GS
+LEFT JOIN `member` AS T
+ON GS.groupTeacherId = T.id
+WHERE grade = 'middle';
