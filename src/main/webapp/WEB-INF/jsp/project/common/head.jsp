@@ -73,7 +73,7 @@
 	      <li><a href="#">커뮤니티</a>
 	        <ul>
 	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/list?boardId=1"><span>알림장</span></a></li>
-	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>메세지 발송</span></a></li>
+	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/home/message"><span>메세지 발송</span></a></li>
 	        </ul>
 	      </li>
 	      <li><a href="#">인터넷강의</a>

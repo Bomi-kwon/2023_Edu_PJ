@@ -25,5 +25,9 @@ public class ProjectHomeController {
 		return "project/home/map";
 	}
 	
+	@RequestMapping("/project/home/message")
+	public String message() {
+		return "project/home/message";
+	}
 	
 }
