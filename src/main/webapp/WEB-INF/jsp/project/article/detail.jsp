@@ -5,6 +5,7 @@
 
 <%@ include file="../common/head.jsp" %>
 
+
 <section class="mt-8 mx-auto text-xl">
 	<div class="container mx-auto px-3">
 		<div class="table-box-type-1">
@@ -45,87 +46,162 @@
 				</tr>
 			</table>
 		</div>
-		<div class="flex justify-end">
-			<div id="hwChkFinishBtn_${article.id }">
-		        <a class="homeworkChk btn btn-success mr-2" 
-		        onclick="getStudentsByClass(${article.id},${article.classId});">과제검사</a>
-		        </div>
+		<div class="flex justify-end mt-2">
+			<c:if test="${homeworks.isEmpty() }">
+				<div>
+			        <a class="homeworkChk btn btn-success mr-2" 
+			        onclick="getStudentsByClass(${article.id},${article.classId});">과제검사</a>
+			    </div>
+		    </c:if>
+		    <c:if test="${homeworks.isEmpty() == false}">
+				<div>
+			        <a class="getHws btn btn-success btn-outline mr-2">과제확인</a>
+			    </div>
+		    </c:if>
 			<a href="list" class="btn btn-success mr-2" >목록</a>
 			<c:if test="${rq.getLoginedMemberId() == article.memberId }">
 				<a href="modify?id=${article.id }&memberId=${article.memberId}" class="btn btn-success mr-2" >수정</a>
-				<a href="doDelete?id=${article.id }&boardId=${article.boardId}&memberId=${article.memberId}" class="btn btn-success mr-2" 
+				<a href="doDelete?id=${article.id }&boardId=${article.boardId}&memberId=${article.memberId}" class="btn btn-success" 
 				onclick="if(confirm('정말 삭제하시겠습니까?')==false) return false;">삭제</a>
 			</c:if>
 		</div>
 	</div>
 </section>
 	
+	
 <script>
-	function getStudentsByClass(relId,classId) {
+function getStudentsByClass(relId,classId) {
+	
+	$.get('getStudentsByClass', {
+		classId : classId
+	}, function(data) {
 		
-		$.get('getStudentsByClass', {
-			classId : classId
-		}, function(data) {
+		console.log(data);
+		if(data.data1 != null) {
 			
-			console.log(data);
-			if(data.data1 != null) {
+			$('#hwChktable').html(`<thead>
+				      <tr>
+			        <th>이름</th>
+			        <th>숙제 완성도</th>
+			        <th>교사의견</th>
+			      </tr>
+			    </thead>`);
+			
+			for(var i = 0; i < data.data1.length; i++) {
+				let name = data.data1[i].name;
+				let memberId = data.data1[i].id;
 				
-				$('#hwChktable').html(`<thead>
+				$('#hwChktable').append(`<tbody>
+						<input type="hidden" name="homeworklist[`+i+`].memberId" value="`+memberId+`"/>
+						<input type="hidden" name="homeworklist[`+i+`].classId" value="`+classId+`"/>
+						<input type="hidden" name="homeworklist[`+i+`].relId" value="`+relId+`"/>
 					      <tr>
-				        <th>이름</th>
-				        <th>숙제 완성도</th>
-				        <th>교사의견</th>
+				        <td>`+name+`</td>
+				        <td><input class="input input-bordered input-success w-20" type="text"
+					        name="homeworklist[`+i+`].hwPerfection" required/> %</td>
+			        	<td>
+				        	<select name="homeworklist[`+i+`].hwMsg" class="select select-success w-full max-w-xs">
+								<option value="숙제가 완벽해요">숙제가 완벽해요</option>
+								<option value="숙제를 전혀 안 했어요">숙제를 전혀 안 했어요</option>
+								<option value="숙제를 안 가져왔어요">숙제를 안 가져왔어요</option>
+								<option value="숙제를 베꼈어요">숙제를 베꼈어요</option>
+								<option value="숙제를 찍었어요">숙제를 찍었어요</option>
+							</select>
+			        	</td>
 				      </tr>
-				    </thead>`);
-				
-				for(var i = 0; i < data.data1.length; i++) {
-					let name = data.data1[i].name;
-					let memberId = data.data1[i].id;
-					
-					$('#hwChktable').append(`<tbody>
-							<input type="hidden" name="homeworklist[`+i+`].memberId" value="`+memberId+`"/>
-							<input type="hidden" name="homeworklist[`+i+`].classId" value="`+classId+`"/>
-							<input type="hidden" name="homeworklist[`+i+`].relId" value="`+relId+`"/>
-						      <tr>
-					        <td>`+name+`</td>
-					        <td><input class="input input-bordered input-success w-20" type="text"
-						        name="homeworklist[`+i+`].hwPerfection" required/> %</td>
-				        	<td>
-					        	<select name="homeworklist[`+i+`].hwMsg" class="select select-success w-full max-w-xs">
-									<option value="숙제가 완벽해요">숙제가 완벽해요</option>
-									<option value="숙제를 전혀 안 했어요">숙제를 전혀 안 했어요</option>
-									<option value="숙제를 안 가져왔어요">숙제를 안 가져왔어요</option>
-									<option value="숙제를 베꼈어요">숙제를 베꼈어요</option>
-									<option value="숙제를 찍었어요">숙제를 찍었어요</option>
-								</select>
-				        	</td>
-					      </tr>
-					    </tbody> `);
-				}
+				    </tbody> `);
 			}
-			
-			
-		}, 'json');
-		
-	}
+		}
+	}, 'json');
+	
+}
+
+function hwmodify() {
+	$('.getHwsmodal-bg, .getHwsmodal').hide();
+	$('.hwChkmodal-bg, .hwChkmodal-form, .hwChkmodal').show();
+	
+	$('.hwChkmodal-form').attr('action','doHwModify');
+	
+	$('#hwChktable').html(`<thead>
+		      <tr>
+	        <th>이름</th>
+	        <th>숙제 완성도</th>
+	        <th>교사의견</th>
+	      </tr>
+	    </thead>`);
+	
+	$('#hwChktable').append(`<tbody>
+			<c:forEach var="homework" items="${homeworks }" varStatus="status">
+			  <tr>
+			  <input type="hidden" name="homeworklist[${status.index}].id" value="${homework.id }"/>
+			    <td>${homework.name }</td>
+		        <td><input class="input input-bordered input-success w-20" type="text"
+			        name="homeworklist[${status.index}].hwPerfection" value="${homework.hwPerfection }" required/> % </td>
+	        	<td>
+		        	<select name="homeworklist[${status.index}].hwMsg" class="select select-success w-full max-w-xs">
+		        		<option value="숙제가 완벽해요" ${homework.hwMsg == '숙제가 완벽해요' ? 'selected' : ''}>숙제가 완벽해요</option>
+						<option value="숙제를 전혀 안 했어요" ${homework.hwMsg == '숙제를 전혀 안 했어요' ? 'selected' : ''}>숙제를 전혀 안 했어요</option>
+						<option value="숙제를 안 가져왔어요" ${homework.hwMsg == '숙제를 안 가져왔어요' ? 'selected' : ''}>숙제를 안 가져왔어요</option>
+						<option value="숙제를 베꼈어요" ${homework.hwMsg == '숙제를 베꼈어요' ? 'selected' : ''}>숙제를 베꼈어요</option>
+						<option value="숙제를 찍었어요" ${homework.hwMsg == '숙제를 찍었어요' ? 'selected' : ''}>숙제를 찍었어요</option>
+					</select>
+			    </td>
+		      </tr>
+	 	</c:forEach>
+	 	</tbody>`);
+	
+	$('.hwChkmodal-btn').html('수정하기');
+}
 	
 </script>
 	
 	
  <!-- 과제검사 모달창 -->
 <div class="hwChkmodal-bg"></div>
-<form action="doHwCheck" onsubmit="hwChkFinish(this,${article.id}); return false;">
+<form action="doHwCheck" class="hwChkmodal-form">
 	<div class="hwChkmodal">
 		<h1>과제검사</h1>
 		<a class="close-btn"><i class="fa-regular fa-circle-xmark"></i></a>
 		
 		<table class="table w-full" id="hwChktable">
-		
   	 	 </table>
-  	 	 <div class="flex justify-end "><button class="btn btn-success">검사완료</button></div>
+  	 	 <div class="flex justify-end "><button class="hwChkmodal-btn btn btn-success">검사완료</button></div>
 		
 	</div>
 </form>
+
+ <!-- 과제확인 모달창 -->
+<div class="getHwsmodal-bg"></div>
+<div class="getHwsmodal">
+	<h1>과제확인</h1>
+	<a class="getHws-close-btn"><i class="fa-regular fa-circle-xmark"></i></a>
+	
+	<table class="table w-full" id="getHwstable">
+		<thead>
+	      <tr>
+	        <th>이름</th>
+	        <th>숙제 완성도</th>
+	        <th>교사의견</th>
+	      </tr>
+	    </thead>
+ 	 		<tbody>
+		 	 	<c:forEach var="homework" items="${homeworks }" varStatus="status">
+					  <tr>
+				        <td>${homework.name }</td>
+				        <td>${homework.hwPerfection } %</td>
+			        	<td>${homework.hwMsg }</td>
+				      </tr>
+		 	 	</c:forEach>
+		   </tbody>
+ 	 </table>
+ 	 <c:if test="${rq.getLoginedMemberId() == article.memberId }">
+	 	 <div class="flex justify-end ">
+	 	 	<a class="btn btn-success mr-2" onclick="hwmodify();">수정</a>
+	 	 	<a href="doHwDelete?relId=${article.id }&memberId=${article.memberId}" 
+	 	 	class="btn btn-success" onclick="if(confirm('정말 삭제하시겠습니까?')==false) return false;">삭제</a>
+	 	 </div>
+	</c:if>
+</div>
 	
 	
 	

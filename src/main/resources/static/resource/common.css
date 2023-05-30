@@ -317,3 +317,40 @@ html.active .menu-box-3 > ul > li > ul > li > a {
 	cursor: pointer;
 	font-size: 2rem;
 }
+
+/* 과제확인 모달창 커스텀 */
+.getHwsmodal-bg, .getHwsmodal {
+	display: none;
+}
+.getHwsmodal-bg {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	background-color: rgba(0,0,0,0.5);
+	z-index: 10;
+}
+.getHwsmodal {
+	position: absolute;
+	height: 500px;
+	width: 700px;
+	background-color: white;
+	top: 50%;
+	left: 50%;
+	transform: translateX(-50%) translateY(-50%);
+	padding: 20px;
+	z-index: 15;
+	border: 2px solid black;
+}
+.getHwsmodal > h1 {
+	font-size: 2rem;
+	margin-bottom: 10px;
+}
+.getHws-close-btn {
+	position: absolute;
+	top:20px;
+	right: 20px;
+	cursor: pointer;
+	font-size: 2rem;
+}

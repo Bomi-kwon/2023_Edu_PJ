@@ -10,5 +10,25 @@
 		classId = #{classId},
 		relId = #{relId};
 	</insert>
+	
+	<select id="getHwsByRelId" resultType="Homework">
+		SELECT H.*, M.name
+		FROM homework AS H
+		INNER JOIN `member` AS M
+		ON H.memberId = M.id
+		WHERE relId = #{relId};
+	</select>
+	
+	<delete id="doHwDelete">
+		DELETE FROM homework
+		WHERE relId = #{relId};
+	</delete>
+	
+	<update id="updateHw">
+		UPDATE homework
+		SET hwPerfection = #{hwPerfection},
+		hwMsg = #{hwMsg}
+		WHERE id = #{id};
+	</update>
 
 </mapper>

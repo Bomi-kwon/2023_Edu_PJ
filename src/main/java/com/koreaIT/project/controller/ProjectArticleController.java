@@ -110,7 +110,14 @@ public class ProjectArticleController {
 		
 		Article article = articleService.getArticleById(id);
 		
+		if(article == null) {
+			rq.jsPrintHistoryBack("해당 번호를 가진 게시물이 없습니다.");
+		}
+		
+		List<Homework> homeworks = homeworkService.getHwsByRelId(id);
+
 		model.addAttribute("article",article);
+		model.addAttribute("homeworks",homeworks);
 		
 		return "project/article/detail";
 	}
@@ -378,19 +385,65 @@ public class ProjectArticleController {
 		
 		List<Homework> homeworkList = homeworklist.getHomeworklist();
 		
+		int relId = 0;
 		for(Homework homework : homeworkList) {
 			
 			if(homework != null) {
 				homeworkService.insertHw(homework.getMemberId(), homework.getHwPerfection(), homework.getHwMsg(),
 						homework.getClassId(), homework.getRelId());
+				relId = homework.getRelId();
 			}
 		}
 		
-		return Util.jsReplace("숙제 검사를 완료했습니다.", "list?boardId=2");
+		return Util.jsReplace("숙제 검사를 완료했습니다.", Util.f("detail?id=%d", relId));
 	}
 		
 		
+	// 숙제 삭제
 	
+	@RequestMapping("/project/article/doHwDelete")
+	@ResponseBody
+	public String doHwDelete(int relId, int memberId) {
+		
+		if(rq.getLoginedMemberId() != memberId) {
+			return Util.jsHistoryBack("숙제 삭제 권한이 없습니다.");
+		}
+		
+		List<Homework> homeworks = homeworkService.getHwsByRelId(relId);
+		
+		if(homeworks.isEmpty()) {
+			return Util.jsHistoryBack(Util.f("%d번 숙제는 존재하지 않습니다.", relId));
+		}
+		
+		homeworkService.doHwDelete(relId);
+		
+		return Util.jsReplace(Util.f("%d번 숙제를 삭제했습니다.", relId), Util.f("detail?id=%d", relId));
+	}
+	
+	
+	// 숙제 수정
+	
+	@RequestMapping("/project/article/doHwModify")
+	@ResponseBody
+	public String doHwModify(HomeworkList homeworklist) {
+		
+		List<Homework> homeworkList = homeworklist.getHomeworklist();
+		
+		int relId = 0;
+		if(homeworkList.isEmpty()) {
+			return Util.jsHistoryBack("숙제 검사 결과를 작성해주세요.");
+		}
+		
+		for(Homework homework : homeworkList) {
+			
+			if(homework != null) {
+				homeworkService.updateHw(homework.getId(), homework.getHwPerfection(), homework.getHwMsg());
+				relId = homework.getRelId();
+			}
+		}
+		
+		return Util.jsReplace("숙제를 수정했습니다.", Util.f("detail?id=%d", relId));
+	}
 	
 	
 }
