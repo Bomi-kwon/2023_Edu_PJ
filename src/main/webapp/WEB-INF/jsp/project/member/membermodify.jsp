@@ -30,7 +30,7 @@
 
 <section class="mt-8 mx-auto text-xl">
 	<div class="container mx-auto px-3">
-			<form action="doMemberModify" onsubmit="check(this); return false;">
+			<form action="doMemberModify" method="post" enctype="multipart/form-data" onsubmit="check(this); return false;">
 				<input type="hidden" name="id" value="${member.id }"/>
 				<div class="table-box-type-1 overflow-x-auto">
 				<div>회원정보 수정</div>
@@ -57,6 +57,18 @@
 							<th>이메일</th>
 							<td><input class="input input-bordered input-success w-full" type="text" name="email" 
 							value="${member.email }" placeholder="이메일을 입력해주세요." /></td>
+						</tr>
+						<tr>
+							<th>프로필 이미지</th>
+							<td>
+								<section class="flex">
+									<span>현재 이미지 : </span>
+									<div class="w-12 h-12 mr-10"><img src="/project/home/file/${profileImg.id }"/></div>
+									<span>수정할 이미지 : </span>
+									<input type="hidden" name="fildId" value="${profileImg.id }"/>
+									<div class="ml-2"><input type="file" name="file"/></div>
+								</section>
+							</td>
 						</tr>
 					</table>
 				</div>

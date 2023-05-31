@@ -25,5 +25,14 @@
 		FROM `file`
 		WHERE id = #{id}
 	</select>
+	
+	<update id="updateFileInfo">
+		UPDATE `file`
+		SET regDate = NOW(),
+		originName = #{orgName},
+		savedName = #{savedName},
+		savedPath = #{savedPath}
+		WHERE id = #{fildId}
+	</update>
 
 </mapper>

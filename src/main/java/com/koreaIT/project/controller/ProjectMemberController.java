@@ -238,16 +238,29 @@ public class ProjectMemberController {
 			return rq.jsReturnOnView("비밀번호가 일치하지 않습니다.", true);
 		}
 		
+		FileVO profileImg = fileService.getFileByRelId("profile", member.getId());
+		
 		model.addAttribute("member", member);
+		model.addAttribute("profileImg", profileImg);
 		
 		return "project/member/membermodify";
 	}
 	
 	@RequestMapping("/project/member/doMemberModify")
 	@ResponseBody
-	public String doMemberModify(int id, String name, String cellphoneNum, String email) {
+	public String doMemberModify(int id, String name, String cellphoneNum, String email, int fildId, MultipartFile file) {
 		
 		memberService.doMemberModify(id, name, cellphoneNum, email);
+		
+		if(!file.isEmpty()) {
+			try {
+				fileService.updateFile(file, "profile", id, fildId);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 		
 		return Util.jsReplace("회원정보를 수정하였습니다.", "memberprofile");
 	}

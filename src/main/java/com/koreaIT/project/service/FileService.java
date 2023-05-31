@@ -56,5 +56,28 @@ public class FileService {
 		return fileRepository.getFileById(id);
 	}
 
+	public void updateFile(MultipartFile file, String relTypecode, int relId, int fildId) throws IOException {
+		
+		if (file.isEmpty()) {
+			return;
+		}
+		
+		String orgName = file.getOriginalFilename();
+
+		// 파일 이름 중복되면 안되서 랜덤으로 난수 발생
+		String uuid = UUID.randomUUID().toString();
+		// 확장자명(jpeg 같은거)
+		String extension = orgName.substring(orgName.lastIndexOf("."));
+
+		String savedName = uuid + extension;
+
+		String savedPath = fileDir + "/" + savedName;
+
+		fileRepository.updateFileInfo(orgName, savedName, savedPath, fildId);
+
+		file.transferTo(new File(savedPath));
+	
+	}
+
 
 }

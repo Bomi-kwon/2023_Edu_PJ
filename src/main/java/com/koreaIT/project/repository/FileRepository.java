@@ -13,5 +13,7 @@ public interface FileRepository {
 
 	FileVO getFileById(int id);
 
+	void updateFileInfo(String orgName, String savedName, String savedPath, int fildId);
+
 	
 }
