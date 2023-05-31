@@ -33,6 +33,10 @@ public class MemberService {
 	public void doMemberJoin(String loginID, String loginPW, String name, String cellphoneNum, String email, int authLevel) {
 		memberRepository.doMemberJoin(loginID, loginPW, name, cellphoneNum, email, authLevel);
 	}
+	
+	public int getLastId() {
+		return memberRepository.getLastId();
+	}
 
 	public Member getMemberByLoginID(String loginID) {
 		return memberRepository.getMemberByLoginID(loginID);

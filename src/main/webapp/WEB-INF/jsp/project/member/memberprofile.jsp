@@ -37,6 +37,10 @@
 					<th>이메일</th>
 					<td>${member.email }</td>
 				</tr>
+				<tr>
+					<th>프로필 이미지</th>
+					<td><div class="w-12 h-12"><img src="/project/home/file/${profileImg.id }"/></div></td>
+				</tr>
 			</table>
 		</div>
 		<div class="flex justify-end">

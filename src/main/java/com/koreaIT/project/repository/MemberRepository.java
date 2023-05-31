@@ -13,6 +13,8 @@ public interface MemberRepository {
 
 	void doMemberJoin(String loginID, String loginPW, String name, String cellphoneNum, String email, int authLevel);
 
+	public int getLastId();
+	
 	Member getMemberByLoginID(String loginID);
 
 	Member getMemberById(int id);

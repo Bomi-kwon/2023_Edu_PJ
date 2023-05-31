@@ -1,5 +1,6 @@
 package com.koreaIT.project.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,10 +8,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.koreaIT.project.service.FileService;
 import com.koreaIT.project.service.GroupService;
 import com.koreaIT.project.service.MemberService;
 import com.koreaIT.project.util.Util;
+import com.koreaIT.project.vo.FileVO;
 import com.koreaIT.project.vo.Group;
 import com.koreaIT.project.vo.Member;
 import com.koreaIT.project.vo.ResultData;
@@ -20,13 +24,15 @@ import com.koreaIT.project.vo.Rq;
 public class ProjectMemberController {
 	private MemberService memberService;
 	private GroupService groupService;
+	private FileService fileService;
 	private Rq rq;
 	
 	@Autowired
 	public ProjectMemberController(MemberService memberService, Rq rq, 
-			GroupService groupService) {
+			GroupService groupService, FileService fileService) {
 		this.memberService = memberService;
 		this.groupService = groupService;
+		this.fileService = fileService;
 		this.rq = rq;
 	}
 	
@@ -51,7 +57,8 @@ public class ProjectMemberController {
 	
 	@RequestMapping("/project/member/doMemberJoin")
 	@ResponseBody
-	public String doMemberJoin(int authLevel, String loginID, String loginPW, String loginPWCheck, String name, String cellphoneNum, String email) {
+	public String doMemberJoin(int authLevel, String loginID, String loginPW, String loginPWCheck, 
+			String name, String cellphoneNum, String email, MultipartFile file) {
 		
 		if(Util.empty(loginID)) {
 			return Util.jsHistoryBack("로그인 아이디를 입력하세요.");
@@ -82,6 +89,16 @@ public class ProjectMemberController {
 		}
 		
 		memberService.doMemberJoin(loginID, Util.sha256(loginPW), name, cellphoneNum, email, authLevel);
+		int relId = memberService.getLastId();
+		
+		if(!file.isEmpty()) {
+			try {
+				fileService.saveFile(file, "profile", relId);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
 		return Util.jsReplace(Util.f("%s님, 회원가입을 축하합니다.", name), "memberlogin");
 	}
@@ -161,7 +178,11 @@ public class ProjectMemberController {
 	public String memberprofile(Model model) {
 		
 		Member member = memberService.getMemberById(rq.getLoginedMemberId());
+		
+		FileVO profileImg = fileService.getFileByRelId("profile", member.getId());
+		
 		model.addAttribute("member", member);
+		model.addAttribute("profileImg",profileImg);
 		
 		return "project/member/memberprofile";
 	}

@@ -78,6 +78,33 @@ CREATE TABLE score (
 	relId INT UNSIGNED NOT NULL COMMENT '몇번째 게시물인지'
 );
 
+# homework 테이블 생성
+# truncate table homework;
+# drop table homework;
+
+CREATE TABLE homework (
+	id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	memberId INT UNSIGNED NOT NULL,
+	hwPerfection INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '과제완성도 %',
+	hwMsg TEXT NOT NULL COMMENT '아주 완벽해요, 숙제를 전혀 안 했어요, 숙제를 안 가져왔어요, 베낀 것 같아요, 찍은 것 같아요, ...',
+	classId INT UNSIGNED NOT NULL DEFAULT 0,
+	relId INT UNSIGNED NOT NULL COMMENT '몇번째 게시물인지'
+);
+
+# file 테이블 생성
+# truncate table file;
+# drop table file;
+
+CREATE TABLE `file` (
+	id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	regDate DATETIME NOT NULL,
+	originName VARCHAR(50) NOT NULL,
+    savedName VARCHAR(100) NOT NULL,
+    savedPath VARCHAR(100) NOT NULL,
+    relTypecode VARCHAR(20) NOT NULL COMMENT 'article(게시물), profile(프로필), ...',
+	relId INT UNSIGNED NOT NULL COMMENT '데이터의 번호'
+);
+
 #reactionPoint 테이블 생성
 CREATE TABLE reactionPoint(
 	id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -105,6 +132,8 @@ DESC `member`;
 DESC board;
 DESC `group`;
 DESC score;
+DESC homework;
+DESC `file`;
 DESC reactionPoint;
 DESC reply;
 
@@ -284,6 +313,28 @@ score = 72,
 classId = 1,
 relId = 5;
 
+# homework 테스트 데이터
+INSERT INTO homework
+SET memberId = 3,
+hwPerfection = 20,
+hwMsg = '숙제를 베꼈어요',
+classId = 1,
+relId = 4;
+
+INSERT INTO homework
+SET memberId = 5,
+hwPerfection = 100,
+hwMsg = '숙제가 완벽해요',
+classId = 1,
+relId = 4;
+
+INSERT INTO homework
+SET memberId = 8,
+hwPerfection = 0,
+hwMsg = '숙제를 안 가져왔어요',
+classId = 1,
+relId = 4;
+
 SELECT *
 FROM article
 ORDER BY id DESC;
@@ -301,16 +352,19 @@ SELECT *
 FROM score
 ORDER BY id DESC;
 
-WITH GS AS(
-	SELECT G.*, COUNT(M.classId) AS studentNum
-	FROM `group` AS G
-	LEFT JOIN `member` AS M
-	ON G.id = M.classId
-	AND M.authLevel = 2
-	GROUP BY G.id
-	)
-SELECT GS.*, T.name AS teacherName
-FROM GS
-LEFT JOIN `member` AS T
-ON GS.groupTeacherId = T.id
-WHERE grade = 'middle';
+SELECT *
+FROM homework;
+
+SELECT *
+FROM `file`;
+
+SELECT H.*, M.name
+FROM homework AS H
+INNER JOIN `member` AS M
+ON H.memberId = M.id
+ORDER BY H.id DESC;
+
+SELECT M.*
+FROM `member` AS M
+WHERE relId = 4
+AND authLevel = 2;

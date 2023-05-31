@@ -8,6 +8,10 @@
 		ORDER BY id
 	</select>
 	
+	<select id="getLastId" resultType="Int">
+		SELECT LAST_INSERT_ID();
+	</select>
+	
 	<insert id="doMemberJoin">
 		INSERT INTO `member`
 		SET regDate = NOW(),

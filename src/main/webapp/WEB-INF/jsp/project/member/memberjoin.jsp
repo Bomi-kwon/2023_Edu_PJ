@@ -7,7 +7,7 @@
 
 <section class="mt-8 mx-auto text-xl">
 	<div class="container mx-auto px-3">
-			<form action="doMemberJoin" >
+			<form action="doMemberJoin" method="post" enctype="multipart/form-data">
 				<div class="table-box-type-1 overflow-x-auto">
 				<div>회원 가입</div>
 						<table border="1" class="mx-auto able w-full bg-gray-100">
@@ -52,6 +52,10 @@
 							<th>이메일</th>
 							<td><input class="input input-bordered input-success w-full" type="text" name="email" 
 							placeholder="이메일을 입력해주세요." /></td>
+						</tr>
+						<tr>
+							<th>프로필사진</th>
+							<td><input class="input input-bordered input-success w-full" type="file" name="file"/></td>
 						</tr>
 					</table>
 				</div>
