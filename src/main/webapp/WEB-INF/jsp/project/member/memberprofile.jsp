@@ -39,7 +39,14 @@
 				</tr>
 				<tr>
 					<th>프로필 이미지</th>
-					<td><div class="w-12 h-12"><img src="/project/home/file/${profileImg.id }"/></div></td>
+					<td>
+						<c:if test="${profileImg != null }">
+							<div class="w-12 h-12"><img src="/project/home/file/${profileImg.id }"/></div>
+						</c:if>
+						<c:if test="${profileImg == null }">
+							<div>이미지 없음</div>
+						</c:if>
+					</td>
 				</tr>
 			</table>
 		</div>

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:set var="pageTitle" value="${board.name } 게시판" />
+<c:set var="pageTitle" value="게시판" />
 
 <%@ include file="../common/head.jsp" %>
 
@@ -35,9 +35,23 @@
 					<td>${article.deadLine }</td>
 				</tr>
 				<tr>
+					<th>내용</th>
 					<td colspan="6">
 						<div>${article.getForPrintBody() }</div>
 					</td>
+				</tr>
+				<tr>
+					<c:if test="${article.boardId != 4}">
+						<th>이미지 등록</th>
+						<td colspan="5"><img src="/project/home/file/${file.id }"/></td>
+					</c:if>
+					<c:if test="${article.boardId == 4}">
+						<th>첨부파일</th>
+						<td colspan="5">
+							<video width="800px" height="600px" 
+							src="/project/home/file/${file.id }" controls loop></video>
+						</td>
+					</c:if>
 				</tr>
 				<tr>
 					<td colspan="6">

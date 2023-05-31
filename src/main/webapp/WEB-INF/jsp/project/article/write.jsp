@@ -30,7 +30,7 @@
 
 <section class="mt-8 mx-auto text-xl">
 	<div class="container mx-auto px-3">
-			<form action="doWrite" >
+			<form action="doWrite" method="POST" enctype="multipart/form-data" >
 				<input type="hidden" name="boardId" value="${boardId }"/>
 				<div class="table-box-type-1 overflow-x-auto">
 				<div>게시물 등록</div>
@@ -76,12 +76,14 @@
 							</td>
 						</tr>
 						<tr>
-							<th>이미지 등록</th>
-							<td></td>
-						</tr>
-						<tr>
-							<th>첨부파일</th>
-							<td></td>
+							<c:if test="${boardId != 4}">
+								<th>이미지 등록</th>
+								<td><input type="file" name="file"/></td>
+							</c:if>
+							<c:if test="${boardId == 4}">
+								<th>첨부파일</th>
+								<td><input type="file" name="file"/></td>
+							</c:if>
 						</tr>
 					</table>
 				</div>

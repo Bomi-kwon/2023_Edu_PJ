@@ -211,10 +211,6 @@ html.active .menu-box-3 > ul > li > ul > li > a {
 
 /*풋 커스텀*/
 .foot {
-	position: absolute;
-	bottom: 2%;
-	left: 50%;
-	transform: translateX(-50%);
 	color: #afafaf;
 	border-top: 1px solid #afafaf;
 	padding-top: 5px;

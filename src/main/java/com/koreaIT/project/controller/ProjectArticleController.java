@@ -7,9 +7,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.koreaIT.project.service.ArticleService;
 import com.koreaIT.project.service.BoardService;
+import com.koreaIT.project.service.FileService;
 import com.koreaIT.project.service.GroupService;
 import com.koreaIT.project.service.HomeworkService;
 import com.koreaIT.project.service.MemberService;
@@ -17,6 +19,7 @@ import com.koreaIT.project.service.ScoreService;
 import com.koreaIT.project.util.Util;
 import com.koreaIT.project.vo.Article;
 import com.koreaIT.project.vo.Board;
+import com.koreaIT.project.vo.FileVO;
 import com.koreaIT.project.vo.Group;
 import com.koreaIT.project.vo.Homework;
 import com.koreaIT.project.vo.HomeworkList;
@@ -34,17 +37,19 @@ public class ProjectArticleController {
 	ScoreService scoreService;
 	HomeworkService homeworkService;
 	GroupService groupService;
+	FileService fileService;
 	Rq rq;
 	
 	public ProjectArticleController(ArticleService articleService, MemberService memberService,
 			BoardService boardService, ScoreService scoreService, HomeworkService homeworkService,
-			GroupService groupService, Rq rq) {
+			GroupService groupService, FileService fileService, Rq rq) {
 		this.articleService = articleService;
 		this.memberService = memberService;
 		this.boardService = boardService;
 		this.scoreService = scoreService;
 		this.homeworkService = homeworkService;
 		this.groupService = groupService;
+		this.fileService = fileService;
 		this.rq = rq;
 	}
 
@@ -80,7 +85,8 @@ public class ProjectArticleController {
 	
 	@RequestMapping("/project/article/doWrite")
 	@ResponseBody
-	public String doWrite(String title, int classId, String deadLine, String body, int boardId) {
+	public String doWrite(String title, int classId, String deadLine, String body, int boardId, 
+			MultipartFile file) throws Exception {
 		
 		if(Util.empty(title)) {
 			return Util.jsHistoryBack("제목을 입력해주세요");
@@ -99,6 +105,10 @@ public class ProjectArticleController {
 		articleService.doWrite(rq.getLoginedMemberId(),title, classId, deadLine, body, boardId);
 		int id = articleService.getLastId();
 		
+		if(!file.isEmpty()) {
+			fileService.saveFile(file, "article", id);
+		}
+		
 		return Util.jsReplace(Util.f("%d번 게시물이 등록되었습니다.",id), Util.f("list?boardId=%d", boardId));
 	}
 	
@@ -115,9 +125,12 @@ public class ProjectArticleController {
 		}
 		
 		List<Homework> homeworks = homeworkService.getHwsByRelId(id);
+		
+		FileVO file = fileService.getFileByRelId("article", id);
 
 		model.addAttribute("article",article);
 		model.addAttribute("homeworks",homeworks);
+		model.addAttribute("file",file);
 		
 		return "project/article/detail";
 	}
@@ -444,6 +457,8 @@ public class ProjectArticleController {
 		
 		return Util.jsReplace("숙제를 수정했습니다.", Util.f("detail?id=%d", relId));
 	}
+	
+	
 	
 	
 }

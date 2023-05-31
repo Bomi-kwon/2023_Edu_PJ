@@ -79,5 +79,18 @@ public class FileService {
 	
 	}
 
+	// 프로필 이미지 등록 안 했을때 기본 이미지 저장하기
+	public void saveBasicFile(String relTypecode, int relId) {
+		
+		String orgName = "basic.png";
+
+		String savedName = orgName;
+
+		String savedPath = "C:/bbomi/upload/" + savedName;
+
+		fileRepository.insertFileInfo(orgName, savedName, savedPath, relTypecode, relId);
+		
+	}
+
 
 }

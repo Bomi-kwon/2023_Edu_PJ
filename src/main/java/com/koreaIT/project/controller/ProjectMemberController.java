@@ -91,14 +91,17 @@ public class ProjectMemberController {
 		memberService.doMemberJoin(loginID, Util.sha256(loginPW), name, cellphoneNum, email, authLevel);
 		int relId = memberService.getLastId();
 		
-		if(!file.isEmpty()) {
 			try {
-				fileService.saveFile(file, "profile", relId);
+				if(!file.isEmpty()) {
+					fileService.saveFile(file, "profile", relId);
+				}
+				else {
+					fileService.saveBasicFile("profile", relId);
+				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
 		
 		return Util.jsReplace(Util.f("%s님, 회원가입을 축하합니다.", name), "memberlogin");
 	}
