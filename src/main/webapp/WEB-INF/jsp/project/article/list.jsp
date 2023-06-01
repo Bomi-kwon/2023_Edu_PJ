@@ -5,19 +5,6 @@
 
 <%@ include file="../common/head.jsp" %>
 
-<script>
-function setTestChk() {
-	
-	$.get('setSelectBox', {
-
-	}, function(data) {
-		console.log(data);
-	}, 'json');
-}
-
-setTestChk();
-
-</script>
 
 <section class="mt-8 mx-auto text-xl">
 	<div class="container mx-auto px-3">
@@ -36,7 +23,7 @@ setTestChk();
 	        <th>작성자</th>
 	        <c:if test="${board.id == 2 }">
 		        <th>제출기한</th>
-		        <th>과제검사</th>
+		        <th>과제검사여부</th>
 	        </c:if>
 	      </tr>
 	    </thead>
@@ -69,7 +56,7 @@ setTestChk();
 	        <td>${article.writerName }</td>
 	        <c:if test="${board.id == 2 }">
 		        <td>${article.deadLine.substring(0,10) }</td>
-		        <td><span id="testChk_${article.id }">미검사</span></td>
+		        <td>${article.hwChk }</td>
 	        </c:if>
 	      </tr>
 	    </tbody> 

@@ -4,14 +4,21 @@
 <mapper namespace="com.koreaIT.project.repository.ArticleRepository">
 
 	<select id="getArticles" resultType="Article">
-		SELECT A.*, M.name AS writerName, IFNULL(G.groupName,'전체') AS groupName
-		FROM article AS A
-		INNER JOIN `member` AS M
-		ON A.memberId = M.id
-		LEFT JOIN `group` AS G
-		ON A.classId = G.id
-		WHERE boardId = #{boardId}
-		ORDER BY A.id DESC;
+		WITH AMG AS (
+			SELECT A.*, M.name AS writerName, IFNULL(G.groupName,'전체') AS groupName
+			FROM article AS A
+			INNER JOIN `member` AS M
+			ON A.memberId = M.id
+			LEFT JOIN `group` AS G
+			ON A.classId = G.id
+			WHERE boardId = #{boardId}
+		)
+		SELECT AMG.*, IF(COUNT(H.hwMsg) = 0, '미검사','검사') AS 'hwChk'
+		FROM AMG
+		LEFT JOIN `homework` AS H
+		ON AMG.id = H.relId
+		GROUP BY AMG.id
+		ORDER BY AMG.id DESC;
 	</select>
 	
 	<insert id="doWrite">

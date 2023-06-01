@@ -22,6 +22,7 @@ public class Article {
 	
 	private String groupName;
 	private String writerName;
+	private String hwChk;
 	
 	public String getForPrintBody() {
 		return this.body.replaceAll("\n", "<br />");
