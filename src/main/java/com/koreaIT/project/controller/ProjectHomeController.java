@@ -63,4 +63,11 @@ public class ProjectHomeController {
 		return new UrlResource("file:" + fileVo.getSavedPath()); 
 	}
 	
+	
+	@RequestMapping("/project/home/test")
+	public String test() {
+		return "project/home/test";
+	}
+	
+	
 }

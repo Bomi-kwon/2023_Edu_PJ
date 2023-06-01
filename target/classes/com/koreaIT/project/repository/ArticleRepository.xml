@@ -4,7 +4,9 @@
 <mapper namespace="com.koreaIT.project.repository.ArticleRepository">
 
 	<select id="getArticles" resultType="Article">
+		<if test="boardId == 2">
 		WITH AMG AS (
+		</if>
 			SELECT A.*, M.name AS writerName, IFNULL(G.groupName,'전체') AS groupName
 			FROM article AS A
 			INNER JOIN `member` AS M
@@ -12,6 +14,10 @@
 			LEFT JOIN `group` AS G
 			ON A.classId = G.id
 			WHERE boardId = #{boardId}
+			<if test="boardId != 2">
+				ORDER BY A.id DESC;
+			</if>
+		<if test="boardId == 2">
 		)
 		SELECT AMG.*, IF(COUNT(H.hwMsg) = 0, '미검사','검사') AS 'hwChk'
 		FROM AMG
@@ -19,6 +25,7 @@
 		ON AMG.id = H.relId
 		GROUP BY AMG.id
 		ORDER BY AMG.id DESC;
+		</if>
 	</select>
 	
 	<insert id="doWrite">
@@ -60,6 +67,12 @@
 		SET regDate = #{regDate},
 		title = #{title},
 		classId = #{classId}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="addYouTubeLink">
+		UPDATE article
+		SET youTubeLink = #{youTubeLink}
 		WHERE id = #{id}
 	</update>
 

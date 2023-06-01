@@ -86,7 +86,7 @@ public class ProjectArticleController {
 	@RequestMapping("/project/article/doWrite")
 	@ResponseBody
 	public String doWrite(String title, int classId, String deadLine, String body, int boardId, 
-			MultipartFile file) throws Exception {
+			MultipartFile file, String youTubeLink) throws Exception {
 		
 		if(Util.empty(title)) {
 			return Util.jsHistoryBack("제목을 입력해주세요");
@@ -105,8 +105,12 @@ public class ProjectArticleController {
 		articleService.doWrite(rq.getLoginedMemberId(),title, classId, deadLine, body, boardId);
 		int id = articleService.getLastId();
 		
-		if(!file.isEmpty()) {
+		if(!file.isEmpty() || file != null) {
 			fileService.saveFile(file, "article", id);
+		}
+		
+		if(!Util.empty(youTubeLink)) {
+			articleService.addYouTubeLink(id, youTubeLink);
 		}
 		
 		return Util.jsReplace(Util.f("%d번 게시물이 등록되었습니다.",id), Util.f("list?boardId=%d", boardId));

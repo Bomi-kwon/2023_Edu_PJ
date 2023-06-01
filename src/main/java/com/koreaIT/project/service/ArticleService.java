@@ -43,4 +43,8 @@ public class ArticleService {
 		articleRepository.doScoreArticleModify(id, title, classId, regDate);
 	}
 
+	public void addYouTubeLink(int id, String youTubeLink) {
+		articleRepository.addYouTubeLink(id, youTubeLink);
+	}
+
 }

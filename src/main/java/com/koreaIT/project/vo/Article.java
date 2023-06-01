@@ -23,6 +23,7 @@ public class Article {
 	private String groupName;
 	private String writerName;
 	private String hwChk;
+	private String youTubeLink;
 	
 	public String getForPrintBody() {
 		return this.body.replaceAll("\n", "<br />");

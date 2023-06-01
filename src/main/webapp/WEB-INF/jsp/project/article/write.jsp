@@ -76,14 +76,12 @@
 							</td>
 						</tr>
 						<tr>
-							<c:if test="${boardId != 4}">
-								<th>이미지 등록</th>
-								<td><input type="file" name="file"/></td>
-							</c:if>
-							<c:if test="${boardId == 4}">
-								<th>첨부파일</th>
-								<td><input type="file" name="file"/></td>
-							</c:if>
+							<th>이미지 등록</th>
+							<td><input type="file" name="file"/></td>
+						</tr>
+						<tr>
+							<th>동영상 링크 복사</th>
+							<td><input class="input input-bordered input-success w-full" type="text" name="youTubeLink"/></td>
 						</tr>
 					</table>
 				</div>

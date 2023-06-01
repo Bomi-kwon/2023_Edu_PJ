@@ -46,10 +46,11 @@
 						<td colspan="5"><img src="/project/home/file/${file.id }"/></td>
 					</c:if>
 					<c:if test="${article.boardId == 4}">
-						<th>첨부파일</th>
+						<th>동영상</th>
 						<td colspan="5">
-							<video width="800px" height="600px" 
-							src="/project/home/file/${file.id }" controls loop></video>
+							<div>
+								<iframe width="1120" height="630" src="https://www.youtube.com/embed/${article.youTubeLink.substring(17) }?mute=1&autoplay=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+							</div>
 						</td>
 					</c:if>
 				</tr>
