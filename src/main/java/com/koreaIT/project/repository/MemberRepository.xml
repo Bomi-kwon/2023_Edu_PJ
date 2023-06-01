@@ -77,5 +77,14 @@
 		AND email = #{email}
 	</select>
 	
+	<select id="getMemberByClassId" resultType="Member">
+		SELECT M.*, IFNULL(G.groupName,'전체') AS groupName
+		FROM `member` AS M
+		LEFT JOIN `group` AS G
+		ON M.classId = G.id
+		WHERE M.classId = #{classId}
+		AND M.authLevel = 2
+	</select>
+	
 
 </mapper>

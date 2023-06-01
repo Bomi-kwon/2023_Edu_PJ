@@ -1,8 +1,18 @@
 package com.koreaIT.project.controller;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +36,8 @@ public class ProjectMemberController {
 	private GroupService groupService;
 	private FileService fileService;
 	private Rq rq;
+	public static String filePath = "C:\\excelTest";
+	public static String fileName = "attendance_book.xlsx";
 	
 	@Autowired
 	public ProjectMemberController(MemberService memberService, Rq rq, 
@@ -404,6 +416,77 @@ public class ProjectMemberController {
 	}
 	
 	
+	// 각 반 학생 명단 상세보기
+	
+	@RequestMapping("/project/member/getMemberByClassId")
+	public String getMemberByClassId(Model model, int classId) {
+		
+		List<Member> students = memberService.getMemberByClassId(classId);
+		if(students.isEmpty()) {
+			rq.jsReturnOnView("해당 반에는 학생이 없습니다.", true);
+		} 
+		
+		model.addAttribute("students",students);
+		model.addAttribute("classId",classId);
+		
+		return "project/member/studentlist";
+	}
+	
+	
+	// 학생 명단 출석부로 다운받기
+	
+	@RequestMapping("/project/member/excelDownload")
+	@ResponseBody
+	public String excelDownload(int classId) throws IOException {
+		
+		List<Member> students = memberService.getMemberByClassId(classId);
+		
+		if(students.isEmpty()) {
+			return Util.jsReplace("해당 반에는 학생이 없습니다.", "studentlist");
+		}
+		
+		XSSFWorkbook workbook = new XSSFWorkbook();
+		
+		XSSFSheet sheet = workbook.createSheet("attendance book");
+		
+		Map<String, Object[]> data = new TreeMap<>();
+		
+		data.put("1", new Object[]{"학생 이름", "수강하는 반", "전화번호", "부모님 번호"});
+		int i = 2;
+		for(Member student : students) {
+			data.put(String.valueOf(i), new Object[]{student.getName(), student.getGroupName(), 
+					student.getCellphoneNum(), student.getEmail()});
+			i++;
+		}
+		
+		Set<String> keyset = data.keySet();
+		int rownum = 0;
+		
+		for (String key : keyset) {
+			Row row = sheet.createRow(rownum++);
+			Object[] objArr = data.get(key);
+			int cellnum = 0;
+			for (Object obj : objArr) {
+				Cell cell = row.createCell(cellnum++);
+				if(obj instanceof String) {
+					cell.setCellValue((String)obj);
+				} else if (obj instanceof Integer){
+					cell.setCellValue((Integer)obj);
+				}
+			}
+		}
+		
+		try {
+			FileOutputStream out = new FileOutputStream(new File(filePath, fileName));
+			workbook.write(out);
+			out.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return Util.jsHistoryBack("출석부를 다운 받았습니다. C 드라이브의 excelTest 폴더를 확인해보세요.");
+	}
 	
 	
 	

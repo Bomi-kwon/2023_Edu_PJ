@@ -31,6 +31,8 @@ public interface MemberRepository {
 
 	Member getMemberByNameAndEmail(String name, String email);
 
+	List<Member> getMemberByClassId(int classId);
+
 
 	
 

@@ -27,6 +27,8 @@
 		}, function(data) {
 			console.log(data);
 			for(var i = 0; i < data.data1.length; i++) {
+				
+				let id = data.data1[i].id;
 				let grade = data.data1[i].grade;
 				let groupName = data.data1[i].groupName;
 				let groupDay = data.data1[i].groupDay;
@@ -37,7 +39,7 @@
 				$('#grouplisttable').append(`<tbody>
 					      <tr>
 				        <td>`+grade+`</td>
-				      	<td>`+groupName+`</td>
+				      	<td><div class="font-bold"><a href="getMemberByClassId?classId=`+id+`">`+groupName+`</a></div></td>
 				        <td>`+groupDay+`</td>
 				        <td>`+teacherName+` 선생님</td>
 				        <td>`+textbook+`</td>
@@ -49,37 +51,6 @@
 		}, 'json');
 	}
 	
-	$(document).ready(function () {
-
-		function itoStr($num)
-		{
-			$num < 10 ? $num = '0'+$num : $num;
-			return $num.toString();
-		}
-		
-		var btn = $('#btnExport');
-		var tbl = 'grouplisttable';
-
-        btn.on('click', function () {
-			var dt = new Date();
-			var year =	itoStr( dt.getFullYear() );
-			var month = itoStr( dt.getMonth() + 1 );
-			var day =	itoStr( dt.getDate() );
-			var hour =	itoStr( dt.getHours() );
-			var mins =	itoStr( dt.getMinutes() );
-
-			var postfix = year + month + day + "_" + hour + mins;
-			var fileName = "MyTable_"+ postfix + ".xlsx";
-
-            var uri = $("#"+tbl).excelexportjs({
-                containerid: tbl
-                , datatype: 'table'
-                , returnUri: true
-            });
-
-            $(this).attr('download', fileName).attr('href', uri).attr('target', '_blank');
-        });
-    });
 </script>
 
 
@@ -112,7 +83,7 @@
 	    <tbody>
 	      <tr>
 	        <td>${group.grade }</td>
-	      	<td>${group.groupName }</td>
+	      	<td><div class="font-bold"><a href="getMemberByClassId?classId=${group.id }">${group.groupName }</a></div></td>
 	        <td>${group.groupDay }</td>
 	        <td>${group.teacherName } 선생님</td>
 	        <td>${group.textbook }</td>
@@ -121,11 +92,6 @@
 	    </tbody>
 		</c:forEach>
 	  </table>
-	  
-	  <a id="btnExport" href="#" download="">
-			<button type='button'>Export</button>
-		</a>
-	  
 	  </div>
 	</div>
 </section>
