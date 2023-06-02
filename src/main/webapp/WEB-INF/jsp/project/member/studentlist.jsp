@@ -29,7 +29,7 @@
 	        <td>${student.name }</td>
 	        <td>${student.groupName }</td>
 	        <td>${student.cellphoneNum }</td>
-	        <td>${student.email }</td>
+	        <td>${student.parentPhoneNum }</td>
 	      </tr>
 	    </tbody>
 		</c:forEach>

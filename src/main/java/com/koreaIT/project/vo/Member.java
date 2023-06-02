@@ -23,5 +23,7 @@ public class Member {
 	private String classId;
 	
 	private String groupName;
+	private String parentPhoneNum;
+	
 	
 }

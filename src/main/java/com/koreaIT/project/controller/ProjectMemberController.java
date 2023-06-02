@@ -36,8 +36,7 @@ public class ProjectMemberController {
 	private GroupService groupService;
 	private FileService fileService;
 	private Rq rq;
-	public static String filePath = "C:\\excelTest";
-	public static String fileName = "attendance_book.xlsx";
+	
 	
 	@Autowired
 	public ProjectMemberController(MemberService memberService, Rq rq, 
@@ -435,6 +434,9 @@ public class ProjectMemberController {
 	
 	// 학생 명단 출석부로 다운받기
 	
+	public static String filePath = "C:\\Users\\권보미\\Downloads";
+	public static String fileName = "";
+	
 	@RequestMapping("/project/member/excelDownload")
 	@ResponseBody
 	public String excelDownload(int classId) throws IOException {
@@ -444,6 +446,10 @@ public class ProjectMemberController {
 		if(students.isEmpty()) {
 			return Util.jsReplace("해당 반에는 학생이 없습니다.", "studentlist");
 		}
+		
+		Group group = groupService.getGroupById(classId);
+		
+		fileName = group.getGroupName() + "_attendance_book.xlsx";
 		
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		

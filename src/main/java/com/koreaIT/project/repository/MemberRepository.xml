@@ -78,12 +78,18 @@
 	</select>
 	
 	<select id="getMemberByClassId" resultType="Member">
-		SELECT M.*, IFNULL(G.groupName,'전체') AS groupName
-		FROM `member` AS M
+		WITH SP AS(
+			SELECT S.*, P.cellphoneNum AS parentPhoneNum
+			FROM `member` AS S
+			LEFT JOIN `member` AS P
+			ON S.id = P.babyId
+		)
+		SELECT SP.*, IFNULL(G.groupName,'전체') AS groupName
+		FROM SP
 		LEFT JOIN `group` AS G
-		ON M.classId = G.id
-		WHERE M.classId = #{classId}
-		AND M.authLevel = 2
+		ON SP.classId = G.id
+		WHERE SP.classId = #{classId}
+		AND SP.authLevel = 2
 	</select>
 	
 
