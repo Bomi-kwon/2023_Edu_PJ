@@ -2,6 +2,7 @@ package com.koreaIT.project.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.koreaIT.project.repository.ScoreRepository;
@@ -11,6 +12,7 @@ import com.koreaIT.project.vo.Score;
 public class ScoreService {
 	ScoreRepository scoreRepository;
 
+	@Autowired
 	public ScoreService(ScoreRepository scoreRepository) {
 		this.scoreRepository = scoreRepository;
 	}

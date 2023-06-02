@@ -9,10 +9,14 @@
 
 <section class="mt-8 mx-auto text-xl">
 	<div class="container mx-auto px-3">
-		<div>
-			<span>동영상 보여주기 예시</span>
-			<iframe width="1120" height="630" src="https://www.youtube.com/embed/-cKuNivBMzE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-		</div>
+		<form action="">
+			<div>
+				<span>메세지 받는 사람 : </span>
+				<input type="text" name="phoneNumber"/>
+				<span>메세지 보낼 내용 : </span>
+				<textarea class="textarea textarea-success w-full" name="message" placeholder="메시지를 입력해주세요."></textarea>
+			</div>
+		</form>
 	</div>
 </section>
 

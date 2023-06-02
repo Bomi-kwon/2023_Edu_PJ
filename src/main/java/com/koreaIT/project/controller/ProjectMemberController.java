@@ -1,13 +1,13 @@
 package com.koreaIT.project.controller;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -434,18 +434,17 @@ public class ProjectMemberController {
 	
 	// 학생 명단 출석부로 다운받기
 	
-	public static String filePath = "C:\\Users\\권보미\\Downloads";
 	public static String fileName = "";
 	
 	@RequestMapping("/project/member/excelDownload")
 	@ResponseBody
-	public String excelDownload(int classId) throws IOException {
+	public void excelDownload(HttpServletResponse response, int classId) throws IOException {
 		
 		List<Member> students = memberService.getMemberByClassId(classId);
 		
-		if(students.isEmpty()) {
-			return Util.jsReplace("해당 반에는 학생이 없습니다.", "studentlist");
-		}
+//		if(students.isEmpty()) {
+//			return Util.jsReplace("해당 반에는 학생이 없습니다.", "studentlist");
+//		}
 		
 		Group group = groupService.getGroupById(classId);
 		
@@ -482,16 +481,14 @@ public class ProjectMemberController {
 			}
 		}
 		
-		try {
-			FileOutputStream out = new FileOutputStream(new File(filePath, fileName));
-			workbook.write(out);
-			out.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+// 다운로드 받을때 브라우저 하단에 다운로드 헤더 나오게 하기		
+// 그냥 fileName 쓰면 브라우저가 유니코드로 인식해서 꼭 encoding 해줘야함		
+		response.setContentType("ms-vnd/excel");
+		response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
 		
+		workbook.write(response.getOutputStream());
+		workbook.close();
 		
-		return Util.jsHistoryBack("출석부를 다운 받았습니다. C 드라이브의 excelTest 폴더를 확인해보세요.");
 	}
 	
 	
