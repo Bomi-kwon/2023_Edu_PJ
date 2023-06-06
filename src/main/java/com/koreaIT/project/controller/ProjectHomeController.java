@@ -44,9 +44,9 @@ public class ProjectHomeController {
 		return "project/home/map";
 	}
 	
-	@RequestMapping("/project/home/message")
-	public String message() {
-		return "project/home/message";
+	@RequestMapping("/project/home/select")
+	public String select() {
+		return "project/home/select";
 	}
 	
 	

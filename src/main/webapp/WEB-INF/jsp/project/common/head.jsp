@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -73,7 +73,7 @@
 	      <li><a href="#">커뮤니티</a>
 	        <ul>
 	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/list?boardId=1"><span>알림장</span></a></li>
-	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/home/message"><span>메세지 발송</span></a></li>
+	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/home/select"><span>메세지 발송</span></a></li>
 	        </ul>
 	      </li>
 	      <li><a href="#">인터넷강의</a>
@@ -81,7 +81,6 @@
 	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/member/groupregistration"><span>수강신청</span></a></li>
 	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>실시간 강의</span></a></li>
 	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/list?boardId=4"><span>수학인강</span></a></li>
-	        	<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/message/test"><span>테스트용 페이지</span></a></li>
 	        </ul>
 	      </li>
 	      <li><a href="#">자율학습</a>
@@ -118,7 +117,7 @@
       <li><a href="#">커뮤니티</a>
         <ul>
           <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/list?boardId=1"><span>알림장</span></a></li>
-          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>메세지 발송</span></a></li>
+          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/home/select"><span>메세지 발송</span></a></li>
         </ul>
       </li>
       <li><a href="#">인터넷강의</a>
