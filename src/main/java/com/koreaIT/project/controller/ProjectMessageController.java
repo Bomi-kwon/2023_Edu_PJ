@@ -1,7 +1,11 @@
 package com.koreaIT.project.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -25,12 +29,16 @@ public class ProjectMessageController {
 	// json 요청이면 requestbody 어노테이션을 써주는게 좋음
 	// 왜냐면 요청의 바디내용을 통째로 자바객체로 변환시키기 때문
 	// 근데 get방식 요청은 requestbody 어노테이션으로 받을수 없고 @pathvariable, @requestparam 이런거 써야됨
-	@RequestMapping("/send-message")
-	@ResponseBody
-    public String sendMessage(SendMessageRequest request) throws Exception {
-		messageService.sendMessage(request.getPhoneNumber(), request.getMessage());
-		return Util.jsReplace("메세지를 성공적으로 발송했습니다.", "/");
+	@RequestMapping("/project/message/test")
+    public String test() {
+		return "project/message/test";
     }
+	
+	@PostMapping(value = "/project/message/sendmessage", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public String sendMessage(@ModelAttribute("sendMessageRequest") SendMessageRequest request) throws Exception {
+		messageService.sendMessage(request.getPhoneNumber(), request.getMessage());
+		return "project/message/result";
+	}
 	
 	
 }

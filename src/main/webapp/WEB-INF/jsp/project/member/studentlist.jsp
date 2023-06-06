@@ -36,7 +36,7 @@
 	  </table>
 	  </div>
 	  
-	  <divb class="flex justify-end">
+	  <div class="flex justify-end">
 	  	<a class="btn " href="excelDownload?classId=${classId }">출석부 파일 다운로드</a>
 	  </div>
 	  
