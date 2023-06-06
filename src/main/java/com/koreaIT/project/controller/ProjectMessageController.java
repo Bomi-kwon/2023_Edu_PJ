@@ -1,17 +1,14 @@
 package com.koreaIT.project.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.koreaIT.project.service.MessageService;
-import com.koreaIT.project.util.Util;
-import com.koreaIT.project.vo.SendMessageRequest;
+import com.koreaIT.project.vo.MessageDTO;
+import com.koreaIT.project.vo.SmsResponseDTO;
 
 @Controller
 public class ProjectMessageController {
@@ -34,9 +31,16 @@ public class ProjectMessageController {
 		return "project/message/test";
     }
 	
-	@PostMapping(value = "/project/message/sendmessage", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public String sendMessage(@ModelAttribute("sendMessageRequest") SendMessageRequest request) throws Exception {
-		messageService.sendMessage(request.getPhoneNumber(), request.getMessage());
+	@PostMapping("/project/message/sendmessage")
+    public String sendMessage(MessageDTO messageDto, Model model) throws Exception {
+		
+		// jsp에서 적은 to와 content를 담은 MessageDTO를
+		// 서비스로 보내서 SmsRequestDTO 요청 JSON으로 가공해서 보내고
+		// 받아온 결과를 SmsResponseDTO response에 넣겠다는 소리임!! 그래서 vo 클래스 3개 필요
+		SmsResponseDTO response = messageService.sendMessage(messageDto);
+		
+		model.addAttribute("response", response);
+		
 		return "project/message/result";
 	}
 	

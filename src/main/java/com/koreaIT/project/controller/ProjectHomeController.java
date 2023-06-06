@@ -64,10 +64,4 @@ public class ProjectHomeController {
 	}
 	
 	
-	@RequestMapping("/project/home/test")
-	public String test() {
-		return "project/home/test";
-	}
-	
-	
 }

@@ -1,50 +1,109 @@
 package com.koreaIT.project.service;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpHeaders;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.HttpClientBuilder;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+
+import org.apache.commons.codec.binary.Base64;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.koreaIT.project.vo.MessageDTO;
+import com.koreaIT.project.vo.SmsRequestDTO;
+import com.koreaIT.project.vo.SmsResponseDTO;
 
 @Service
 public class MessageService {
 
-	private static final String NAVER_SENS_API_URL = "https://sens.apigw.ntruss.com/sms/v2/services/{serviceId}/messages";
-    private static final String NAVER_SENS_API_ACCESS_KEY = "OxAIgEdXyNQXm36Tas3j";
-    private static final String NAVER_SENS_API_SECRET_KEY = "mncOGNerievlx9JfvdsJlpDK0YOVjPsD07F3vmUR";
-    private static final String NAVER_SENS_API_SERVICE_ID = "ncp:sms:kr:309259979584:spongeedu";
+	
+	// API키는 함수단에서 바로 사용하기보다는 application에 한번에 넣어놓고 사용하는것이 나음.
+	@Value("${naver-cloud-sms.accessKey}")
+	private String accessKey;
+	@Value("${naver-cloud-sms.secretKey}")
+	private String secretKey;
+	@Value("${naver-cloud-sms.serviceId}")
+	private String serviceId;
+	@Value("${naver-cloud-sms.senderPhone}")
+	private String phone;
+	
 
-    public void sendMessage(String phoneNumber, String message) throws Exception {
-        String url = NAVER_SENS_API_URL.replace("{serviceId}", NAVER_SENS_API_SERVICE_ID);
+	// 네이버 공식문서에 나와있는 메시지 형식 만들기
+    public String makeSignature(Long time) throws UnsupportedEncodingException, 
+    NoSuchAlgorithmException, InvalidKeyException {
+    	String space = " ";
+    	String newLine = "\n";
+    	String method = "POST";
+    	String url = "/sms/v2/services/" + this.serviceId + "/messages";
+    	String timestamp = time.toString();			// current timestamp (epoch)
+    	String accessKey = this.accessKey;			// access key id (from portal or Sub Account)
+    	String secretKey = this.secretKey;
 
-        HttpClient client = HttpClientBuilder.create().build();
-        HttpPost httpPost = new HttpPost(url);
+    	String message = new StringBuilder()
+    		.append(method)
+    		.append(space)
+    		.append(url)
+    		.append(newLine)
+    		.append(timestamp)
+    		.append(newLine)
+    		.append(accessKey)
+    		.toString();
 
-        httpPost.setHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType());
-        httpPost.setHeader("X-NCP-auth-key", NAVER_SENS_API_ACCESS_KEY);
-        httpPost.setHeader("X-NCP-service-secret", NAVER_SENS_API_SECRET_KEY);
+    	SecretKeySpec signingKey = new SecretKeySpec(secretKey.getBytes("UTF-8"), "HmacSHA256");
+    	Mac mac = Mac.getInstance("HmacSHA256");
+    	mac.init(signingKey);
 
-        String requestBody = "{\"type\":\"SMS\","
-        		+ "\"contentType\":\"COMM\","
-        		+ "\"countryCode\":\"82\","
-        		+ "\"from\":\"01000000000\","
-        		+ "\"content\":\"" + message + "\","
-        				+ "\"messages\":[{\"to\":\"" + phoneNumber + "\"}]}";
-        HttpEntity entity = new StringEntity(requestBody, ContentType.APPLICATION_JSON);
-        httpPost.setEntity(entity);
+    	byte[] rawHmac = mac.doFinal(message.getBytes("UTF-8"));
+    	String encodeBase64String = Base64.encodeBase64String(rawHmac);
 
-        HttpResponse response = client.execute(httpPost);
-        int statusCode = response.getStatusLine().getStatusCode();
-
-        if (statusCode == 202) {
-            System.out.println("메시지가 성공적으로 전송되었습니다.");
-        } else {
-            System.out.println("메시지 전송에 실패했습니다. 상태 코드: " + statusCode);
-        }
+      return encodeBase64String;
+    }
+    
+    
+    public SmsResponseDTO sendMessage(MessageDTO messageDto) throws Exception {
+    	
+    	Long time = System.currentTimeMillis();
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.set("x-ncp-apigw-timestamp", time.toString());
+		headers.set("x-ncp-iam-access-key", accessKey);
+		headers.set("x-ncp-apigw-signature-v2", makeSignature(time));
+		
+		List<MessageDTO> messages = new ArrayList<>();
+		messages.add(messageDto);
+		
+		SmsRequestDTO request = SmsRequestDTO.builder()
+				.type("SMS")
+				.contentType("COMM")
+				.countryCode("82")
+				.from(phone)
+				.content(messageDto.getContent())
+				.messages(messages)
+				.build();
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		String body = objectMapper.writeValueAsString(request);
+		HttpEntity<String> httpBody = new HttpEntity<>(body, headers);
+		
+		RestTemplate restTemplate = new RestTemplate();
+	    restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+	    SmsResponseDTO response = restTemplate.postForObject(new URI("https://sens.apigw.ntruss.com/sms/v2/services/"
+	    + serviceId +"/messages"), httpBody, SmsResponseDTO.class);
+ 
+    	
+    	return response;
     }
 
 

@@ -32,5 +32,10 @@ custom:
   siteMainUri: http://localhost:8081
   emailFrom: no-reply@localhost
   emailFromName: SPONGEedu
+naver-cloud-sms:
+  accessKey: OxAIgEdXyNQXm36Tas3j
+  secretKey: mncOGNerievlx9JfvdsJlpDK0YOVjPsD07F3vmUR
+  serviceId: ncp:sms:kr:309259979584:spongeedu
+  senderPhone: 01097480218
 file:
   dir: C:/bbomi/upload
