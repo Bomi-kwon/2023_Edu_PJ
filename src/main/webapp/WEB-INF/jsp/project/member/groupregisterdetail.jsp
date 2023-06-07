@@ -5,6 +5,45 @@
 
 <%@ include file="../common/head.jsp" %>
 
+<!-- 결제창 연동 라이브러리 추가 -->
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+
+<script>
+	var IMP = window.IMP; 
+	IMP.init("imp71714386"); 
+  
+    var today = new Date();   
+    var hours = today.getHours(); // 시
+    var minutes = today.getMinutes();  // 분
+    var seconds = today.getSeconds();  // 초
+    var milliseconds = today.getMilliseconds();
+    var makeMerchantUid = hours +  minutes + seconds + milliseconds;
+	
+	function requestPay() {
+	    IMP.request_pay({
+	      pg: "kcp.INIBillTst",
+	      pay_method: "card",
+	      merchant_uid: "IMP" + makeMerchantUid,   // 주문번호
+	      name: "인터넷강의 수강신청",
+	      amount: 2000,                         // 숫자 타입
+	      buyer_email: "rnjsqhal51@naver.com",
+	      buyer_name: "권보미",
+	      buyer_tel: "010-9748-0218",
+	      buyer_addr: "대전광역시 서구 둔산동",
+	      buyer_postcode: "35205"
+	    }, function (rsp) { // callback
+	      //rsp.imp_uid 값으로 결제 단건조회 API를 호출하여 결제결과를 판단합니다.
+	    	  console.log(rsp);
+	      if(rsp.success) {
+	    	  alert('결제가 완료되었습니다.');
+	      } else {
+	    	  alert('결제에 실패하였습니다. 에러 내용 : ' + rsp.error_msg);
+	      }
+	    });
+	  }
+	
+</script>
+
 <section class="mt-8 mx-auto text-xl">
 	<div class="container mx-auto px-3">
 		<div class="table-box-type-1 mb-5">
@@ -94,7 +133,8 @@
 		
 		
 		<div class="flex justify-end">
-			<a href="list" class="btn btn-success mr-2" >목록</a>
+			<a class="btn btn-success mr-2" onclick="requestPay()">결제하기</a>
+			<a href="list" class="btn btn-success" >목록</a>
 		</div>
 	</div>
 </section>
