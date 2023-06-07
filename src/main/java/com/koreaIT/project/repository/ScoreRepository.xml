@@ -29,5 +29,11 @@
 		SET score = ${score}
 		WHERE id = #{id}
 	</update>
+	
+	<select id="getScoreByRelId" resultType="Score">
+		SELECT *
+		FROM score
+		WHERE relId = #{relId}
+	</select>
 
 </mapper>

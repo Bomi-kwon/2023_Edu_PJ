@@ -47,4 +47,14 @@ public class ArticleService {
 		articleRepository.addYouTubeLink(id, youTubeLink);
 	}
 
+	public void deleteArticles(List<Integer> articleIds) {
+		for (int articleId : articleIds) {
+			Article article = getArticleById(articleId);
+			
+			if (article != null) {
+				doDelete(articleId);
+			}
+		}
+	}
+
 }

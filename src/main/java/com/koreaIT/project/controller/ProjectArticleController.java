@@ -1,5 +1,6 @@
 package com.koreaIT.project.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -157,6 +158,29 @@ public class ProjectArticleController {
 		articleService.doDelete(id);
 		
 		return Util.jsReplace(Util.f("%d번 게시물을 삭제했습니다.", id),Util.f("list?boardId=%d", boardId));
+	}
+	
+	
+	// 게시물들 여러개 체크해서 삭제
+	@RequestMapping("/project/article/doDeleteArticles")
+	@ResponseBody
+	public String doDeleteArticles(@RequestParam(defaultValue = "") String ids, int boardId) {
+		// 체크된 박스들 번호를 String으로 받아오기
+		
+		if (Util.empty(ids)) {
+			return Util.jsHistoryBack("선택한 게시물이 없습니다");
+		}
+		
+		List<Integer> articleIds = new ArrayList<>();
+		
+		// 콤마 기준으로 다시 구분해서 하나씩 리스트에 담기 (int로 형변환해서)
+		for (String idStr : ids.split(",")) {
+			articleIds.add(Integer.parseInt(idStr));
+		}
+		
+		articleService.deleteArticles(articleIds);
+		
+		return Util.jsReplace("선택한 게시물이 삭제되었습니다", Util.f("list?boardId=%d", boardId) );
 	}
 	
 	
@@ -322,6 +346,32 @@ public class ProjectArticleController {
 		scoreService.doScoreDelete(id);
 		
 		return Util.jsReplace(Util.f("%d번 게시물을 삭제했습니다.", id), "scorelist");
+	}
+	
+	
+	// 성적 점수 + 게시물 삭제 (체크박스로 여러개 선택)
+	
+	@RequestMapping("/project/article/doDeleteScoresArticles")
+	@ResponseBody
+	public String doDeleteScoresArticles(@RequestParam(defaultValue = "") String ids) {
+		
+		// 체크된 박스들 번호를 String으로 받아오기
+		
+		if (Util.empty(ids)) {
+			return Util.jsHistoryBack("선택한 게시물이 없습니다");
+		}
+		
+		List<Integer> articleIds = new ArrayList<>();
+		
+		// 콤마 기준으로 다시 구분해서 하나씩 리스트에 담기 (int로 형변환해서)
+		for (String idStr : ids.split(",")) {
+			articleIds.add(Integer.parseInt(idStr));
+		}
+		
+		articleService.deleteArticles(articleIds);
+		scoreService.deleteScores(articleIds);
+		
+		return Util.jsReplace("선택한 성적 게시물들이 삭제되었습니다", "scorelist");
 	}
 	
 	// 성적 '게시물' 수정

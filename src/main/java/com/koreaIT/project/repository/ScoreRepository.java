@@ -16,5 +16,7 @@ public interface ScoreRepository {
 	void doScoreDelete(int relId);
 
 	void updateScore(int id, int score);
+
+	Score getScoreByRelId(int relId);
 	
 }

@@ -33,4 +33,18 @@ public class ScoreService {
 		scoreRepository.updateScore(id, score);
 	}
 
+	public void deleteScores(List<Integer> articleIds) {
+		for (int articleId : articleIds) {
+			Score score = getScoreByRelId(articleId);
+			
+			if (score != null) {
+				doScoreDelete(articleId);
+			}
+		}
+	}
+
+	private Score getScoreByRelId(int relId) {
+		return scoreRepository.getScoreByRelId(relId);
+	}
+
 }
