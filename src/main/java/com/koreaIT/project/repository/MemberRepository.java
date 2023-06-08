@@ -33,6 +33,8 @@ public interface MemberRepository {
 
 	List<Member> getMemberByClassId(int classId);
 
+	List<Member> getStudentsByNameKeyWord(String keyWord);
+
 
 	
 

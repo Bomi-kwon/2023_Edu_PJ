@@ -92,5 +92,12 @@
 		AND SP.authLevel = 2
 	</select>
 	
+	<select id="getStudentsByNameKeyWord" resultType="Member">
+		SELECT *
+		FROM `member`
+		WHERE authLevel = 2
+		AND `name` LIKE CONCAT('%',#{keyWord},'%')
+	</select>
+	
 
 </mapper>

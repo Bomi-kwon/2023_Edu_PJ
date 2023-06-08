@@ -96,6 +96,10 @@ public class MemberService {
 		return memberRepository.getMemberByClassId(classId);
 	}
 
+	public List<Member> getStudentsByNameKeyWord(String keyWord) {
+		return memberRepository.getStudentsByNameKeyWord(keyWord);
+	}
+
 	
 	
 

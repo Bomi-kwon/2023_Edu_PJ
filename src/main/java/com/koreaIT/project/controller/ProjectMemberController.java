@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.koreaIT.project.service.CouponService;
+import com.koreaIT.project.service.CouponService;
 import com.koreaIT.project.service.FileService;
 import com.koreaIT.project.service.GroupService;
 import com.koreaIT.project.service.MemberService;
@@ -35,15 +37,17 @@ public class ProjectMemberController {
 	private MemberService memberService;
 	private GroupService groupService;
 	private FileService fileService;
+	private CouponService couponService;
 	private Rq rq;
 	
 	
 	@Autowired
 	public ProjectMemberController(MemberService memberService, Rq rq, 
-			GroupService groupService, FileService fileService) {
+			GroupService groupService, FileService fileService, CouponService couponService) {
 		this.memberService = memberService;
 		this.groupService = groupService;
 		this.fileService = fileService;
+		this.couponService = couponService;
 		this.rq = rq;
 	}
 	
@@ -489,6 +493,53 @@ public class ProjectMemberController {
 		workbook.write(response.getOutputStream());
 		workbook.close();
 		
+	}
+	
+	
+	// 선생님이 학생한테 쿠폰줄 때
+	
+	@RequestMapping("/project/member/givecoupon")
+	public String givecoupon() {
+		
+		if(rq.getLoginedMember().getAuthLevel() != 1) {
+			return rq.jsReturnOnView("선생님 회원만 이용할 수 있는 탭입니다.", true);
+		}
+		
+		return "project/member/givecoupon";
+	}
+	
+	
+	// 이름 검색해서 학생 명단 가져오기
+	
+	@RequestMapping("/project/member/getStudentsByNameKeyWord")
+	@ResponseBody
+	public ResultData getStudentsByNameKeyWord(String keyWord) {
+		
+		List<Member> students = memberService.getStudentsByNameKeyWord(keyWord);
+		
+		if(students.isEmpty()) {
+			return ResultData.from("F-1", "해당하는 학생 명단이 없습니다.");
+		}
+		
+		return ResultData.from("S-1", "해당하는 학생 명단을 가져왔습니다", "students", students);
+	}
+	
+	
+	// 학생한테 최종적으로 쿠폰 발행
+	
+	@RequestMapping("/project/member/doGiveCoupon")
+	@ResponseBody
+	public String doGiveCoupon(String deadLine, int studentId) {
+		
+		Member member = memberService.getMemberById(studentId);
+		
+		if (member == null) {
+			return Util.jsReplace("존재하지 않는 학생입니다.", "givecoupon");
+		}
+		
+		couponService.doGiveCoupon(deadLine, studentId);
+		
+		return Util.jsReplace(Util.f("%s 학생에게 쿠폰이 발행되었습니다.", member.getName()), "/");
 	}
 	
 	
