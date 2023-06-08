@@ -61,7 +61,7 @@
 			<option value="3">학부모</option>
 		</select>
 	</div>
-	
+	<div class="table-box-type-1">
 	  <table class="table w-full" id="memberlisttable">
 	    <thead>
 	      <tr>
@@ -87,6 +87,7 @@
 	    </tbody>
 		</c:forEach>
 	  </table>
+	  </div>
 	</div>
 </section>
 	
