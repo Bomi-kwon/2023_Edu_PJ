@@ -9,5 +9,11 @@
 		deadLine = #{deadLine},
 		studentId = #{studentId};
 	</insert>
+	
+	<select id="getCouponByStudentId" resultType="Coupon">
+		SELECT *
+		FROM coupon
+		WHERE studentId = #{studentId};
+	</select>
 
 </mapper>

@@ -35,6 +35,8 @@ public interface MemberRepository {
 
 	List<Member> getStudentsByNameKeyWord(String keyWord);
 
+	void doRegister(int memberId, int classId);
+
 
 	
 

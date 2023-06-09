@@ -50,6 +50,7 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer{
 		ir.addPathPatterns("/project/member/groupregistration");
 		ir.addPathPatterns("/project/member/getGroupsByTeacherID");
 		ir.addPathPatterns("/project/member/groupregisterdetail");
+		ir.addPathPatterns("/project/member/doRegister");
 		ir.addPathPatterns("/project/member/getStudentsByClass");
 		ir.addPathPatterns("/project/member/givecoupon");
 		ir.addPathPatterns("/project/article/write");

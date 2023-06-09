@@ -6,11 +6,14 @@
 <%@ include file="../common/head.jsp" %>
 
 <script>
+	
+	let deadLineVal;
+	
 	function getStudentsByNameKeyWord() {
 		
 		$('#studentlisthavingkeyword').html(``);
 		
-		let deadLineVal = $('#deadLine').val();
+		deadLineVal = $('#deadLine').val();
 		let keyWordVal = $('#keyWord').val();
 		
 		$.get('getStudentsByNameKeyWord', {
@@ -31,7 +34,7 @@
 							<span>`+name+`</span>
 							<span>(`+loginID+`), </span>
 							<span>`+cellphoneNum+`</span>
-							<button class="btn btn-xs" onclick="selectstudent(`+id+`, `+deadLineVal+`);">선택</button>
+							<button class="btn btn-xs" onclick="selectstudent(`+id+`);">선택</button>
 						</div>
 						`);
 			}
@@ -39,7 +42,7 @@
 		
 	}
 	
-	function selectstudent(id, deadLineVal) {
+	function selectstudent(id) {
 		
 		console.log(deadLineVal);
 		
@@ -48,6 +51,7 @@
 				<input type="hidden" name="studentId" value="`+id+`"/>
 				`);
 		
+		$('#doGiveCoupon').submit();
 		
 	}
 </script>

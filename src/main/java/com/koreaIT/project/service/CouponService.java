@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.koreaIT.project.repository.CouponRepository;
+import com.koreaIT.project.vo.Coupon;
 
 @Service
 public class CouponService {
@@ -16,6 +17,10 @@ public class CouponService {
 
 	public void doGiveCoupon(String deadLine, int studentId) {
 		couponRepository.doGiveCoupon(deadLine, studentId);
+	}
+
+	public Coupon getCouponByStudentId(int studentId) {
+		return couponRepository.getCouponByStudentId(studentId);
 	}
 
 

@@ -18,6 +18,7 @@
     var seconds = today.getSeconds();  // 초
     var milliseconds = today.getMilliseconds();
     var makeMerchantUid = hours +  minutes + seconds + milliseconds;
+    var paymentComplete;
 	
 	function requestPay() {
 	    IMP.request_pay({
@@ -25,7 +26,7 @@
 	      pay_method: "card",
 	      merchant_uid: "IMP" + makeMerchantUid,   // 주문번호
 	      name: "인터넷강의 수강신청",
-	      amount: 2000,                         // 숫자 타입
+	      amount: 500,                         // 숫자 타입
 	      buyer_email: "rnjsqhal51@naver.com",
 	      buyer_name: "권보미",
 	      buyer_tel: "010-9748-0218",
@@ -36,11 +37,27 @@
 	    	  console.log(rsp);
 	      if(rsp.success) {
 	    	  alert('결제가 완료되었습니다.');
+	    	  paymentComplete = true;
 	      } else {
 	    	  alert('결제에 실패하였습니다. 에러 내용 : ' + rsp.error_msg);
+	    	  paymentComplete = false;
 	      }
+	      
+	      $.get('doRegisterAfterPayment', {
+				classId : ${group.id},
+				paymentComplete : paymentComplete
+			}, function(data) {
+				alert(data);
+				location.replace('/');
+			}, 'text');
+	      
 	    });
 	  }
+	
+		
+	
+		
+	
 	
 </script>
 
@@ -79,42 +96,48 @@
 			</table>
 		</div>
 		
-		<div class="table-box-type-1 mb-5">
-			<span>쿠폰내역</span>
-			<table class="mx-auto table w-full">
-				 <thead>
-				      <tr>
-				      	<th>NO</th>
-				        <th>사용가능 보유쿠폰</th>
-				        <th>할인액</th>
-				        <th>발급일</th>
-				        <th>사용기한</th>
-				        <th>선택</th>
-				      </tr>
-			    </thead>
-			    
-			    <tbody>
-				      <tr>
-				      	<td>1</td>
-				        <td>학원지급쿠폰</td>
-				        <td>200,000원</td>
-				        <td>2023-05-28</td>
-				        <td>30일</td>
-				        <td><label><input type="checkbox" class="checkbox" /></label></td>
-			     	 </tr>
-		    	</tbody>
-			</table>
-		</div>
+		<c:if test="${coupon != null }">
+			<div class="table-box-type-1 mb-5">
+				<span>쿠폰내역</span>
+				<table class="mx-auto table w-full">
+					 <thead>
+					      <tr>
+					      	<th>NO</th>
+					        <th>사용가능 보유쿠폰</th>
+					        <th>할인액</th>
+					        <th>발급일</th>
+					        <th>마감일</th>
+					        <th>선택</th>
+					      </tr>
+				    </thead>
+				    
+				    <tbody>
+					      <tr>
+					      	<td>${coupon.id }</td>
+					        <td>학원지급쿠폰</td>
+					        <td>200,000원</td>
+					        <td>${coupon.regDate.substring(0,10) }</td>
+					        <td>${coupon.deadLine.substring(0,10) }</td>
+					        <td><label><input type="checkbox" class="checkbox couponChk" /></label></td>
+				     	 </tr>
+			    	</tbody>
+				</table>
+			</div>
+		</c:if>
 		
 		<div class="table-box-type-1 mb-5">
 			<span>결제금액</span>
-			<table class="mx-auto table w-full">
+			<table style="table-layout:fixed" class="mx-auto table w-full">
+				 <colgroup>
+				 	<col width="100"/>
+				 	<col width="100"/>
+				 	<col width="100"/>
+				 </colgroup>
+				
 				 <thead>
 				      <tr>
 				      	<th>수강료</th>
 				        <th>쿠폰</th>
-				        <th>교재비</th>
-				        <th>배송비</th>
 				        <th>총 결제금액</th>
 				      </tr>
 			    </thead>
@@ -122,24 +145,41 @@
 			    <tbody>
 				      <tr>
 				      	<td>200,000원</td>
-				        <td>0원</td>
-				        <td>0원</td>
-				        <td>0원</td>
-				        <td>200,000원</td>
+				        <td class="couponprice">0원</td>
+				        <td class="totalprice">200,000원</td>
 			     	 </tr>
 		    	</tbody>
+		    	
+		    	
+		    	
 			</table>
 		</div>
 		
 		
 		<div class="flex justify-end">
-			<a class="btn btn-success mr-2" onclick="requestPay()">결제하기</a>
+			<a class="btn btn-success mr-2 payBtn" onclick="requestPay()">결제하기</a>
+			<a style="display:none;" class="btn btn-success mr-2 registerBtn" href="doRegister?classId=${group.id }">수강신청하기</a>
 			<a href="list" class="btn btn-success" >목록</a>
 		</div>
 	</div>
 </section>
 	
 	
+<script>
+	$('.couponChk').change(function() {
+		$('.payBtn').toggle();
+		$('.registerBtn').toggle();
+		
+		if($('.couponChk').is(':checked')) {
+			$('.couponprice').html('200,000원');
+			$('.totalprice').html('0원');
+		} else {
+			$('.couponprice').html('0원');
+			$('.totalprice').html('200,000원');
+		}
+		
+	})
+</script>
 	
 	
 <%@ include file="../common/foot.jsp" %>

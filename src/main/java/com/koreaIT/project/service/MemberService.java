@@ -100,6 +100,10 @@ public class MemberService {
 		return memberRepository.getStudentsByNameKeyWord(keyWord);
 	}
 
+	public void doRegister(int memberId, int classId) {
+		memberRepository.doRegister(memberId, classId);
+	}
+
 	
 	
 

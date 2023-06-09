@@ -26,6 +26,7 @@ import com.koreaIT.project.service.FileService;
 import com.koreaIT.project.service.GroupService;
 import com.koreaIT.project.service.MemberService;
 import com.koreaIT.project.util.Util;
+import com.koreaIT.project.vo.Coupon;
 import com.koreaIT.project.vo.FileVO;
 import com.koreaIT.project.vo.Group;
 import com.koreaIT.project.vo.Member;
@@ -384,6 +385,10 @@ public class ProjectMemberController {
 			return rq.jsReturnOnView("학생 회원만 이용할 수 있는 탭입니다.", true);
 		}
 		
+		if (rq.getLoginedMember().getClassId() != 0) {
+			return rq.jsReturnOnView("이미 수강신청을 완료했습니다.", true);
+		}
+		
 		List<Member> teachers = memberService.getMembersByAuthLevel(1);
 		model.addAttribute("teachers",teachers);
 		
@@ -413,9 +418,43 @@ public class ProjectMemberController {
 	public String groupregisterdetail(Model model, int id) {
 		
 		Group group = groupService.getGroupById(id);
+		
+		Coupon coupon = couponService.getCouponByStudentId(rq.getLoginedMemberId());
+		
 		model.addAttribute("group", group);
+		model.addAttribute("coupon", coupon);
 		
 		return "project/member/groupregisterdetail";
+	}
+	
+	
+	// 수강신청하기
+	
+	@RequestMapping("/project/member/doRegister")
+	@ResponseBody
+	public String doRegister(int classId) {
+		
+		// 멤버 테이블에 반 정보 업데이트
+		memberService.doRegister(rq.getLoginedMemberId(), classId);
+		
+		return Util.jsReplace("수강신청을 완료했습니다.", "/");
+	}
+	
+	
+	// 결제 후 수강신청하기
+	
+	@RequestMapping("/project/member/doRegisterAfterPayment")
+	@ResponseBody
+	public String doRegisterAfterPayment(int classId, boolean paymentComplete) {
+		
+		if (paymentComplete == false) {
+			return "결제 후 수강신청에 실패했습니다.";
+		}
+		
+		// 멤버 테이블에 반 정보 업데이트
+		memberService.doRegister(rq.getLoginedMemberId(), classId);
+		
+		return "결제 후 수강신청을 완료했습니다.";
 	}
 	
 	
@@ -485,8 +524,8 @@ public class ProjectMemberController {
 			}
 		}
 		
-// 다운로드 받을때 브라우저 하단에 다운로드 헤더 나오게 하기		
-// 그냥 fileName 쓰면 브라우저가 유니코드로 인식해서 꼭 encoding 해줘야함		
+		// 다운로드 받을때 브라우저 하단에 다운로드 헤더 나오게 하기		
+		// 그냥 fileName 쓰면 브라우저가 유니코드로 인식해서 꼭 encoding 해줘야함		
 		response.setContentType("ms-vnd/excel");
 		response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
 		

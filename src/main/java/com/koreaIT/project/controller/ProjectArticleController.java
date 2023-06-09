@@ -513,6 +513,22 @@ public class ProjectArticleController {
 	}
 	
 	
+	// 공부인증 리스트 보여주기
+	
+	@RequestMapping("/project/article/studylist")
+	public String studylist(Model model) {
+		
+		Board board = boardService.getBoardById(5);
+		
+		List<Article> articles = articleService.getArticles(5);
+		
+		model.addAttribute("board", board);
+		model.addAttribute("articles", articles);
+		
+		return "project/article/studylist";
+	}
+	
+	
 	
 	
 }

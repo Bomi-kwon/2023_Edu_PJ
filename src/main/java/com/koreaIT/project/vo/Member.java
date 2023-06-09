@@ -20,7 +20,7 @@ public class Member {
 	private String email;
 	private int delStatus;
 	private String delData;
-	private String classId;
+	private int classId;
 	
 	private String groupName;
 	private String parentPhoneNum;

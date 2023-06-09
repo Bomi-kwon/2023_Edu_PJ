@@ -74,6 +74,7 @@
 	        <ul>
 	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/list?boardId=1"><span>알림장</span></a></li>
 	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/home/select"><span>메세지 발송</span></a></li>
+	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>입시 정보</span></a></li>
 	        </ul>
 	      </li>
 	      <li><a href="#">인터넷강의</a>
@@ -87,7 +88,7 @@
 	      <li><a href="#">자율학습</a>
 	        <ul>
 	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/home/timer"><span>모의고사 시계</span></a></li>
-	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>공부 인증</span></a></li>
+	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/studylist"><span>공부 인증</span></a></li>
 	        </ul>
 	      </li>
 	      <li>
@@ -119,6 +120,7 @@
         <ul>
           <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/list?boardId=1"><span>알림장</span></a></li>
           <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/home/select"><span>메세지 발송</span></a></li>
+          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>입시 정보</span></a></li>
         </ul>
       </li>
       <li><a href="#">인터넷강의</a>
@@ -132,7 +134,7 @@
       <li><a href="#">자율학습</a>
         <ul>
           <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/home/timer"><span>모의고사 시계</span></a></li>
-          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>공부 인증</span></a></li>
+          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/studylist"><span>공부 인증</span></a></li>
         </ul>
       </li>
     </ul>

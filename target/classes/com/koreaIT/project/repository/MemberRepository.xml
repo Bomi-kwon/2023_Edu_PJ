@@ -99,5 +99,12 @@
 		AND `name` LIKE CONCAT('%',#{keyWord},'%')
 	</select>
 	
+	<update id="doRegister">
+		UPDATE `member`
+		SET classId = #{classId}
+		WHERE id = #{memberId}
+		OR babyId = #{memberId}
+	</update>
+	
 
 </mapper>
