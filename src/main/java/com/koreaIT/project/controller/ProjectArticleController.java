@@ -139,6 +139,7 @@ public class ProjectArticleController {
 		List<Homework> homeworks = homeworkService.getHwsByRelId(id);
 		
 		FileVO file = fileService.getFileByRelId("article", id);
+		
 
 		model.addAttribute("article",article);
 		model.addAttribute("homeworks",homeworks);

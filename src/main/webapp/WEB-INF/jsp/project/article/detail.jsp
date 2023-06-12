@@ -62,17 +62,22 @@
 			</table>
 		</div>
 		<div class="flex justify-end mt-2">
-			<c:if test="${homeworks.isEmpty() }">
-				<div>
-			        <a class="homeworkChk btn btn-success mr-2" 
-			        onclick="getStudentsByClass(${article.id},${article.classId});">과제검사</a>
-			    </div>
-		    </c:if>
-		    <c:if test="${homeworks.isEmpty() == false}">
-				<div>
-			        <a class="getHws btn btn-success btn-outline mr-2">과제확인</a>
-			    </div>
-		    </c:if>
+			<c:if test="${article.boardId == 2 && rq.getLoginedMember().getAuthLevel() == 1}">
+				<c:choose>
+					<c:when test="${homeworks.isEmpty() }">
+						<div>
+					        <a class="homeworkChk btn btn-success mr-2" 
+					        onclick="getStudentsByClass(${article.id},${article.classId});">과제검사</a>
+					    </div>
+					</c:when>
+					<c:otherwise>
+						<div>
+				        	<a class="getHws btn btn-success btn-outline mr-2">과제확인</a>
+				    	</div>
+					</c:otherwise>
+				</c:choose>
+			</c:if>
+			
 			<a href="list?boardId=${article.boardId }" class="btn btn-success mr-2" >목록</a>
 			<c:if test="${rq.getLoginedMemberId() == article.memberId }">
 				<a href="modify?id=${article.id }&memberId=${article.memberId}" class="btn btn-success mr-2" >수정</a>

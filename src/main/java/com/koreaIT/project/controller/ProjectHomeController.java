@@ -2,6 +2,10 @@ package com.koreaIT.project.controller;
 
 import java.io.IOException;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -46,6 +50,7 @@ public class ProjectHomeController {
 	
 	@RequestMapping("/project/home/select")
 	public String select() {
+		
 		return "project/home/select";
 	}
 	
@@ -62,6 +67,35 @@ public class ProjectHomeController {
 		// 그럼 그 id로 file을 찾아와서 걔의 경로를 적어서 이렇게 나타내주면 이미지가 잘 나옴
 		return new UrlResource("file:" + fileVo.getSavedPath()); 
 	}
+	
+	
+	@RequestMapping("/project/home/entranceinfo")
+	public String entranceinfo() {
+		
+		String URL = "https://cafe.naver.com/suhui?iframe_url=/ArticleList.nhn%3Fsearch.clubid=10197921%26search.menuid=2016%26search.boardtype=L";
+		Document doc;
+		try {
+			doc = Jsoup.connect(URL).get();
+			
+			Elements titles = doc.select("tr.type-up");
+			
+			for(Element elm : titles) {
+				String title = elm.select("a.article").text();
+				String href = elm.select("a.article").attr("href");
+				System.out.println("글 제목 : "+title);
+				System.out.println("링크 : "+href);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return "project/home/entranceinfo";
+	}
+	
+	
+	
 	
 	
 }
