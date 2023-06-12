@@ -5,7 +5,31 @@
 
 <%@ include file="../common/head.jsp" %>
 
+<style>
+	.row::after {
+	  content:"";
+	  display: block;
+	  clear:both;
+	}
+	
+	.row > li:hover > .article-name {
+	text-decoration: underline;
+	}
+	
+	.cropping {
+	max-width: 340px;
+	max-height: 340px;
+	overflow: hidden;
+	}
+	
+	.cropping img {
+	max-width: initial;
+	max-height: initial;
+	}
+</style>
 
+
+<c:if test="${board.id != 5 }">
 <section class="mt-8 mx-auto text-xl">
 	<div class="container mx-auto px-3">
 	  <div class="table-box-type-1">
@@ -68,6 +92,38 @@
 	</c:if>
 	</div>
 </section>
+</c:if>
+
+<c:if test="${board.id == 5 }">
+	<section class="mt-8 mx-auto text-xl">
+	<div class="container mx-auto px-3">
+	    <ul class="row">
+			<c:forEach var="article" items="${articles }">
+				<li class="cell box-border float-left w-1/4 relative">
+					<div class="cropping mb-3"><a href="detail?id=${article.id }">
+						<img class="block" src="/project/home/file/${article.fileId }"/></a></div>
+					<div class="article-name mb-1" ><a href="detail?id=${article.id }">${article.title }</a></div>
+					<div class="font-light text-gray-500 text-sm">${article.writerName }</div>
+					<div class="text-gray-400 text-xs mb-5">
+						<span>${article.regDate.substring(0,10) }</span>
+						<span>(조회 : ${article.hit })</span>
+					</div>
+				</li>
+			</c:forEach>
+	    </ul>
+		
+		<div class="flex justify-end">
+			<button class="btn btn-success mr-2 btn-delete-selected-articles">글 삭제</button>
+			<a href="write?boardId=${board.id }" class="btn btn-success" >글 쓰기</a>
+			
+			<form action="doDeleteArticles?boardId=${board.id }" method="POST" name="do-delete-articles-form">
+				<input type="hidden" name="ids" value="" />
+			</form>
+			
+		</div>
+	</div>
+</section>
+</c:if>
 
 <!-- 체크박스 스크립트는 html 아래에다 놔야 적용되넹?? -->
 <script>

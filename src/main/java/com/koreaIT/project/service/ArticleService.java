@@ -57,4 +57,12 @@ public class ArticleService {
 		}
 	}
 
+	public List<Article> getArticlesForStudyList() {
+		return articleRepository.getArticlesForStudyList();
+	}
+
+	public void increaseHit(int id) {
+		articleRepository.increaseHit(id);
+	}
+
 }

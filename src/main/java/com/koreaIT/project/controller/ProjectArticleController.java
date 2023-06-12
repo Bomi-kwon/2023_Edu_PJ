@@ -16,6 +16,7 @@ import com.koreaIT.project.service.FileService;
 import com.koreaIT.project.service.GroupService;
 import com.koreaIT.project.service.HomeworkService;
 import com.koreaIT.project.service.MemberService;
+import com.koreaIT.project.service.ReplyService;
 import com.koreaIT.project.service.ScoreService;
 import com.koreaIT.project.util.Util;
 import com.koreaIT.project.vo.Article;
@@ -25,6 +26,7 @@ import com.koreaIT.project.vo.Group;
 import com.koreaIT.project.vo.Homework;
 import com.koreaIT.project.vo.HomeworkList;
 import com.koreaIT.project.vo.Member;
+import com.koreaIT.project.vo.Reply;
 import com.koreaIT.project.vo.ResultData;
 import com.koreaIT.project.vo.Rq;
 import com.koreaIT.project.vo.Score;
@@ -39,11 +41,12 @@ public class ProjectArticleController {
 	HomeworkService homeworkService;
 	GroupService groupService;
 	FileService fileService;
+	ReplyService replyService;
 	Rq rq;
 	
 	public ProjectArticleController(ArticleService articleService, MemberService memberService,
 			BoardService boardService, ScoreService scoreService, HomeworkService homeworkService,
-			GroupService groupService, FileService fileService, Rq rq) {
+			GroupService groupService, FileService fileService, ReplyService replyService, Rq rq) {
 		this.articleService = articleService;
 		this.memberService = memberService;
 		this.boardService = boardService;
@@ -51,6 +54,7 @@ public class ProjectArticleController {
 		this.homeworkService = homeworkService;
 		this.groupService = groupService;
 		this.fileService = fileService;
+		this.replyService = replyService;
 		this.rq = rq;
 	}
 
@@ -123,12 +127,15 @@ public class ProjectArticleController {
 	@RequestMapping("/project/article/detail")
 	public String detail(int id, Model model) {
 		
+		articleService.increaseHit(id);
+		
 		Article article = articleService.getArticleById(id);
 		
 		if(article == null) {
 			rq.jsPrintHistoryBack("해당 번호를 가진 게시물이 없습니다.");
 		}
 		
+		List<Reply> replies = replyService.getReplies("article", id);
 		List<Homework> homeworks = homeworkService.getHwsByRelId(id);
 		
 		FileVO file = fileService.getFileByRelId("article", id);
@@ -136,6 +143,7 @@ public class ProjectArticleController {
 		model.addAttribute("article",article);
 		model.addAttribute("homeworks",homeworks);
 		model.addAttribute("file",file);
+		model.addAttribute("replies",replies);
 		
 		return "project/article/detail";
 	}
@@ -513,20 +521,6 @@ public class ProjectArticleController {
 	}
 	
 	
-	// 공부인증 리스트 보여주기
-	
-	@RequestMapping("/project/article/studylist")
-	public String studylist(Model model) {
-		
-		Board board = boardService.getBoardById(5);
-		
-		List<Article> articles = articleService.getArticles(5);
-		
-		model.addAttribute("board", board);
-		model.addAttribute("articles", articles);
-		
-		return "project/article/studylist";
-	}
 	
 	
 	

@@ -25,4 +25,8 @@ public interface ArticleRepository {
 
 	public void addYouTubeLink(int id, String youTubeLink);
 
+	public List<Article> getArticlesForStudyList();
+
+	public void increaseHit(int id);
+
 }

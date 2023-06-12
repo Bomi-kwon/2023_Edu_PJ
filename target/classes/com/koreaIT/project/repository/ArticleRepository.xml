@@ -4,7 +4,7 @@
 <mapper namespace="com.koreaIT.project.repository.ArticleRepository">
 
 	<select id="getArticles" resultType="Article">
-		<if test="boardId == 2">
+		<if test="boardId == 2 or boardId == 5">
 		WITH AMG AS (
 		</if>
 			SELECT A.*, M.name AS writerName, IFNULL(G.groupName,'전체') AS groupName
@@ -14,7 +14,7 @@
 			LEFT JOIN `group` AS G
 			ON A.classId = G.id
 			WHERE boardId = #{boardId}
-			<if test="boardId != 2">
+			<if test="boardId != 2 and boardId != 5">
 				ORDER BY A.id DESC;
 			</if>
 		<if test="boardId == 2">
@@ -23,6 +23,15 @@
 		FROM AMG
 		LEFT JOIN `homework` AS H
 		ON AMG.id = H.relId
+		GROUP BY AMG.id
+		ORDER BY AMG.id DESC;
+		</if>
+		<if test="boardId == 5">
+		)
+		SELECT AMG.*, F.id AS fileId
+		FROM AMG
+		LEFT JOIN `file` AS F
+		ON AMG.id = F.relId
 		GROUP BY AMG.id
 		ORDER BY AMG.id DESC;
 		</if>
@@ -75,6 +84,27 @@
 		SET youTubeLink = #{youTubeLink}
 		WHERE id = #{id}
 	</update>
+	
+	<select id="getArticlesForStudyList" resultType="Article">
+		WITH AMG AS (
+			SELECT A.*, M.name AS writerName
+			FROM article AS A
+			INNER JOIN `member` AS M
+			ON A.memberId = M.id
+			WHERE boardId = 5
+		)
+		SELECT AMG.*, F.id AS fileId
+		FROM AMG
+		LEFT JOIN `file` AS F
+		ON AMG.id = F.relId
+		GROUP BY AMG.id
+		ORDER BY AMG.id DESC;
+	</select>
 
+	<update id="increaseHit">
+		UPDATE article
+		SET hit = hit + 1
+		WHERE id = #{id}
+	</update>
 
 </mapper>

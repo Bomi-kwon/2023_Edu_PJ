@@ -24,6 +24,7 @@ public class Article {
 	private String writerName;
 	private String hwChk;
 	private String youTubeLink;
+	private int fileId;
 	
 	public String getForPrintBody() {
 		return this.body.replaceAll("\n", "<br />");
