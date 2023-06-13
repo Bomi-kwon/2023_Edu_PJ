@@ -24,6 +24,7 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
+import com.koreaIT.project.service.AttendanceService;
 import com.koreaIT.project.service.FileService;
 import com.koreaIT.project.service.GroupService;
 import com.koreaIT.project.service.MemberService;
@@ -38,14 +39,17 @@ public class ProjectHomeController {
 	private FileService fileService;
 	private GroupService groupService;
 	private MemberService memberService;
+	private AttendanceService attendanceService;
 	
 	
 
 	@Autowired
-	public ProjectHomeController(FileService fileService, GroupService groupService, MemberService memberService) {
+	public ProjectHomeController(FileService fileService, GroupService groupService, 
+			MemberService memberService, AttendanceService attendanceService) {
 		this.fileService = fileService;
 		this.groupService = groupService;
 		this.memberService = memberService;
+		this.attendanceService = attendanceService;
 	}
 	
 	@RequestMapping("/project/home/main")
@@ -105,7 +109,7 @@ public class ProjectHomeController {
 	
 	@RequestMapping("/project/home/doAttendanceChk")
 	@ResponseBody
-	public String doAttendanceChk(String todayDate, int classId, String name){
+	public String doAttendanceChk(int classId, String name){
 		
 		Member member = memberService.getMemberByName(name);
 		
@@ -117,7 +121,7 @@ public class ProjectHomeController {
 			return Util.jsHistoryBack(Util.f("%s 학생은 우리반 수강생이 아닙니다.", name));
 		}
 			
-		
+		attendanceService.insertAttendance(classId, member.getId());
 		
 		return Util.jsReplace(Util.f("%s 학생 출석체크 완료되었습니다.", name), "/");
 	}

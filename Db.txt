@@ -116,10 +116,20 @@ CREATE TABLE coupon (
 	id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	regDate DATETIME NOT NULL,
 	deadLine DATETIME NOT NULL,
-	studentId INT UNSIGNED NOT NULL,
-	delStatus TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '탈퇴여부 (탈퇴 전 = 0, 탈퇴 후 = 1)',
-	delData DATETIME COMMENT '탈퇴 날짜'
+	studentId INT UNSIGNED NOT NULL
 );
+
+# attendance 테이블 생성
+# truncate table attendance;
+# drop table attendance;
+
+CREATE TABLE attendance (
+	id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	todayDateAndTime DATETIME NOT NULL,
+	classId INT UNSIGNED NOT NULL DEFAULT 0,
+	memberId INT UNSIGNED NOT NULL
+);
+
 
 #reactionPoint 테이블 생성
 CREATE TABLE reactionPoint(
@@ -130,6 +140,10 @@ CREATE TABLE reactionPoint(
 	relId INT UNSIGNED NOT NULL COMMENT '데이터의 번호',
 	`point` SMALLINT NOT NULL DEFAULT 1 COMMENT '좋아요(+1)'
 );
+
+# reply 테이블 생성
+# truncate table reply;
+# drop table reply;
 
 #reply 테이블 생성
 CREATE TABLE reply (
@@ -151,6 +165,7 @@ DESC score;
 DESC homework;
 DESC `file`;
 DESC coupon;
+DESC attendance;
 DESC reactionPoint;
 DESC reply;
 
@@ -200,6 +215,25 @@ boardId = 3,
 title = '수1 기본반 총괄테스트',
 `body` = '점수~~!!',
 classId = 2;
+
+INSERT INTO article
+SET regDate = NOW(),
+updateDate = NOW(),
+memberId = 5,
+boardId = 5,
+title = '공부인증합니다',
+`body` = '오늘 7시간이나 공부했어요 짱이죠?';
+
+INSERT INTO article
+SET regDate = NOW(),
+updateDate = NOW(),
+memberId = 19,
+boardId = 5,
+title = '기말고사 잘보고 싶은데..',
+`body` = '너무 더워서 공부하기 싫어요';
+
+SELECT * FROM `member`
+
 
 # member 테스트 데이터
 INSERT INTO `member`
@@ -285,6 +319,10 @@ INSERT INTO board
 SET `code` = 'onlineclass',
 `name` = '인터넷강의';
 
+INSERT INTO board
+SET `code` = 'study',
+`name` = '공부인증';
+
 # group 테스트 데이터
 INSERT INTO `group`
 SET grade = 'middle',
@@ -362,7 +400,28 @@ SET regDate = NOW(),
 deadLine = DATE_ADD(NOW(), INTERVAL 4 MONTH),
 studentId = 16;
 
+# coupon 테스트 데이터
+INSERT INTO coupon
+SET regDate = NOW(),
+deadLine = DATE_ADD(NOW(), INTERVAL 4 MONTH),
+studentId = 16;
 
+# file 테스트 데이터
+INSERT INTO `file`
+SET regDate = NOW(),
+originName = 'mathstudy3.jpg',
+savedName = 'mathstudy3.jpg',
+savedPath = 'C:/bbomi/upload/mathstudy3.jpg',
+relTypecode = 'article',
+relId = 71;
+
+INSERT INTO `file`
+SET regDate = NOW(),
+originName = 'mathstudy.jpg',
+savedName = 'mathstudy.jpg',
+savedPath = 'C:/bbomi/upload/mathstudy.jpg',
+relTypecode = 'article',
+relId = 72;
 
 
 # 데이터 조회하기
@@ -372,6 +431,15 @@ ORDER BY id DESC;
 
 SELECT *
 FROM `member`;
+
+UPDATE `member`
+SET classId = 0
+WHERE id = 21
+
+SELECT *
+FROM `member`
+WHERE 
+AND `name` LIKE '%스%'
 
 SELECT *
 FROM board;
@@ -387,8 +455,29 @@ SELECT *
 FROM homework;
 
 SELECT *
-FROM `file`;
+FROM `file`
+ORDER BY id DESC;
 
 SELECT *
 FROM coupon;
 
+SELECT *
+FROM reply;
+
+SELECT *
+FROM coupon
+WHERE studentId = 16;
+
+SELECT *
+FROM attendance;
+
+
+SELECT R.*, M.name AS writerName, F.id AS fileId
+		FROM reply AS R
+		INNER JOIN `member` AS M
+		ON R.replymemberId = M.id
+		LEFT JOIN `file` AS F
+		ON M.id = F.relId
+		AND F.relTypecode = 'profile'
+		WHERE R.relTypecode = 'article'
+		AND R.relId = 74

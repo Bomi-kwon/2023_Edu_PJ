@@ -8,7 +8,6 @@
 	<section class="mt-8 mx-auto text-xl">
 		<div class="container mx-auto px-3 h-full ">
 			<form action="doAttendanceChk">
-				<input type="hidden" name="todayDate" value="${todayDate }"/>
 				<input type="hidden" name="classId" value="${group.id }"/>
 				<div class="text-2xl mb-3">오늘도 열심히 공부해봅시다!!!</div>
 				<div>오늘 날짜 : ${todayDate }</div>
