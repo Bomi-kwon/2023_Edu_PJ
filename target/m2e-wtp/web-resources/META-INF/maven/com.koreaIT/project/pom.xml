@@ -101,6 +101,19 @@
 		    <artifactId>jsoup</artifactId>
 		    <version>1.16.1</version>
 		</dependency>
+
+		<!-- 웹 크롤링을 위한 JSOUP -->
+		<dependency>
+		    <groupId>com.google.zxing</groupId>
+		    <artifactId>core</artifactId>
+		    <version>3.5.1</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.google.zxing</groupId>
+		    <artifactId>javase</artifactId>
+		    <version>3.5.1</version>
+		</dependency>
+		
 		
 	</dependencies>
 

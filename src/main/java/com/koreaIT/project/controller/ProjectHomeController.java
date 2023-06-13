@@ -2,6 +2,8 @@ package com.koreaIT.project.controller;
 
 import java.io.IOException;
 
+import org.apache.commons.io.output.ByteArrayOutputStream;
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -9,12 +11,19 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
 import com.koreaIT.project.service.FileService;
 import com.koreaIT.project.vo.FileVO;
 
@@ -48,10 +57,22 @@ public class ProjectHomeController {
 		return "project/home/map";
 	}
 	
-	@RequestMapping("/project/home/select")
-	public String select() {
+	@RequestMapping("/project/home/setqrurl")
+	public String setqrurl() {
+		return "project/home/setqrurl";
+	}
+	
+	@RequestMapping("/project/home/doMakeQR")
+	@ResponseBody
+	public Object doMakeQR(String url) throws WriterException, IOException {
+		int width = 200;
+		int height = 200;
+		BitMatrix matrix = new MultiFormatWriter().encode(url, BarcodeFormat.QR_CODE, width, height);
 		
-		return "project/home/select";
+		try (ByteArrayOutputStream out = new ByteArrayOutputStream();) {
+			MatrixToImageWriter.writeToStream(matrix, "PNG", out);
+			return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(out.toByteArray());
+		}
 	}
 	
 	
@@ -69,33 +90,54 @@ public class ProjectHomeController {
 	}
 	
 	
+	@RequestMapping("/project/home/select")
+	public String select() {
+		
+		System.out.println("까꿍");
+		
+		return "project/home/select";
+	}
+	
+	
 	@RequestMapping("/project/home/entranceinfo")
 	public String entranceinfo() {
 		
 		String URL = "https://cafe.naver.com/suhui?iframe_url=/ArticleList.nhn%3Fsearch.clubid=10197921%26search.menuid=2016%26search.boardtype=L";
-		Document doc;
+		Connection conn = Jsoup.connect(URL);
+		Document doc = null;
 		try {
-			doc = Jsoup.connect(URL).get();
-			
-			Elements titles = doc.select("tr.type-up");
-			
-			for(Element elm : titles) {
-				String title = elm.select("a.article").text();
-				String href = elm.select("a.article").attr("href");
-				System.out.println("글 제목 : "+title);
-				System.out.println("링크 : "+href);
-			}
+			doc = conn.get();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	
+		Elements elms = doc.getElementsByClass("type_up");
 		
+		for(Element elm : elms) {
+			String title = elm.select("a.article").text();
+			System.out.println(title);
+		}
+		
+		
+		
+		// System.out.println(titles.toString());
+		
+		/*
+		for(Element title : titles) {
+			
+			String titleStr = title.text();
+			// String href = title.attr("href");
+			System.out.println("글 제목 : " + titleStr);
+			// System.out.println("링크 : " + href);
+		}
+		*/
 		
 		return "project/home/entranceinfo";
+	
+	
+	
+	
 	}
-	
-	
-	
-	
 	
 }

@@ -36,6 +36,7 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer{
 		ir.excludePathPatterns("/resource/**");
 		
 		ir = registry.addInterceptor(needLoginInterceptor);
+		ir.addPathPatterns("/project/home/select");
 		ir.addPathPatterns("/project/member/memberlist");
 		ir.addPathPatterns("/project/member/doMemberLogout");
 		ir.addPathPatterns("/project/member/doMemberDrop");
@@ -51,11 +52,17 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer{
 		ir.addPathPatterns("/project/member/getGroupsByTeacherID");
 		ir.addPathPatterns("/project/member/groupregisterdetail");
 		ir.addPathPatterns("/project/member/doRegister");
+		ir.addPathPatterns("/project/member/doRegisterAfterPayment");
+		ir.addPathPatterns("/project/member/getMemberByClassId");
+		ir.addPathPatterns("/project/member/excelDownload");
 		ir.addPathPatterns("/project/member/getStudentsByClass");
 		ir.addPathPatterns("/project/member/givecoupon");
+		ir.addPathPatterns("/project/member/doGiveCoupon");
+		ir.addPathPatterns("/project/member/getStudentsByNameKeyWord");
 		ir.addPathPatterns("/project/article/write");
 		ir.addPathPatterns("/project/article/doWrite");
 		ir.addPathPatterns("/project/article/doDelete");
+		ir.addPathPatterns("/project/article/doDeleteArticles");
 		ir.addPathPatterns("/project/article/modify");
 		ir.addPathPatterns("/project/article/doModify");
 		ir.addPathPatterns("/project/article/setSelectBox");
@@ -63,9 +70,14 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer{
 		ir.addPathPatterns("/project/article/score");
 		ir.addPathPatterns("/project/article/doWriteScoreArticle");
 		ir.addPathPatterns("/project/article/doScoreDelete");
+		ir.addPathPatterns("/project/article/doDeleteScoresArticles");
 		ir.addPathPatterns("/project/article/scorearticlemodify");
 		ir.addPathPatterns("/project/article/scoremodify");
 		ir.addPathPatterns("/project/article/doModifyScoreArticle");
+		ir.addPathPatterns("/project/article/getStudentsByClass");
+		ir.addPathPatterns("/project/article/doHwCheck");
+		ir.addPathPatterns("/project/article/doHwDelete");
+		ir.addPathPatterns("/project/article/doHwModify");
 		
 		
 		ir = registry.addInterceptor(needLogoutInterceptor);
