@@ -106,5 +106,10 @@
 		OR babyId = #{memberId}
 	</update>
 	
+	<select id="getMemberByName" resultType="Member">
+		SELECT *
+		FROM `member`
+		WHERE name = #{name}
+	</select>
 
 </mapper>

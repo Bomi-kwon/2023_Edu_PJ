@@ -37,6 +37,8 @@ public interface MemberRepository {
 
 	void doRegister(int memberId, int classId);
 
+	Member getMemberByName(String name);
+
 
 	
 

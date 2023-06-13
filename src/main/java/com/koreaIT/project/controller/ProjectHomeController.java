@@ -25,16 +25,27 @@ import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.koreaIT.project.service.FileService;
+import com.koreaIT.project.service.GroupService;
+import com.koreaIT.project.service.MemberService;
+import com.koreaIT.project.util.Util;
 import com.koreaIT.project.vo.FileVO;
+import com.koreaIT.project.vo.Group;
+import com.koreaIT.project.vo.Member;
 
 @Controller
 public class ProjectHomeController {
 	
 	private FileService fileService;
+	private GroupService groupService;
+	private MemberService memberService;
+	
+	
 
 	@Autowired
-	public ProjectHomeController(FileService fileService) {
+	public ProjectHomeController(FileService fileService, GroupService groupService, MemberService memberService) {
 		this.fileService = fileService;
+		this.groupService = groupService;
+		this.memberService = memberService;
 	}
 	
 	@RequestMapping("/project/home/main")
@@ -64,15 +75,51 @@ public class ProjectHomeController {
 	
 	@RequestMapping("/project/home/doMakeQR")
 	@ResponseBody
-	public Object doMakeQR(String url) throws WriterException, IOException {
-		int width = 200;
-		int height = 200;
+	public Object doMakeQR(String todayDate, int classId) throws WriterException, IOException {
+		int width = 400;
+		int height = 400;
+		
+		String url = Util.f("http://192.168.200.32:8081/project/home/attendanceChk?todayDate=%s&classId=%d", todayDate, classId);
 		BitMatrix matrix = new MultiFormatWriter().encode(url, BarcodeFormat.QR_CODE, width, height);
+		
+		System.out.println(todayDate);
+		System.out.println(classId);
 		
 		try (ByteArrayOutputStream out = new ByteArrayOutputStream();) {
 			MatrixToImageWriter.writeToStream(matrix, "PNG", out);
 			return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(out.toByteArray());
 		}
+	}
+	
+	@RequestMapping("/project/home/attendanceChk")
+	public String attendanceChk(Model model, String todayDate, int classId) {
+		
+		Group group = groupService.getGroupById(classId);
+		
+		model.addAttribute("todayDate", todayDate);
+		model.addAttribute("group", group);
+		
+		return "project/home/attendanceChk";
+	}
+	
+	
+	@RequestMapping("/project/home/doAttendanceChk")
+	@ResponseBody
+	public String doAttendanceChk(String todayDate, int classId, String name){
+		
+		Member member = memberService.getMemberByName(name);
+		
+		if(member == null) {
+			return Util.jsHistoryBack("이름을 잘못 입력했습니다.");
+		}
+		
+		if(member.getClassId() != classId) {
+			return Util.jsHistoryBack(Util.f("%s 학생은 우리반 수강생이 아닙니다.", name));
+		}
+			
+		
+		
+		return Util.jsReplace(Util.f("%s 학생 출석체크 완료되었습니다.", name), "/");
 	}
 	
 	

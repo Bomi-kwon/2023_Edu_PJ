@@ -104,6 +104,10 @@ public class MemberService {
 		memberRepository.doRegister(memberId, classId);
 	}
 
+	public Member getMemberByName(String name) {
+		return memberRepository.getMemberByName(name);
+	}
+
 	
 	
 

@@ -112,6 +112,7 @@
       <li><a href="#">수업관리</a>
         <ul>
           <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/home/setqrurl"><span>출결</span></a></li>
+          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/home/attendanceChk"><span>출석체크(학생용)</span></a></li>
           <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/list?boardId=2"><span>숙제</span></a></li>
           <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/scorelist"><span>성적</span></a></li>
         </ul>

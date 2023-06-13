@@ -6,6 +6,7 @@
 <%@ include file="../common/head.jsp" %>
 
 <script>
+	<!-- 학년 선택하면 반 소분류 나오게하기 -->
 	function setSelectBox(grade) {
 		$('#group').html(`<option value="">전체</option>`);
 		
