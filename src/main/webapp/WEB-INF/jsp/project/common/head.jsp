@@ -81,7 +81,7 @@
 	        <ul>
 	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/member/groupregistration"><span>수강신청</span></a></li>
 	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/member/givecoupon"><span>쿠폰발행</span></a></li>
-	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>실시간 강의</span></a></li>
+	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/video/conference"><span>실시간 강의</span></a></li>
 	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/list?boardId=4"><span>수학인강</span></a></li>
 	        </ul>
 	      </li>
@@ -127,7 +127,7 @@
         <ul>
           <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/member/groupregistration"><span>수강신청</span></a></li>
           <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/member/givecoupon"><span>쿠폰발행</span></a></li>
-          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="#"><span>실시간 강의</span></a></li>
+          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/video/conference"><span>실시간 강의</span></a></li>
           <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/list?boardId=4"><span>수학인강</span></a></li>
         </ul>
       </li>
