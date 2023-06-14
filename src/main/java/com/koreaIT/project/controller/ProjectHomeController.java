@@ -62,20 +62,32 @@ public class ProjectHomeController {
 		return "redirect:/project/home/main";
 	}
 	
+	
+	// 모의고사 시계
+	
 	@RequestMapping("/project/home/timer")
 	public String timer() {
 		return "project/home/timer";
 	}
+	
+	
+	// 찾아오시는 길
 	
 	@RequestMapping("/project/home/map")
 	public String map() {
 		return "project/home/map";
 	}
 	
+	
+	// QR코드 생성을 위한 날짜,반 입력 화면
+	
 	@RequestMapping("/project/home/setqrurl")
 	public String setqrurl() {
 		return "project/home/setqrurl";
 	}
+	
+	
+	// QR코드 최종 생성
 	
 	@RequestMapping("/project/home/doMakeQR")
 	@ResponseBody
@@ -95,6 +107,9 @@ public class ProjectHomeController {
 		}
 	}
 	
+	
+	// 출석체크를 위한 이름 입력
+	
 	@RequestMapping("/project/home/attendanceChk")
 	public String attendanceChk(Model model, String todayDate, int classId) {
 		
@@ -106,6 +121,8 @@ public class ProjectHomeController {
 		return "project/home/attendanceChk";
 	}
 	
+	
+	// 최종 출석체크 확정
 	
 	@RequestMapping("/project/home/doAttendanceChk")
 	@ResponseBody
@@ -127,6 +144,8 @@ public class ProjectHomeController {
 	}
 	
 	
+	// 이미지 파일 연결
+	
 	// 이미지에서 src에 보통은 경로를 적지만 이렇게 컨트롤러 함수를 적어줘도 됨
 	// 단 이미지마다 달라지는 id를 표현하기 위해 경로의 마지막 부분을 ${file.id} 이렇게 적어주고
 	// 함수에서 걔를 이런식으로 parameter로 받아올 수 있음!!
@@ -141,6 +160,8 @@ public class ProjectHomeController {
 	}
 	
 	
+	// 메세지 발송 (카카오톡/문자) 선택 화면
+	
 	@RequestMapping("/project/home/select")
 	public String select() {
 		
@@ -149,6 +170,8 @@ public class ProjectHomeController {
 		return "project/home/select";
 	}
 	
+	
+	// 입시정보
 	
 	@RequestMapping("/project/home/entranceinfo")
 	public String entranceinfo() {
@@ -159,17 +182,19 @@ public class ProjectHomeController {
 		try {
 			doc = conn.get();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	
+		
 		Elements elms = doc.getElementsByClass("type_up");
 		
+		System.out.println(elms);
+		
+		/*
 		for(Element elm : elms) {
 			String title = elm.select("a.article").text();
 			System.out.println(title);
 		}
-		
+		*/
 		
 		
 		// System.out.println(titles.toString());
@@ -185,9 +210,6 @@ public class ProjectHomeController {
 		*/
 		
 		return "project/home/entranceinfo";
-	
-	
-	
 	
 	}
 	

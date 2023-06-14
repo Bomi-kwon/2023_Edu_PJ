@@ -273,6 +273,13 @@ html.active .menu-box-3 > ul > li > ul > li > a {
 	left: calc(50% - 3px);
 	transform-origin: bottom;
 }
+.timertest {
+	width: 500px;
+	height: 500px;
+	position: absolute;
+	top:22%;
+	left:55%;
+}
 
 /* 과제검사 모달창 커스텀 */
 .hwChkmodal-bg, .hwChkmodal {
