@@ -1,6 +1,10 @@
 package com.koreaIT.project.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.jsoup.Connection;
@@ -178,36 +182,43 @@ public class ProjectHomeController {
 		
 		String URL = "https://cafe.naver.com/suhui?iframe_url=/ArticleList.nhn%3Fsearch.clubid=10197921%26search.menuid=2016%26search.boardtype=L";
 		Connection conn = Jsoup.connect(URL);
-		Document doc = null;
 		try {
-			doc = conn.get();
+			Document doc = conn.get();
+			
+			Elements els = doc.getElementsByClass("m-tcol-c");
+			els.forEach(el -> {
+				System.out.println(el.text());
+			});
+			
+			// .text()는 태그 안쪽의 내용만 가져오기
+			// .toString()은 태그까지 합쳐서 string으로 만들기
+			
+			/*
+			List<String> hrefList = new ArrayList<>();
+			
+			for(Element element : titleElements) {
+				hrefList.add(element.attr("abs:href")); // 절대경로 추출하고 싶으면 abs: 붙이면됨
+			}
+			
+			Map<String, String> ArticleData = new HashMap<>();
+			
+			for (int j = 0; j < hrefList.size(); j++) {
+				String title = (j+1) + "번 " + titleElements.get(j).text();
+				String href = hrefList.get(j).toString();
+				ArticleData.put(title, href);
+			}
+			
+			for(Map.Entry<String, String> entry : ArticleData.entrySet()) {
+				System.out.println(entry.getKey() + " : " + entry.getValue());
+			}
+			
+			*/
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		Elements elms = doc.getElementsByClass("type_up");
 		
-		System.out.println(elms);
-		
-		/*
-		for(Element elm : elms) {
-			String title = elm.select("a.article").text();
-			System.out.println(title);
-		}
-		*/
-		
-		
-		// System.out.println(titles.toString());
-		
-		/*
-		for(Element title : titles) {
-			
-			String titleStr = title.text();
-			// String href = title.attr("href");
-			System.out.println("글 제목 : " + titleStr);
-			// System.out.println("링크 : " + href);
-		}
-		*/
 		
 		return "project/home/entranceinfo";
 	

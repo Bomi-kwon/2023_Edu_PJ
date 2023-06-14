@@ -102,7 +102,7 @@
 		    <version>1.16.1</version>
 		</dependency>
 
-		<!-- 웹 크롤링을 위한 JSOUP -->
+		<!-- QR코드 생성기를 위한 JSOUP -->
 		<dependency>
 		    <groupId>com.google.zxing</groupId>
 		    <artifactId>core</artifactId>
