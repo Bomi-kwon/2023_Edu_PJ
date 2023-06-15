@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.koreaIT.project.service.CouponService;
-import com.koreaIT.project.service.CouponService;
 import com.koreaIT.project.service.FileService;
 import com.koreaIT.project.service.GroupService;
 import com.koreaIT.project.service.MemberService;
@@ -227,7 +226,14 @@ public class ProjectMemberController {
 	@ResponseBody
 	public ResultData getGroupsByGrade(String grade) {
 		
-		List<Group> groups = groupService.getGroupsByGrade(grade);
+		List<Group> groups;
+		
+		if(grade.equals("all")) {
+			groups = groupService.getgroups();
+		}
+		else {
+			groups = groupService.getGroupsByGrade(grade);
+		}
 		
 		if(groups.isEmpty()) {
 			return ResultData.from("F-1", "해당 학년에는 반이 없습니다.");
@@ -398,7 +404,10 @@ public class ProjectMemberController {
 			return rq.jsReturnOnView("이미 수강신청을 완료했습니다.", true);
 		}
 		
+		List<Group> groups = groupService.getgroups();
 		List<Member> teachers = memberService.getMembersByAuthLevel(1);
+		
+		model.addAttribute("groups",groups);
 		model.addAttribute("teachers",teachers);
 		
 		return "project/member/groupregistration";
@@ -411,7 +420,14 @@ public class ProjectMemberController {
 	@ResponseBody
 	public ResultData getGroupsByTeacherID(int groupTeacherId) {
 		
-		List<Group> groups = groupService.getGroupsByTeacherID(groupTeacherId);
+		List<Group> groups;
+		
+		if(groupTeacherId == 0) {
+			groups = groupService.getgroups();
+		}
+		else {
+			groups = groupService.getGroupsByTeacherID(groupTeacherId);
+		}
 		
 		if(groups.isEmpty()) {
 			return ResultData.from("F-1", "해당 선생님이 수업하는 반이 없습니다.");

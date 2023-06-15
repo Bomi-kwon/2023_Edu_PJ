@@ -47,4 +47,16 @@ public class ScoreService {
 		return scoreRepository.getScoreByRelId(relId);
 	}
 
+	public int getAverageOfScores(int relId) {
+		return scoreRepository.getAverageOfScores(relId);
+	}
+
+	public Score getBestScore(int relId) {
+		return scoreRepository.getBestScore(relId);
+	}
+
+	public Score getWorstScore(int relId) {
+		return scoreRepository.getWorstScore(relId);
+	}
+
 }

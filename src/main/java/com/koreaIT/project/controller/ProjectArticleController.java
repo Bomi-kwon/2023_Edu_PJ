@@ -280,8 +280,31 @@ public class ProjectArticleController {
 	public String scoredetail(int relId, Model model) {
 		
 		List<Score> scores = scoreService.getScoresByRelId(relId);
+		if(scores.isEmpty() == false) {
+			int averageOfScores = scoreService.getAverageOfScores(relId);
+			Score bestScore = scoreService.getBestScore(relId);
+			Score worstScore = scoreService.getWorstScore(relId);
+			model.addAttribute("averageOfScores", averageOfScores);
+			model.addAttribute("bestScore", bestScore);
+			model.addAttribute("worstScore", worstScore);
+		}
 		
 		Article article = articleService.getArticleById(relId);
+		
+		if(rq.getLoginedMemberId() != 0) {
+			visitHistoryService.insertVisit(rq.getLoginedMemberId(),relId);
+		}
+		
+		List<visitHistory> visitorList =  visitHistoryService.getVisitorsByArticleId(relId);
+		List<Member> visitors = new ArrayList<>();
+		
+		if(visitorList.isEmpty() == false) {
+			for(visitHistory visitHistory : visitorList) {
+				visitors.add(memberService.getMemberById(visitHistory.getMemberId()));
+			}
+			model.addAttribute("visitors",visitors);
+		}
+		
 		
 		model.addAttribute("scores", scores);
 		model.addAttribute("article",article);

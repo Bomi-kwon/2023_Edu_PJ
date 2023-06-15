@@ -54,8 +54,13 @@
 	</select>
 	
 	<select id="getArticleById" resultType="Article">
-		SELECT * FROM article
-		WHERE id = #{id}
+		SELECT A.*, M.name AS writerName, IFNULL(G.groupName,'전체') AS groupName
+		FROM article AS A
+		INNER JOIN `member` AS M
+		ON A.memberId = M.id
+		LEFT JOIN `group` AS G
+		ON A.classId = G.id
+		WHERE A.id = #{id}
 	</select>
 	
 	<delete id="doDelete">

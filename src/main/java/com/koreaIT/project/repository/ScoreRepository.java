@@ -18,5 +18,11 @@ public interface ScoreRepository {
 	void updateScore(int id, int score);
 
 	Score getScoreByRelId(int relId);
+
+	int getAverageOfScores(int relId);
+
+	Score getBestScore(int relId);
+
+	Score getWorstScore(int relId);
 	
 }

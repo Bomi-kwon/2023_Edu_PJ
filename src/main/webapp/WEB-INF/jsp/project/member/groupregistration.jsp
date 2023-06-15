@@ -52,6 +52,7 @@
 	<div class="mb-5">
 		<label for="">선생님 성함 : </label>
 		<select name="groupTeacherId" class="select select-success w-full max-w-xs" onchange="getGroupsByTeacherID(this);">
+				<option value="0">전체</option>
 			<c:forEach var="teacher" items="${teachers }">
 				<option value="${teacher.id }">${teacher.name }</option>
 			</c:forEach>
@@ -68,6 +69,18 @@
 	        <th>수강신청</th>
 	      </tr>
 	    </thead>
+	    
+	    <tbody>
+	    <c:forEach var="group" items="${groups }">
+	      <tr>
+	      	<td>사진넣을곳</td>
+	        <td>${group.groupName }</td>
+	        <td>200,000원</td>
+	        <td>${group.textbook }</td>
+	        <td><a href="groupregisterdetail?id=${group.id }" class="btn btn-success">수강신청</a></td>
+     	 </tr>
+     	 </c:forEach>
+    	</tbody>
 	    
 	  </table>
 	</div>

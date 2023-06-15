@@ -4,7 +4,7 @@
 <mapper namespace="com.koreaIT.project.repository.ScoreRepository">
 	
 	<select id="getScoresByRelId" resultType="Score">
-		SELECT S.*, M.name
+		SELECT S.*, RANK() OVER (ORDER BY S.score DESC) AS score_rank, M.name
 		FROM score AS S
 		INNER JOIN `member` AS M
 		ON S.memberId = M.id
@@ -34,6 +34,32 @@
 		SELECT *
 		FROM score
 		WHERE relId = #{relId}
+	</select>
+	
+	<select id="getAverageOfScores" resultType="Int">
+		SELECT ROUND(AVG(S.score))
+		FROM score AS S
+		WHERE relId = #{relId}
+	</select>
+	
+	<select id="getBestScore" resultType="Score">
+		SELECT S.*, M.name
+		FROM score AS S
+		INNER JOIN `member` AS M
+		ON S.memberId = M.id
+		WHERE S.relId = #{relId}
+		ORDER BY S.score DESC
+		LIMIT 1
+	</select>
+	
+	<select id="getWorstScore" resultType="Score">
+		SELECT S.*, M.name
+		FROM score AS S
+		INNER JOIN `member` AS M
+		ON S.memberId = M.id
+		WHERE S.relId = #{relId}
+		ORDER BY S.score
+		LIMIT 1
 	</select>
 
 </mapper>
