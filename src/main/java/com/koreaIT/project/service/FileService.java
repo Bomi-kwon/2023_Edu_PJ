@@ -92,5 +92,16 @@ public class FileService {
 		
 	}
 
+	public int getImageByMemberId(int memberId) {
+		
+		FileVO file = fileRepository.getFileByRelId("profile", memberId);
+		
+		if(file == null) {
+			return 3;
+		}
+		
+		return file.getId();
+	}
+
 
 }

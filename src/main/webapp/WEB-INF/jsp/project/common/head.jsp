@@ -39,6 +39,15 @@
 				<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/member/memberjoin"><span>회원가입</span></a></li>
 			</c:if>
 			<c:if test="${rq.getLoginedMemberId() != 0 }">
+				
+				<li class="hover:underline">
+					<div class="avatar h-full px-3 flex items-center">
+					  <div class="w-12 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+					    <img src="/project/home/file/${rq.getLoginedMemberImageId() }" />
+					  </div>
+					</div>
+				</li>
+				
 				<c:if test="${rq.getLoginedMember().getAuthLevel() == 1 }">
 					<li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/member/memberlist"><span>회원명단</span></a></li>
 				</c:if>

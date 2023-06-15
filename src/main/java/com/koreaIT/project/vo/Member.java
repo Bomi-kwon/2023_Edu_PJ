@@ -24,6 +24,7 @@ public class Member {
 	
 	private String groupName;
 	private String parentPhoneNum;
+	private int fileId;
 	
 	
 }

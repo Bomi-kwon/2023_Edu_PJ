@@ -18,6 +18,7 @@ import com.koreaIT.project.service.HomeworkService;
 import com.koreaIT.project.service.MemberService;
 import com.koreaIT.project.service.ReplyService;
 import com.koreaIT.project.service.ScoreService;
+import com.koreaIT.project.service.VisitHistoryService;
 import com.koreaIT.project.util.Util;
 import com.koreaIT.project.vo.Article;
 import com.koreaIT.project.vo.Board;
@@ -31,6 +32,7 @@ import com.koreaIT.project.vo.ResultData;
 import com.koreaIT.project.vo.Rq;
 import com.koreaIT.project.vo.Score;
 import com.koreaIT.project.vo.ScoreList;
+import com.koreaIT.project.vo.visitHistory;
 
 @Controller
 public class ProjectArticleController {
@@ -42,11 +44,13 @@ public class ProjectArticleController {
 	GroupService groupService;
 	FileService fileService;
 	ReplyService replyService;
+	VisitHistoryService visitHistoryService;
 	Rq rq;
 	
 	public ProjectArticleController(ArticleService articleService, MemberService memberService,
 			BoardService boardService, ScoreService scoreService, HomeworkService homeworkService,
-			GroupService groupService, FileService fileService, ReplyService replyService, Rq rq) {
+			GroupService groupService, FileService fileService, ReplyService replyService, 
+			VisitHistoryService visitHistoryService, Rq rq) {
 		this.articleService = articleService;
 		this.memberService = memberService;
 		this.boardService = boardService;
@@ -55,6 +59,7 @@ public class ProjectArticleController {
 		this.groupService = groupService;
 		this.fileService = fileService;
 		this.replyService = replyService;
+		this.visitHistoryService = visitHistoryService;
 		this.rq = rq;
 	}
 
@@ -135,13 +140,29 @@ public class ProjectArticleController {
 			rq.jsPrintHistoryBack("해당 번호를 가진 게시물이 없습니다.");
 		}
 		
+		Group group = groupService.getGroupById(article.getClassId());
+		
 		List<Reply> replies = replyService.getReplies("article", id);
 		List<Homework> homeworks = homeworkService.getHwsByRelId(id);
 		
 		FileVO file = fileService.getFileByRelId("article", id);
 		
+		if(rq.getLoginedMemberId() != 0) {
+			visitHistoryService.insertVisit(rq.getLoginedMemberId(),id);
+		}
+		
+		List<visitHistory> visitorList =  visitHistoryService.getVisitorsByArticleId(id);
+		List<Member> visitors = new ArrayList<>();
+		
+		if(visitorList.isEmpty() == false) {
+			for(visitHistory visitHistory : visitorList) {
+				visitors.add(memberService.getMemberById(visitHistory.getMemberId()));
+			}
+			model.addAttribute("visitors",visitors);
+		}
 
 		model.addAttribute("article",article);
+		model.addAttribute("group",group);
 		model.addAttribute("homeworks",homeworks);
 		model.addAttribute("file",file);
 		model.addAttribute("replies",replies);

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.koreaIT.project.repository.VisitHistoryRepository">
+	
+	<insert id="insertVisit">
+		INSERT INTO visitHistory
+		SET regDate = NOW(),
+		memberId = #{memberId},
+		articleId = #{articleId};
+	</insert>
+
+	<select id="getVisitorsByArticleId" resultType="VisitHistory">
+		SELECT *
+		FROM visitHistory
+		WHERE articleId = #{articleId}
+	</select>
+	
+	<select id="getHistoryByMemberIdAndArticleId" resultType="VisitHistory">
+		SELECT *
+		FROM visitHistory
+		WHERE memberId = #{memberId}
+		AND articleId = #{articleId}
+	</select>
+
+</mapper>

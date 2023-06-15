@@ -118,6 +118,8 @@ public class ProjectMemberController {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
+			
 		
 		return Util.jsReplace(Util.f("%s님, 회원가입을 축하합니다.", name), "memberlogin");
 	}
@@ -315,7 +317,14 @@ public class ProjectMemberController {
 	@ResponseBody
 	public ResultData getMembersByAuthLevel(int authLevel) {
 		
-		List<Member> members = memberService.getMembersByAuthLevel(authLevel);
+		List<Member> members;
+		
+		if(authLevel == 0) {
+			members = memberService.getMembers();
+		}
+		else {
+			members = memberService.getMembersByAuthLevel(authLevel);
+		}
 		
 		if(members.isEmpty()) {
 			return ResultData.from("F-1", "회원이 없습니다");

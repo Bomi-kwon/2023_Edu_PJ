@@ -15,5 +15,4 @@ public interface FileRepository {
 
 	void updateFileInfo(String orgName, String savedName, String savedPath, int fildId);
 
-	
 }

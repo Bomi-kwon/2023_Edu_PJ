@@ -4,8 +4,12 @@
 <mapper namespace="com.koreaIT.project.repository.MemberRepository">
 
 	<select id="getMembers" resultType="Member">
-		SELECT * FROM `member`
-		ORDER BY id
+		SELECT M.*, F.id AS fileId
+		FROM `member` AS M
+		LEFT JOIN `file` AS F
+		ON M.id = F.relId
+		AND F.relTypecode = 'profile'
+		ORDER BY id;
 	</select>
 	
 	<select id="getLastId" resultType="Int">
@@ -30,8 +34,12 @@
 	</select>
 	
 	<select id="getMemberById" resultType="Member">
-		SELECT * FROM `member`
-		WHERE id = #{id}
+		SELECT M.*, F.id AS fileId 
+		FROM `member` AS M
+		LEFT JOIN `file` AS F
+		ON M.id = F.relId
+		AND F.relTypecode = 'profile'
+		WHERE M.id = #{id}
 	</select>
 	
 	<select id="getStudentsByClass" resultType="Member">
@@ -63,10 +71,13 @@
 	</delete>
 	
 	<select id="getMembersByAuthLevel" resultType="Member">
-		SELECT M.*, IFNULL(G.groupName,'전체') AS groupName
+		SELECT M.*, IFNULL(G.groupName,'전체') AS groupName, F.id AS fileId
 		FROM `member` AS M
 		LEFT JOIN `group` AS G
 		ON M.classId = G.id
+		LEFT JOIN `file` AS F
+		ON M.id = F.relId
+		AND F.relTypecode = 'profile'
 		WHERE authLevel = #{authLevel}
 	</select>
 	

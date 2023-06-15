@@ -23,6 +23,8 @@ public class Rq {
 	private int loginedMemberId;
 	@Getter
 	private Member loginedMember;
+	@Getter
+	private int loginedMemberImageId;
 
 	private HttpServletRequest req;
 	private HttpServletResponse resp;
@@ -34,14 +36,17 @@ public class Rq {
 
 	    int loginedMemberId = 0;
 	    Member loginedMember = null;
+	    int loginedMemberImageId = 0;
 
 	    if(httpSession.getAttribute("loginedMemberId") != null) {
 	    	loginedMemberId = (int)httpSession.getAttribute("loginedMemberId");
 	    	loginedMember = memberService.getMemberById(loginedMemberId);
+	    	loginedMemberImageId = memberService.getImageByMemberId(loginedMemberId);
 	    }
 
 	    this.loginedMemberId = loginedMemberId;
 	    this.loginedMember = loginedMember;
+	    this.loginedMemberImageId = loginedMemberImageId;
 
 	    this.req.setAttribute("rq", this);
 	}

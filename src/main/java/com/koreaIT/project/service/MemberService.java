@@ -26,13 +26,15 @@ public class MemberService {
 	private MailService mailService;
 	private MessageService messageService;
 	private CouponService couponService;
+	private FileService fileService;
 
 	public MemberService(MemberRepository memberRepository, MailService mailService, 
-			MessageService messageService, CouponService couponService) {
+			MessageService messageService, CouponService couponService, FileService fileService) {
 		this.memberRepository = memberRepository;
 		this.mailService = mailService;
 		this.messageService = messageService;
 		this.couponService = couponService;
+		this.fileService = fileService;
 	}
 
 	public List<Member> getMembers() {
@@ -133,6 +135,10 @@ public class MemberService {
 
 	public Member getMemberByName(String name) {
 		return memberRepository.getMemberByName(name);
+	}
+
+	public int getImageByMemberId(int memberId) {
+		return fileService.getImageByMemberId(memberId);
 	}
 
 	

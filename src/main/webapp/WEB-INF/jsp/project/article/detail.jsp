@@ -24,11 +24,11 @@
 				</tr>
 				<tr>
 					<th>우리반</th>
-					<td colspan="5">${article.classId }</td>
+					<td colspan="5">${group.groupName }</td>
 				</tr>
 				<tr>
 					<th>작성자</th>
-					<td>${article.memberId }</td>
+					<td>${group.teacherName }</td>
 					<th>작성일</th>
 					<td>${article.updateDate }</td>
 					<th>제출일</th>
@@ -41,11 +41,11 @@
 					</td>
 				</tr>
 				<tr>
-					<c:if test="${article.boardId != 4}">
+					<c:if test="${article.boardId != 4 && file != null}">
 						<th>이미지 등록</th>
 						<td colspan="5"><img src="/project/home/file/${file.id }"/></td>
 					</c:if>
-					<c:if test="${article.boardId == 4}">
+					<c:if test="${article.boardId == 4 && article.youTubeLink != null}">
 						<th>동영상</th>
 						<td colspan="5">
 							<div>
@@ -54,11 +54,25 @@
 						</td>
 					</c:if>
 				</tr>
+				<c:if test="${visitors != null }">
 				<tr>
-					<td colspan="6">
-						<div>조회 : ${article.hit }</div>
+					<th>조회</th>
+					<td colspan="5">
+						<div class="avatar-group -space-x-6">
+							<c:forEach var="visitor" items="${visitors }">
+								<section class="flex flex-col justify-center">
+									<div class="avatar bg-white">
+									    <div class="w-20 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+									      <img src="/project/home/file/${visitor.fileId }" />
+									    </div>
+									</div>
+									<div class="text-xs text-center">${visitor.name }</div>
+								</section>
+							</c:forEach>
+						</div>
 					</td>
 				</tr>
+				</c:if>
 			</table>
 		</div>
 		<div class="flex justify-end mt-2">

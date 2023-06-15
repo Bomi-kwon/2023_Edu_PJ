@@ -15,6 +15,7 @@
 		        <th>수강하는 반</th>
 		        <th>휴대전화</th>
 		        <th>이메일</th>
+		        <th>이미지</th>
 		      </tr>
 		    </thead>`);
 		
@@ -31,6 +32,7 @@
 				let groupName = data.data1[i].groupName;
 				let cellphoneNum = data.data1[i].cellphoneNum;
 				let email = data.data1[i].email;
+				let fileId = data.data1[i].fileId;
 				
 				$('#memberlisttable').append(`<tbody>
 					      <tr>
@@ -40,6 +42,7 @@
 				        <td>`+groupName+`</td>
 				        <td>`+cellphoneNum+`</td>
 				        <td>`+email+`</td>
+				        <td><div class="w-12 h-12"><img src="/project/home/file/`+fileId+`"/></div></td>
 				      </tr>
 				    </tbody>`);
 			}
@@ -71,6 +74,7 @@
 	        <th>수강하는 반</th>
 	        <th>휴대전화</th>
 	        <th>이메일</th>
+	        <th>이미지</th>
 	      </tr>
 	    </thead>
 	    
@@ -83,6 +87,7 @@
 	        <td>${member.groupName }</td>
 	        <td>${member.cellphoneNum }</td>
 	        <td>${member.email }</td>
+	        <td><div class="w-12 h-12"><img src="/project/home/file/${member.fileId }"/></div></td>
 	      </tr>
 	    </tbody>
 		</c:forEach>
