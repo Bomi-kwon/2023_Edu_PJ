@@ -101,8 +101,15 @@
 		    <artifactId>jsoup</artifactId>
 		    <version>1.16.1</version>
 		</dependency>
+		
+		<!-- 웹 크롤링을 위한 selenium -->
+		<dependency>
+		    <groupId>org.seleniumhq.selenium</groupId>
+		    <artifactId>selenium-java</artifactId>
+		    <version>3.141.59</version>
+		</dependency>
 
-		<!-- QR코드 생성기를 위한 JSOUP -->
+		<!-- QR코드 생성기를 위한 zxing -->
 		<dependency>
 		    <groupId>com.google.zxing</groupId>
 		    <artifactId>core</artifactId>
@@ -113,6 +120,37 @@
 		    <artifactId>javase</artifactId>
 		    <version>3.5.1</version>
 		</dependency>
+		
+		<!-- webRTC 관련 -->
+		
+		<!-- WebSocket -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-websocket</artifactId>
+		    <version>3.1.0</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.webjars</groupId>
+		    <artifactId>sockjs-client</artifactId>
+		    <version>1.5.1</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.webjars</groupId>
+		    <artifactId>stomp-websocket</artifactId>
+		    <version>2.3.4</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.google.code.gson</groupId>
+		    <artifactId>gson</artifactId>
+		    <version>2.9.0</version>
+		</dependency>
+		<!-- 채팅방에서 파일 업로드 -->
+		<dependency>
+		    <groupId>org.springframework.cloud</groupId>
+		    <artifactId>spring-cloud-starter-aws</artifactId>
+		    <version>2.2.1.RELEASE</version>
+		</dependency>
+		
 		
 		
 	</dependencies>

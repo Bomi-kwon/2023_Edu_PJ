@@ -1,17 +1,8 @@
 package com.koreaIT.project.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -175,49 +166,15 @@ public class ProjectHomeController {
 	}
 	
 	
+	public static String WEB_DRIVER_ID = "webdriver.chrome.driver"; // 드라이버 ID
+	public static String WEB_DRIVER_PATH = "C:\\bbomi\\chromedriver_win32\\chromedriver.exe"; // 드라이버 ID
+	
 	// 입시정보
 	
 	@RequestMapping("/project/home/entranceinfo")
 	public String entranceinfo() {
 		
-		String URL = "https://cafe.naver.com/suhui?iframe_url=/ArticleList.nhn%3Fsearch.clubid=10197921%26search.menuid=2016%26search.boardtype=L";
-		Connection conn = Jsoup.connect(URL);
-		try {
-			Document doc = conn.get();
-			
-			Elements els = doc.getElementsByClass("m-tcol-c");
-			els.forEach(el -> {
-				System.out.println(el.text());
-			});
-			
-			// .text()는 태그 안쪽의 내용만 가져오기
-			// .toString()은 태그까지 합쳐서 string으로 만들기
-			
-			/*
-			List<String> hrefList = new ArrayList<>();
-			
-			for(Element element : titleElements) {
-				hrefList.add(element.attr("abs:href")); // 절대경로 추출하고 싶으면 abs: 붙이면됨
-			}
-			
-			Map<String, String> ArticleData = new HashMap<>();
-			
-			for (int j = 0; j < hrefList.size(); j++) {
-				String title = (j+1) + "번 " + titleElements.get(j).text();
-				String href = hrefList.get(j).toString();
-				ArticleData.put(title, href);
-			}
-			
-			for(Map.Entry<String, String> entry : ArticleData.entrySet()) {
-				System.out.println(entry.getKey() + " : " + entry.getValue());
-			}
-			
-			*/
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
+		System.setProperty(WEB_DRIVER_ID, WEB_DRIVER_PATH);
 		
 		
 		return "project/home/entranceinfo";
