@@ -7,7 +7,8 @@
 		INSERT INTO coupon
 		SET regDate = NOW(),
 		deadLine = #{deadLine},
-		studentId = #{studentId};
+		studentId = #{studentId},
+		couponPassword = #{couponPassword};
 	</insert>
 	
 	<select id="getCouponByStudentId" resultType="Coupon">

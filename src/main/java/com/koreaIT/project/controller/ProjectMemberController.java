@@ -568,7 +568,7 @@ public class ProjectMemberController {
 	
 	@RequestMapping("/project/member/doGiveCoupon")
 	@ResponseBody
-	public String doGiveCoupon(String deadLine, int studentId) {
+	public String doGiveCoupon(String deadLine, int studentId) throws Exception {
 		
 		Member member = memberService.getMemberById(studentId);
 		
@@ -576,11 +576,36 @@ public class ProjectMemberController {
 			return Util.jsReplace("존재하지 않는 학생입니다.", "givecoupon");
 		}
 		
-		couponService.doGiveCoupon(deadLine, studentId);
+		Coupon coupon = couponService.getCouponByStudentId(studentId);
 		
-		return Util.jsReplace(Util.f("%s 학생에게 쿠폰이 발행되었습니다.", member.getName()), "/");
+		if (coupon != null) {
+			return Util.jsReplace(Util.f("%s 학생에게는 이미 쿠폰이 있습니다.", member.getName()) , "givecoupon");
+		}
+		
+		ResultData notifyTempCouponByMessageRd =  memberService.notifyTempCouponByMessage(member, deadLine, studentId);
+		
+		return Util.jsReplace(notifyTempCouponByMessageRd.getMsg(), "/");
 	}
 	
+	
+	// 학생이 적은 쿠폰번호 맞는지 확인하기
+	
+	@RequestMapping("/project/member/verifyPassword")
+	@ResponseBody
+	public ResultData verifyPassword(String couponPassword) {
+		
+		Coupon coupon = couponService.getCouponByStudentId(rq.getLoginedMemberId());
+		
+		if(coupon == null) {
+			return ResultData.from("F-1", "쿠폰이 지급되지 않았습니다.");
+		}
+		
+		if(!coupon.getCouponPassword().equals(couponPassword)) {
+			return ResultData.from("F-1", "쿠폰번호가 틀렸습니다.");
+		}
+		
+		return ResultData.from("S-1", "쿠폰이 성공적으로 등록되었습니다.","coupon", coupon);
+	}
 	
 	
 }

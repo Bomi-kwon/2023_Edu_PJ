@@ -1,0 +1,41 @@
+server:
+  port: 8081
+spring:
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 20MB
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: mailtestcjh@gmail.com
+    password: xohvhfpztqxdzaqo
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true 
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/Edu_PJ?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull
+    username: root
+    password: 
+mybatis:
+  type-aliases-package: com.koreaIT.project.vo
+custom:
+  siteName: SPONGEedu
+  siteMainUri: http://localhost:8081
+  emailFrom: no-reply@localhost
+  emailFromName: SPONGEedu
+naver-cloud-sms:
+  accessKey: OxAIgEdXyNQXm36Tas3j
+  secretKey: mncOGNerievlx9JfvdsJlpDK0YOVjPsD07F3vmUR
+  serviceId: ncp:sms:kr:309259979584:spongeedu
+  senderPhone: 01097480218
+file:
+  dir: C:/bbomi/upload

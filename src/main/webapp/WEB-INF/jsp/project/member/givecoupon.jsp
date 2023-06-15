@@ -74,6 +74,7 @@
 			<div id="studentlisthavingkeyword"></div>
 			
 			
+			<!-- 학생 선택해서 쿠폰 보내주는 곳 -->
 			<form action="doGiveCoupon" id="doGiveCoupon"></form>
 			
 		</div>

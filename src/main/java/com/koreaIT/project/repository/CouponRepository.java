@@ -7,7 +7,7 @@ import com.koreaIT.project.vo.Coupon;
 @Mapper
 public interface CouponRepository {
 
-	public void doGiveCoupon(String deadLine, int studentId);
+	public void doGiveCoupon(String deadLine, int studentId, String couponPassword);
 
 	public Coupon getCouponByStudentId(int studentId);
 

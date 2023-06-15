@@ -12,6 +12,7 @@ public class Coupon {
 	private String regDate;
 	private String deadLine;
 	private int studentId;
+	private String couponPassword;
 	
 	
 }

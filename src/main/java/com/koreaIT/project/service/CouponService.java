@@ -15,8 +15,8 @@ public class CouponService {
 		this.couponRepository = couponRepository;
 	}
 
-	public void doGiveCoupon(String deadLine, int studentId) {
-		couponRepository.doGiveCoupon(deadLine, studentId);
+	public void doGiveCoupon(String deadLine, int studentId, String couponPassword) {
+		couponRepository.doGiveCoupon(deadLine, studentId, couponPassword);
 	}
 
 	public Coupon getCouponByStudentId(int studentId) {

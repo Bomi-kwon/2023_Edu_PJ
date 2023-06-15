@@ -9,7 +9,10 @@ import org.springframework.ui.Model;
 import com.koreaIT.project.repository.MemberRepository;
 import com.koreaIT.project.util.Util;
 import com.koreaIT.project.vo.Member;
+import com.koreaIT.project.vo.MessageDTO;
+import com.koreaIT.project.vo.MessageDTO.MessageDTOBuilder;
 import com.koreaIT.project.vo.ResultData;
+import com.koreaIT.project.vo.SmsResponseDTO;
 
 @Service
 public class MemberService {
@@ -21,10 +24,15 @@ public class MemberService {
 	
 	private MemberRepository memberRepository;
 	private MailService mailService;
+	private MessageService messageService;
+	private CouponService couponService;
 
-	public MemberService(MemberRepository memberRepository, MailService mailService) {
+	public MemberService(MemberRepository memberRepository, MailService mailService, 
+			MessageService messageService, CouponService couponService) {
 		this.memberRepository = memberRepository;
 		this.mailService = mailService;
+		this.messageService = messageService;
+		this.couponService = couponService;
 	}
 
 	public List<Member> getMembers() {
@@ -91,6 +99,25 @@ public class MemberService {
 	private void setTempPassword(Member member, String tempPassword) {
 		memberRepository.doPasswordModify(member.getId(), Util.sha256(tempPassword));
 	}
+	
+	public ResultData notifyTempCouponByMessage(Member member, String deadLine, int studentId) throws Exception {
+		String couponPassword = Util.getTempPassword(6);
+		
+		MessageDTO messageDTO = MessageDTO.builder()
+				.to(member.getCellphoneNum())
+				.content(Util.f("쿠폰 번호는 %s 입니다.", couponPassword))
+				.build();
+		
+		SmsResponseDTO response = messageService.sendMessage(messageDTO);
+		
+		if(response.getStatusName().equals("success") == false) {
+			return ResultData.from("F-1", "쿠폰번호 문자 전송에 실패하였습니다.");
+		}
+		
+		couponService.doGiveCoupon(deadLine, studentId, couponPassword);
+		
+		return ResultData.from("S-1", Util.f("쿠폰번호를 %s 학생에게 문자로 보냈습니다.", member.getName()));
+	}
 
 	public List<Member> getMemberByClassId(int classId) {
 		return memberRepository.getMemberByClassId(classId);
@@ -107,6 +134,8 @@ public class MemberService {
 	public Member getMemberByName(String name) {
 		return memberRepository.getMemberByName(name);
 	}
+
+	
 
 	
 	

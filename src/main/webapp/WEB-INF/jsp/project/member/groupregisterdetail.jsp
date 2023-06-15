@@ -149,9 +149,6 @@
 				        <td class="totalprice">200,000원</td>
 			     	 </tr>
 		    	</tbody>
-		    	
-		    	
-		    	
 			</table>
 		</div>
 		
@@ -163,20 +160,107 @@
 		</div>
 	</div>
 </section>
+
+
+ <!-- 쿠폰번호 입력 모달창 -->
+<div class="CouponPassworkChkmodal-bg"></div>
+<div class="CouponPassworkChkmodal">
+	<h1>쿠폰번호 입력</h1>
+	<a class="close-btn"><i class="fa-regular fa-circle-xmark"></i></a>
+ 	<div class="flex">
+	 	<input class="input input-bordered input-success w-full" type="text" name="" id="CouponPassworkChktable"/>
+	 	<button class="CouponPassworkChkmodal-btn btn btn-success">입력</button>
+ 	</div>
+	
+</div>
+
+<style>
+	/* 쿠폰번호 입력 모달창 커스텀 */
+.CouponPassworkChkmodal-bg, .CouponPassworkChkmodal {
+	display: none;
+}
+.CouponPassworkChkmodal-bg {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	background-color: rgba(0,0,0,0.5);
+	z-index: 10;
+}
+.CouponPassworkChkmodal {
+	position: absolute;
+	height: 200px;
+	width: 500px;
+	background-color: white;
+	top: 50%;
+	left: 50%;
+	transform: translateX(-50%) translateY(-50%);
+	padding: 20px;
+	z-index: 15;
+	border: 2px solid black;
+}
+.CouponPassworkChkmodal > h1 {
+	font-size: 1.5rem;
+	margin-bottom: 30px;
+}
+.close-btn {
+	position: absolute;
+	top:20px;
+	right: 20px;
+	cursor: pointer;
+	font-size: 2rem;
+}
+</style>
 	
 	
 <script>
+	$('.close-btn').click(function(){
+		$('.CouponPassworkChkmodal-bg, .CouponPassworkChkmodal').hide();
+		$('#CouponPassworkChktable').html("");
+	});
+	
+	$('.CouponPassworkChkmodal-bg').click(function(){
+		$('.CouponPassworkChkmodal-bg, .CouponPassworkChkmodal').hide();
+		$('#CouponPassworkChktable').html("");
+	});
+	
 	$('.couponChk').change(function() {
-		$('.payBtn').toggle();
-		$('.registerBtn').toggle();
 		
 		if($('.couponChk').is(':checked')) {
-			$('.couponprice').html('200,000원');
-			$('.totalprice').html('0원');
+			$('.CouponPassworkChkmodal-bg, .CouponPassworkChkmodal').show();
 		} else {
 			$('.couponprice').html('0원');
 			$('.totalprice').html('200,000원');
+			$('.payBtn').show();
+			$('.registerBtn').hide();
 		}
+		
+	})
+	
+	$('.CouponPassworkChkmodal-btn').click(function() {
+		
+		var couponPWVal = $('#CouponPassworkChktable').val();
+		
+		$.get('verifyPassword', {
+			couponPassword : couponPWVal
+		}, function(data) {
+			console.log(data);
+			
+			if(data.success) {
+				$('.CouponPassworkChkmodal-bg, .CouponPassworkChkmodal').hide();
+				$('#CouponPassworkChktable').val("");
+				$('.couponprice').html('200,000원');
+				$('.totalprice').html('0원');
+				$('.payBtn').hide();
+				$('.registerBtn').show();
+				alert(data.msg);
+			}
+			else {
+				alert(data.msg);
+				location.replace('groupregisterdetail?id=${group.id}');
+			}
+		}, 'json');
 		
 	})
 </script>
