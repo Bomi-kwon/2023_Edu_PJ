@@ -7,7 +7,7 @@
 
 <script>
 	function setSelectBox(grade) {
-		$('#group').html(`<option value="">전체</option>`);
+		$('#group').html(`<option class="text-lg" value="">전체</option>`);
 		
 		let gradeVal = grade.value;
 		
@@ -50,14 +50,18 @@
 								<div>
 									<select name="grade" class="select select-success w-full max-w-xs" onchange="setSelectBox(this)">
 										<option value="">학년</option>
-										<option value="elementary">초등</option>
-										<option value="middle">중등</option>
-										<option value="high">고등</option>
+										<option value="elementary" ${group.grade == 'elementary' ? 'selected' : ''}>초등</option>
+										<option value="middle" ${group.grade == 'middle' ? 'selected' : ''}>중등</option>
+										<option value="high" ${group.grade == 'high' ? 'selected' : ''}>고등</option>
 									</select>
 								</div>
 								<div>
 									<select name="classId" id="group" class="select select-success w-full max-w-xs">
 										<option value="">전체</option>
+										<c:forEach var="groupbygrade" items="${groupList }">
+											<option value="${groupbygrade.id }" ${group.id == groupbygrade.id ? 'selected' : ''}>
+											${groupbygrade.groupName }</option>
+										</c:forEach>
 									</select>
 								</div>
 								</div>
@@ -66,7 +70,7 @@
 						<tr>
 							<th>시험일자</th>
 							<td><input class="input input-bordered input-success w-60" type="date" name="regDate" 
-							min="2023-01-01" max="2024-12-31" value="${article.regDate }"/></td>
+							min="2023-01-01" max="2024-12-31" value="${article.regDate.substring(0,10) }"/></td>
 						</tr>
 					</table>
 				</div>
@@ -78,11 +82,5 @@
 		</div>
 </section>
 
-			
-
-
-	
-	
-	
 	
 <%@ include file="../common/foot.jsp" %>

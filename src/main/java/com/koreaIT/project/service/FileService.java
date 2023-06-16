@@ -56,7 +56,7 @@ public class FileService {
 		return fileRepository.getFileById(id);
 	}
 
-	public void updateFile(MultipartFile file, String relTypecode, int relId, int fildId) throws IOException {
+	public void updateFile(MultipartFile file, String relTypecode, int relId, int fileId) throws IOException {
 		
 		if (file.isEmpty()) {
 			return;
@@ -73,7 +73,7 @@ public class FileService {
 
 		String savedPath = fileDir + "/" + savedName;
 
-		fileRepository.updateFileInfo(orgName, savedName, savedPath, fildId);
+		fileRepository.updateFileInfo(orgName, savedName, savedPath, fileId);
 
 		file.transferTo(new File(savedPath));
 	

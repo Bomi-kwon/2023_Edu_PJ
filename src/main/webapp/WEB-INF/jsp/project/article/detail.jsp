@@ -30,9 +30,9 @@
 					<th>작성자</th>
 					<td>${group.teacherName }</td>
 					<th>작성일</th>
-					<td>${article.updateDate }</td>
+					<td>${article.updateDate.substring(0,10) }</td>
 					<th>제출일</th>
-					<td>${article.deadLine }</td>
+					<td>${article.deadLine.substring(0,10) }</td>
 				</tr>
 				<tr>
 					<th>내용</th>
@@ -42,7 +42,7 @@
 				</tr>
 				<tr>
 					<c:if test="${article.boardId != 4 && file != null}">
-						<th>이미지 등록</th>
+						<th>이미지</th>
 						<td colspan="5"><img src="/project/home/file/${file.id }"/></td>
 					</c:if>
 					<c:if test="${article.boardId == 4 && article.youTubeLink != null}">
@@ -196,11 +196,11 @@ function getStudentsByClass(relId,classId) {
 					        name="homeworklist[`+i+`].hwPerfection" required/> %</td>
 			        	<td>
 				        	<select name="homeworklist[`+i+`].hwMsg" class="select select-success w-full max-w-xs">
-								<option value="숙제가 완벽해요">숙제가 완벽해요</option>
-								<option value="숙제를 전혀 안 했어요">숙제를 전혀 안 했어요</option>
-								<option value="숙제를 안 가져왔어요">숙제를 안 가져왔어요</option>
-								<option value="숙제를 베꼈어요">숙제를 베꼈어요</option>
-								<option value="숙제를 찍었어요">숙제를 찍었어요</option>
+								<option class="text-lg" value="숙제가 완벽해요">숙제가 완벽해요</option>
+								<option class="text-lg" value="숙제를 전혀 안 했어요">숙제를 전혀 안 했어요</option>
+								<option class="text-lg" value="숙제를 안 가져왔어요">숙제를 안 가져왔어요</option>
+								<option class="text-lg" value="숙제를 베꼈어요">숙제를 베꼈어요</option>
+								<option class="text-lg" value="숙제를 찍었어요">숙제를 찍었어요</option>
 							</select>
 			        	</td>
 				      </tr>
@@ -234,11 +234,11 @@ function hwmodify() {
 			        name="homeworklist[${status.index}].hwPerfection" value="${homework.hwPerfection }" required/> % </td>
 	        	<td>
 		        	<select name="homeworklist[${status.index}].hwMsg" class="select select-success w-full max-w-xs">
-		        		<option value="숙제가 완벽해요" ${homework.hwMsg == '숙제가 완벽해요' ? 'selected' : ''}>숙제가 완벽해요</option>
-						<option value="숙제를 전혀 안 했어요" ${homework.hwMsg == '숙제를 전혀 안 했어요' ? 'selected' : ''}>숙제를 전혀 안 했어요</option>
-						<option value="숙제를 안 가져왔어요" ${homework.hwMsg == '숙제를 안 가져왔어요' ? 'selected' : ''}>숙제를 안 가져왔어요</option>
-						<option value="숙제를 베꼈어요" ${homework.hwMsg == '숙제를 베꼈어요' ? 'selected' : ''}>숙제를 베꼈어요</option>
-						<option value="숙제를 찍었어요" ${homework.hwMsg == '숙제를 찍었어요' ? 'selected' : ''}>숙제를 찍었어요</option>
+		        		<option class="text-lg" value="숙제가 완벽해요" ${homework.hwMsg == '숙제가 완벽해요' ? 'selected' : ''}>숙제가 완벽해요</option>
+						<option class="text-lg" value="숙제를 전혀 안 했어요" ${homework.hwMsg == '숙제를 전혀 안 했어요' ? 'selected' : ''}>숙제를 전혀 안 했어요</option>
+						<option class="text-lg" value="숙제를 안 가져왔어요" ${homework.hwMsg == '숙제를 안 가져왔어요' ? 'selected' : ''}>숙제를 안 가져왔어요</option>
+						<option class="text-lg" value="숙제를 베꼈어요" ${homework.hwMsg == '숙제를 베꼈어요' ? 'selected' : ''}>숙제를 베꼈어요</option>
+						<option class="text-lg" value="숙제를 찍었어요" ${homework.hwMsg == '숙제를 찍었어요' ? 'selected' : ''}>숙제를 찍었어요</option>
 					</select>
 			    </td>
 		      </tr>

@@ -12,7 +12,6 @@
 		        <th>가입날짜</th>
 		        <th>로그인 아이디</th>
 		        <th>이름</th>
-		        <th>수강하는 반</th>
 		        <th>휴대전화</th>
 		        <th>이메일</th>
 		        <th>이미지</th>
@@ -29,7 +28,6 @@
 				let regDate = data.data1[i].regDate;
 				let loginID = data.data1[i].loginID;
 				let name = data.data1[i].name;
-				let groupName = data.data1[i].groupName;
 				let cellphoneNum = data.data1[i].cellphoneNum;
 				let email = data.data1[i].email;
 				let fileId = data.data1[i].fileId;
@@ -39,7 +37,6 @@
 				        <td>`+regDate+`</td>
 				        <td>`+loginID+`</td>
 				        <td>`+name+`</td>
-				        <td>`+groupName+`</td>
 				        <td>`+cellphoneNum+`</td>
 				        <td>`+email+`</td>
 				        <td><div class="w-12 h-12"><img src="/project/home/file/`+fileId+`"/></div></td>
@@ -71,7 +68,6 @@
 	        <th>가입날짜</th>
 	        <th>로그인 아이디</th>
 	        <th>이름</th>
-	        <th>수강하는 반</th>
 	        <th>휴대전화</th>
 	        <th>이메일</th>
 	        <th>이미지</th>
@@ -84,7 +80,6 @@
 	        <td>${member.regDate }</td>
 	        <td>${member.loginID }</td>
 	        <td>${member.name }</td>
-	        <td>${member.groupName }</td>
 	        <td>${member.cellphoneNum }</td>
 	        <td>${member.email }</td>
 	        <td><div class="w-12 h-12"><img src="/project/home/file/${member.fileId }"/></div></td>

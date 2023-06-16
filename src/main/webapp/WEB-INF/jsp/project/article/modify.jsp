@@ -33,9 +33,9 @@
 						<th>작성자</th>
 						<td>${article.memberId }</td>
 						<th>작성일</th>
-						<td>${article.updateDate }</td>
+						<td>${article.updateDate.substring(0,10) }</td>
 						<th>제출일</th>
-						<td>이번주 금요일</td>
+						<td>${article.deadLine.substring(0,10) }</td>
 					</tr>
 					<tr>
 						<td colspan="6">
@@ -44,12 +44,37 @@
 					</tr>
 					<tr>
 						<th>이미지</th>
-						<td colspan="5"></td>
+						<td colspan="5">
+						<c:if test="${file != null}">
+							<div>현재 이미지</div>
+							<div><img src="/project/home/file/${file.id }"/></div>
+							<input type="hidden" name="fileId" value="${file.id }"/>
+						</c:if>
+							<div>
+								<span>수정할 이미지 : </span>
+								<div class=""><input type="file" name="file"/></div>
+							</div>
+						</td>
 					</tr>
+					
+					<c:if test="${article.boardId == 4}">
 					<tr>
-						<th>첨부파일</th>
-						<td colspan="5"></td>
+						<th>동영상</th>
+						<td colspan="5">
+						<c:if test="${article.youTubeLink != null}">
+							<div>현재 동영상</div>
+							<div>
+								<iframe width="1120" height="630" src="https://www.youtube.com/embed/${article.youTubeLink.substring(17) }?mute=1" title="YouTube video player" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+							</div>
+						</c:if>
+							<div>
+								<span>수정할 동영상 링크: </span>
+								<div class=""><input class="input input-bordered input-success w-full" type="text" name="youTubeLink"/></div>
+							</div>
+						</td>
 					</tr>
+					</c:if>
+					
 					<tr>
 						<td colspan="6">
 							<div>2명 확인</div>

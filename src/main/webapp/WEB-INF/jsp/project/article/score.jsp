@@ -69,8 +69,8 @@
 						        name="scorelist[${status.index }].score" required/></td>
 						        <td>
 						        	<select name="classId" class="select select-success w-full max-w-xs">
-										<option value="">응시</option>
-										<option value="">미응시</option>
+										<option class="text-lg" value="">응시</option>
+										<option class="text-lg" value="">미응시</option>
 									</select>
 						        </td>
 						      </tr>

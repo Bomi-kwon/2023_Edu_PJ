@@ -34,15 +34,11 @@
 				</div>
 				
 				<form action="doModifyScoreArticle">
+				<input type="hidde" name="articleId" value="${article.id }"/>
 				<div class="table-box-type-1 mt-5">
 					<table class="table w-full" id="scoretable">
 						<thead>
 						      <tr>
-						        <th>
-						          <label>
-						            <input type="checkbox" class="checkbox" />
-						          </label>
-						        </th>
 						        <th>원생명</th>
 						        <th>총점</th>
 						        <th>응시여부</th>
@@ -54,11 +50,6 @@
 							<input type="hidden" name="scorelist[${status.index }].id" value="${score.id }"/>
 							<input type="hidden" name="scorelist[${status.index }].memberId" value="${score.memberId }"/>
 						      <tr id="${status.count }">
-						        <th>
-						          <label>
-						            <input type="checkbox" class="checkbox" />
-						          </label>
-						        </th>
 						        <td>${score.name }</td>
 						        <td><input class="input input-bordered input-success w-full" type="text"
 						        name="scorelist[${status.index }].score" value="${score.score }" required/></td>

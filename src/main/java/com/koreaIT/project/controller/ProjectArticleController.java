@@ -1,5 +1,6 @@
 package com.koreaIT.project.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -224,23 +225,30 @@ public class ProjectArticleController {
 		}
 		
 		Article article = articleService.getArticleById(id);
+		
 		if(article == null) {
 			return Util.f("%d번 게시물은 존재하지 않습니다.", id);
 		}
+		
+		FileVO file = fileService.getFileByRelId("article", id);
+		
 		model.addAttribute("article", article);
+		model.addAttribute("file",file);
 		
 		return "project/article/modify";
 	}
 	
 	@RequestMapping("/project/article/doModify")
 	@ResponseBody
-	public String doModify(int id, String title, String body, int memberId, int boardId) {
+	public String doModify(int id, String title, String body, int memberId, int boardId, 
+			@RequestParam(defaultValue = "0") int fileId, MultipartFile file, String youTubeLink) throws IOException {
 		
 		if(rq.getLoginedMemberId() != memberId) {
 			return Util.jsReplace("게시물 삭제 권한이 없습니다.",Util.f("list?boardId=%d", boardId));
 		}
 		
 		Article article = articleService.getArticleById(id);
+		
 		if(article == null) {
 			return Util.f("%d번 게시물은 존재하지 않습니다.", id);
 		}
@@ -253,7 +261,17 @@ public class ProjectArticleController {
 			return Util.jsHistoryBack("내용을 입력해주세요");
 		}
 		
-		articleService.doModify(id, title, body);
+		if(Util.empty(youTubeLink)) {
+			articleService.doModify(id, title, body, article.getYouTubeLink());
+		}
+		
+		else {
+			articleService.doModify(id, title, body, youTubeLink);
+		}
+		
+		if(file != null && !file.isEmpty()) {
+			fileService.updateFile(file, "article", id, fileId);
+		}
 		
 		return Util.jsReplace(Util.f("%d번 게시물을 수정하였습니다.",id), Util.f("detail?id=%d", id));
 	}
@@ -295,6 +313,12 @@ public class ProjectArticleController {
 			visitHistoryService.insertVisit(rq.getLoginedMemberId(),relId);
 		}
 		
+		Group group = groupService.getGroupById(article.getClassId());
+		if(group != null) {
+			int studentNum = groupService.getStudentNumById(group.getId());
+			model.addAttribute("studentNum", studentNum);
+		}
+		
 		List<visitHistory> visitorList =  visitHistoryService.getVisitorsByArticleId(relId);
 		List<Member> visitors = new ArrayList<>();
 		
@@ -305,10 +329,8 @@ public class ProjectArticleController {
 			model.addAttribute("visitors",visitors);
 		}
 		
-		
 		model.addAttribute("scores", scores);
 		model.addAttribute("article",article);
-		
 		
 		return "project/article/scoredetail";
 	}
@@ -433,7 +455,14 @@ public class ProjectArticleController {
 	public String scorearticlemodify(Model model, int id) {
 		
 		Article article = articleService.getArticleById(id);
+		
+		Group group = groupService.getGroupById(article.getClassId());
+		
+		List<Group> groupList = groupService.getGroupsByGrade(group.getGrade());
+		
 		model.addAttribute("article", article);
+		model.addAttribute("group", group);
+		model.addAttribute("groupList", groupList);
 		
 		return "project/article/scorearticlemodify";
 	}
@@ -465,7 +494,7 @@ public class ProjectArticleController {
 	
 	@RequestMapping("/project/article/doModifyScoreArticle")
 	@ResponseBody
-	public String doModifyScoreArticle(ScoreList scorelist) {
+	public String doModifyScoreArticle(int articleId, ScoreList scorelist, String body) {
 		
 		List<Score> scoreList = scorelist.getScorelist();
 		
@@ -474,6 +503,12 @@ public class ProjectArticleController {
 			if(score != null) {
 				scoreService.updateScore(score.getId(), score.getScore());
 			}
+		}
+		
+		Article article = articleService.getArticleById(articleId);
+		
+		if(article != null) {
+			articleService.doModify(articleId, article.getTitle(), body, null);
 		}
 		
 		return Util.jsReplace("성적을 수정했습니다.", "scorelist");
@@ -566,7 +601,20 @@ public class ProjectArticleController {
 	}
 	
 	
+	// 게시판 당 게시물 하루 한개 작성 제한 - 오늘 내가 쓴 글 있나 확인하기
 	
+		@RequestMapping("/project/article/getArticleNumLimit")
+		@ResponseBody
+		public ResultData getArticleNumLimit(String today, int boardId, int loginedMemberId) {
+
+			List<Article> articles = articleService.getArticleNumLimit(today, boardId, loginedMemberId);
+			
+			if(articles.size() != 0) {
+				return ResultData.from("F-1", "게시판 당 하루에 게시물 하나씩만 쓸 수 있습니다.");
+			}
+			
+			return ResultData.from("S-1", "오늘 이 게시판에 쓴 글이 없으므로 글 쓰기가 가능합니다.");
+		}
 	
 	
 	

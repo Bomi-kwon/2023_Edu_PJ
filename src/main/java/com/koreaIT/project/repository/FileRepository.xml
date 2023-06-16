@@ -32,7 +32,7 @@
 		originName = #{orgName},
 		savedName = #{savedName},
 		savedPath = #{savedPath}
-		WHERE id = #{fildId}
+		WHERE id = #{fileId}
 	</update>
 
 </mapper>

@@ -13,6 +13,6 @@ public interface FileRepository {
 
 	FileVO getFileById(int id);
 
-	void updateFileInfo(String orgName, String savedName, String savedPath, int fildId);
+	void updateFileInfo(String orgName, String savedName, String savedPath, int fileId);
 
 }

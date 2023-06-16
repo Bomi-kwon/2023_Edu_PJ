@@ -31,6 +31,10 @@ public class GroupService {
 		return groupRepository.getGroupById(id);
 	}
 
+	public int getStudentNumById(int id) {
+		return groupRepository.getStudentNumById(id);
+	}
+
 
 
 }

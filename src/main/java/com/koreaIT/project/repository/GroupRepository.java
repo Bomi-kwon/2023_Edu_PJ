@@ -15,4 +15,6 @@ public interface GroupRepository {
 	public List<Group> getGroupsByTeacherID(int groupTeacherId);
 
 	public Group getGroupById(int id);
+
+	public int getStudentNumById(int id);
 }

@@ -46,5 +46,15 @@
 		ON G.groupTeacherId = M.id
 		WHERE G.id = #{id};
 	</select>
+	
+	<select id="getStudentNumById" resultType="Int">
+		SELECT COUNT(M.classId) AS studentNum
+		FROM `group` AS G
+		LEFT JOIN `member` AS M
+		ON G.id = M.classId
+		AND M.authLevel = 2
+		GROUP BY G.id
+		HAVING G.id = #{id};
+	</select>
 
 </mapper>

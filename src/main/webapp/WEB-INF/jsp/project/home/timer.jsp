@@ -74,6 +74,16 @@
 			      	</tr>
 			    </tbody>
 	    	</table>
+	    	<div class="">
+	    		<span>영어듣기평가 파일 : </span>
+	    		<audio id="myAudio" src="https://blog.kakaocdn.net/dn/GfTMk/btskfczI6z8/s9g8hbJUItpfUo87N30Opk/00_%EC%95%88%EB%82%B4%EB%A9%98%ED%8A%B8.mp3?attach=1&knm=tfile.mp3" controls></audio>
+	    	</div>
+	    	<div>
+	    		<span>재생할 날짜와 시간</span>
+	    		<input id="nowDate" type="date" min="2023-06-01" max="2023-07-31"/>
+	    		<input id="nowTime" type="time" />
+	    	</div>
+	    	<button id="play-button">입력</button>
 	    	</div>
 	    	</div>
     </div>
@@ -85,15 +95,12 @@
     const dpTime = function () {
       const now = new Date();
       let year = now.getFullYear();
-      let month = now.getMonth();
+      let month = now.getMonth() + 1;
       let date = now.getDate();
       
       let hours = now.getHours();
       let minutes = now.getMinutes();
       let seconds = now.getSeconds();
-      
-      const startTime = new Date('2023-05-30 14:30:00');
-      const endTime = new Date('2023-05-30 15:05:00');
       
       if (month < 10) {
     	  month = '0' + month;
@@ -121,11 +128,13 @@
 
       
       let nowTime = hours + "" + minutes + "" + seconds;
-      
+     
+      <!-- 
 	  console.clear();
       console.log('현재 : ' + now);
       console.log('시간만(밀리초): ' + now.getTime());
       console.log('시간만: ' + nowTime);
+      -->
       
       if(nowTime >= 084000 && nowTime <= 100000) {
     	  $('.korean').css('color','red');
@@ -156,8 +165,39 @@
     	  $('.chinese').css('background-color','yellow');
       }
       
+      
     }
+    
     setInterval(dpTime, 1000)  // 1초마다 함수 실행되도록 설정
+    
+    
+    
+    function playAudioAtTime(audioPath, playTime) {
+    	  var audio = new Audio(audioPath);
+    	  var currentTime = new Date().getTime();
+    	  var delay = playTime - currentTime;
+
+    	  if (delay > 0) {
+    	    setTimeout(function() {
+    	      audio.play();
+    	    }, delay);
+    	  } else {
+    	    // 이미 지정한 시간이 지난 경우 즉시 재생
+    	    audio.play();
+    	  }
+    	}
+    
+    $('#play-button').click(function() {
+    	
+	    console.log($('#nowDate').value);
+	    console.log($('#nowTime').value);
+	    var playTime = new Date(2023, 5, 16, 18, 39, 0).getTime();
+	    var audioPath = "https://blog.kakaocdn.net/dn/GfTMk/btskfczI6z8/s9g8hbJUItpfUo87N30Opk/00_%EC%95%88%EB%82%B4%EB%A9%98%ED%8A%B8.mp3?attach=1&knm=tfile.mp3";
+	    
+	    playAudioAtTime(audioPath, playTime);
+    })
+
+    
   </script>
   
   

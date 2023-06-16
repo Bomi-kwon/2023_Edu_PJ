@@ -31,7 +31,7 @@
 				</tr>
 				<tr>
 					<th>응시현황</th>
-					<td>2명응시/총 ${scores.size() }명</td>
+					<td>${scores.size() }명 응시/총 ${studentNum }명</td>
 					<th>만점기준</th>
 					<td>100점</td>
 				</tr>
@@ -45,7 +45,7 @@
 				</tr>
 				<tr>
 					<th>교사의견</th>
-					<td colspan="3">${article.body }</td>
+					<td colspan="3">${article.getForPrintBody() }</td>
 				</tr>
 				
 				<c:if test="${visitors != null }">

@@ -65,13 +65,12 @@
 									<span>현재 이미지 : </span>
 									<c:if test="${profileImg != null }">
 										<div class="w-12 h-12 mr-10"><img src="/project/home/file/${profileImg.id }"/></div>
-										<input type="hidden" name="fildId" value="${profileImg.id }"/>
+										<input type="hidden" name="fileId" value="${profileImg.id }"/>
 									</c:if>
 									<c:if test="${profileImg == null }">
 										<div class="mr-10">없음</div>
 									</c:if>
 									<span>수정할 이미지 : </span>
-									
 									<div class="ml-2"><input type="file" name="file"/></div>
 								</section>
 							</td>

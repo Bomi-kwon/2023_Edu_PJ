@@ -72,7 +72,8 @@
 		UPDATE article
 		SET updateDate = NOW(),
 		title = #{title},
-		`body` = #{body}
+		`body` = #{body},
+		youTubeLink = #{youTubeLink}
 		WHERE id = #{id}
 	</update>
 	
@@ -111,5 +112,13 @@
 		SET hit = hit + 1
 		WHERE id = #{id}
 	</update>
+	
+	<select id="getArticleNumLimit" resultType="Article">
+		SELECT *
+		FROM article
+		WHERE memberId = #{loginedMemberId}
+		AND boardId = #{boardId}
+		AND regDate LIKE CONCAT('%',#{today},'%');
+	</select>
 
 </mapper>

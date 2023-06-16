@@ -275,13 +275,13 @@ public class ProjectMemberController {
 	
 	@RequestMapping("/project/member/doMemberModify")
 	@ResponseBody
-	public String doMemberModify(int id, String name, String cellphoneNum, String email, int fildId, MultipartFile file) {
+	public String doMemberModify(int id, String name, String cellphoneNum, String email, int fileId, MultipartFile file) {
 		
 		memberService.doMemberModify(id, name, cellphoneNum, email);
 		
-		if(!file.isEmpty()) {
+		if(!file.isEmpty() || file != null) {
 			try {
-				fileService.updateFile(file, "profile", id, fildId);
+				fileService.updateFile(file, "profile", id, fileId);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

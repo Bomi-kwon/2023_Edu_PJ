@@ -35,8 +35,8 @@ public class ArticleService {
 		articleRepository.doDelete(id);
 	}
 
-	public void doModify(int id, String title, String body) {
-		articleRepository.doModify(id, title, body);
+	public void doModify(int id, String title, String body, String youTubeLink) {
+		articleRepository.doModify(id, title, body, youTubeLink);
 	}
 
 	public void doScoreArticleModify(int id, String title, int classId, String regDate) {
@@ -63,6 +63,10 @@ public class ArticleService {
 
 	public void increaseHit(int id) {
 		articleRepository.increaseHit(id);
+	}
+
+	public List<Article> getArticleNumLimit(String today, int boardId, int loginedMemberId) {
+		return articleRepository.getArticleNumLimit(today, boardId, loginedMemberId);
 	}
 
 }

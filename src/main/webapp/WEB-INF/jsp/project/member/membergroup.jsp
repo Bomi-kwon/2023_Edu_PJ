@@ -58,11 +58,11 @@
 	<div class="container mx-auto px-3">
 	  <div class="mb-5">
 		<label for="">대상 학년 : </label>
-		<select name="grade" class="select select-success w-full max-w-xs" onchange="getGroupsByGrade(this);">
-			<option value="all">전체</option>
-			<option value="elementary">초등</option>
-			<option value="middle">중등</option>
-			<option value="high">고등</option>
+		<select name="grade" class="select select-success w-full max-w-xs text-lg" onchange="getGroupsByGrade(this);">
+			<option class="text-lg" value="all">전체</option>
+			<option class="text-lg" value="elementary">초등</option>
+			<option class="text-lg" value="middle">중등</option>
+			<option class="text-lg" value="high">고등</option>
 		</select>
 	</div>
 	  

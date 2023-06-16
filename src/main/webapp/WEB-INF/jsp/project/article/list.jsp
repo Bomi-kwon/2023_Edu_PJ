@@ -23,12 +23,15 @@
 	}
 	
 	.cropping img {
-	max-width: initial;
-	max-height: initial;
+	max-width: 400px;
+	max-height: 400px;
+	min-width: 340px;
+	min-height: 340px;
 	}
 </style>
 
 
+<!-- 숙제, 알림장, 수학강의 등 게시판 리스트 -->
 <c:if test="${board.id != 5 }">
 <section class="mt-8 mx-auto text-xl">
 	<div class="container mx-auto px-3">
@@ -82,7 +85,7 @@
 	  <c:if test="${rq.getLoginedMember().getAuthLevel() == 1 }">
 		<div class="flex justify-end">
 			<button class="btn btn-success mr-2 btn-delete-selected-articles">글 삭제</button>
-			<a href="write?boardId=${board.id }" class="btn btn-success" >글 쓰기</a>
+			<a href="write?boardId=${board.id }" class="btn btn-success" onclick="articleNumLimit(${board.id},${rq.getLoginedMemberId() }); return false;">글 쓰기</a>
 			
 			<form action="doDeleteArticles?boardId=${board.id }" method="POST" name="do-delete-articles-form">
 				<input type="hidden" name="ids" value="" />
@@ -94,13 +97,14 @@
 </section>
 </c:if>
 
+<!-- 공부인증 게시판 리스트 -->
 <c:if test="${board.id == 5 }">
 	<section class="mt-8 mx-auto text-xl">
 	<div class="container mx-auto px-3">
 	    <ul class="row">
 			<c:forEach var="article" items="${articles }">
 				<li class="cell box-border float-left w-1/4 relative">
-					<div class="cropping mb-3"><a href="detail?id=${article.id }">
+					<div class="cropping mb-3 w-full"><a href="detail?id=${article.id }">
 						<img class="block" src="/project/home/file/${article.fileId }"/></a></div>
 					<div class="article-name mb-1" ><a href="detail?id=${article.id }">${article.title }</a></div>
 					<div class="font-light text-gray-500 text-sm">${article.writerName }</div>
@@ -112,15 +116,16 @@
 			</c:forEach>
 	    </ul>
 		
+		<c:if test="${rq.getLoginedMember().getAuthLevel() == 2 }">
 		<div class="flex justify-end">
 			<button class="btn btn-success mr-2 btn-delete-selected-articles">글 삭제</button>
-			<a href="write?boardId=${board.id }" class="btn btn-success" >글 쓰기</a>
-			
+			<a href="write?boardId=${board.id }" class="btn btn-success" onclick="articleNumLimit(${board.id},${rq.getLoginedMemberId() }); return false;">글 쓰기</a>
 			<form action="doDeleteArticles?boardId=${board.id }" method="POST" name="do-delete-articles-form">
 				<input type="hidden" name="ids" value="" />
 			</form>
 			
 		</div>
+		</c:if>
 	</div>
 </section>
 </c:if>
@@ -168,6 +173,41 @@
 		<!-- 폼 실행하기 -->
 		$('form[name=do-delete-articles-form]').submit();
 	})
+	
+	
+	function articleNumLimit(boardId,loginedMemberId) {
+		
+		
+		const now = new Date();
+		let year = now.getFullYear();
+	    let month = now.getMonth() + 1;
+	    let date = now.getDate();
+	    
+	    if (month < 10) {
+	    	  month = '0' + month;
+	    }
+        if (date < 10) {
+    	    date = '0' + date;
+        }
+	    
+	    let today = year + "-" + month + "-" + date;
+
+	    $.get('getArticleNumLimit', {
+			today : today,
+			boardId : boardId,
+			loginedMemberId : loginedMemberId
+		}, function(data) {
+			
+			console.log(data);
+			
+			if(data.success) {
+				location.replace('write?boardId='+boardId);
+			} else {
+				alert(data.msg);
+			}
+		}, 'json');
+		
+	}
 </script>
 	
 <%@ include file="../common/foot.jsp" %>

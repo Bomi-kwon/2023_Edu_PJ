@@ -19,7 +19,7 @@ public interface ArticleRepository {
 
 	public void doDelete(int id);
 
-	public void doModify(int id, String title, String body);
+	public void doModify(int id, String title, String body, String youTubeLink);
 
 	public void doScoreArticleModify(int id, String title, int classId, String regDate);
 
@@ -28,5 +28,7 @@ public interface ArticleRepository {
 	public List<Article> getArticlesForStudyList();
 
 	public void increaseHit(int id);
+
+	public List<Article> getArticleNumLimit(String today, int boardId, int loginedMemberId);
 
 }
