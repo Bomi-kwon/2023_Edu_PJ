@@ -74,16 +74,14 @@
 			      	</tr>
 			    </tbody>
 	    	</table>
-	    	<div class="">
-	    		<span>영어듣기평가 파일 : </span>
-	    		<audio id="myAudio" src="https://blog.kakaocdn.net/dn/GfTMk/btskfczI6z8/s9g8hbJUItpfUo87N30Opk/00_%EC%95%88%EB%82%B4%EB%A9%98%ED%8A%B8.mp3?attach=1&knm=tfile.mp3" controls></audio>
-	    	</div>
 	    	<div>
-	    		<span>재생할 날짜와 시간</span>
-	    		<input id="nowDate" type="date" min="2023-06-01" max="2023-07-31"/>
-	    		<input id="nowTime" type="time" />
+	    		<div class="my-5">재생할 날짜와 시간</div>
+	    		<div><span>날짜 : </span><input class="input input-bordered input-success w-96" id="nowDate" type="date" min="2023-06-01" max="2023-07-31"/></div>
+	    		<div><span>시간 : </span><input class="input input-bordered input-success w-96" id="nowTime" type="time" /></div>
 	    	</div>
-	    	<button id="play-button">입력</button>
+	    	<button id="reserve-button">예약</button>
+	    	<button id="play-button">재생</button>
+	    	<button id="stop-button">정지</button>
 	    	</div>
 	    	</div>
     </div>
@@ -127,14 +125,6 @@
       $('.second').css('transform','rotate('+degSecond+'deg)');
 
       
-      let nowTime = hours + "" + minutes + "" + seconds;
-     
-      <!-- 
-	  console.clear();
-      console.log('현재 : ' + now);
-      console.log('시간만(밀리초): ' + now.getTime());
-      console.log('시간만: ' + nowTime);
-      -->
       
       if(nowTime >= 084000 && nowTime <= 100000) {
     	  $('.korean').css('color','red');
@@ -170,10 +160,10 @@
     
     setInterval(dpTime, 1000)  // 1초마다 함수 실행되도록 설정
     
-    
+    var audio;
     
     function playAudioAtTime(audioPath, playTime) {
-    	  var audio = new Audio(audioPath);
+    	  audio = new Audio(audioPath);
     	  var currentTime = new Date().getTime();
     	  var delay = playTime - currentTime;
 
@@ -185,18 +175,29 @@
     	    // 이미 지정한 시간이 지난 경우 즉시 재생
     	    audio.play();
     	  }
+    	  
     	}
     
-    $('#play-button').click(function() {
+    $('#reserve-button').click(function() {
     	
-	    console.log($('#nowDate').value);
-	    console.log($('#nowTime').value);
-	    var playTime = new Date(2023, 5, 16, 18, 39, 0).getTime();
+	    let nowDate = $('#nowDate').val();
+	    let nowTime = $('#nowTime').val();
+	    console.log('입력한 날짜 : ' + nowDate);
+	    console.log('입력한 날짜 : ' + nowTime);
+	    console.log(nowDate + ' ' + nowTime);
+	    
+	    var playTime = new Date(nowDate + ' ' + nowTime).getTime();
 	    var audioPath = "https://blog.kakaocdn.net/dn/GfTMk/btskfczI6z8/s9g8hbJUItpfUo87N30Opk/00_%EC%95%88%EB%82%B4%EB%A9%98%ED%8A%B8.mp3?attach=1&knm=tfile.mp3";
 	    
 	    playAudioAtTime(audioPath, playTime);
     })
 
+    $('#stop-button').click(function() {
+    	audio.pause();
+    })
+    $('#play-button').click(function() {
+    	audio.play();
+    })
     
   </script>
   
