@@ -12,7 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -179,6 +182,26 @@ public class ProjectHomeController {
 		
 		return "project/home/entranceinfo";
 	
+	}
+	
+	// 오디오 파일 업로드 하기
+	@RequestMapping(value="/project/home/uploadAudioFile", method=RequestMethod.POST)
+	@ResponseBody
+	public int uploadAudioFile(MultipartHttpServletRequest request) throws Exception{
+		
+		MultipartFile audioFile = request.getFile("file");
+		
+		int audioFileId = 0;
+		
+		if(!audioFile.isEmpty() || audioFile != null) {
+			fileService.saveFile(audioFile, "audio", 1);
+			
+			audioFileId = fileService.getLastId();
+			
+		}
+		
+		return audioFileId;
+
 	}
 	
 }

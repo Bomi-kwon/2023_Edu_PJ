@@ -103,5 +103,10 @@ public class FileService {
 		return file.getId();
 	}
 
+	public int getLastId() {
+		return fileRepository.getLastId();
+	}
+
+	
 
 }

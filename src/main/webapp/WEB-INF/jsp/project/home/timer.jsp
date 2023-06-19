@@ -75,7 +75,13 @@
 			    </tbody>
 	    	</table>
 	    	<div>
-	    		<div class="my-5">재생할 날짜와 시간</div>
+	    		<div class="my-5">재생할 파일과 시간</div>
+	    		<div class="">
+		    		<form id="fileForm" method="post" enctype="multipart/form-data">
+		    			<span class="">파일 : </span>
+					    <input class="input input-bordered input-success w-96" type="file" name="file">
+					</form>
+				</div>
 	    		<div><span>날짜 : </span><input class="input input-bordered input-success w-96" id="nowDate" type="date" min="2022-06-01" max="2023-07-31"/></div>
 	    		<div><span>시간 : </span><input class="input input-bordered input-success w-96" id="nowTime" type="time" /></div>
 	    	</div>
@@ -191,15 +197,29 @@
 	    	return;
 	    }
 	    
-	    var playTime = new Date(nowDate + ' ' + nowTime).getTime();
-	    var audioPath = "https://blog.kakaocdn.net/dn/GfTMk/btskfczI6z8/s9g8hbJUItpfUo87N30Opk/00_%EC%95%88%EB%82%B4%EB%A9%98%ED%8A%B8.mp3?attach=1&knm=tfile.mp3";
+	    var formData = new FormData($('#fileForm')[0]);
 	    
-	    playAudioAtTime(audioPath, playTime);
+	    $.ajax({
+	    	type: "POST",
+	    	enctype: 'multipart/form-data',	// 필수
+	    	url: 'uploadAudioFile',
+	    	data: formData,		// 필수
+	    	processData: false,	// 필수
+	    	contentType: false,	// 필수
+	    	cache: false
+	    }).done(function(data){
+	    		var audioPath = "/project/home/file/" + data;
+	    		console.log(audioPath);
+	   			var playTime = new Date(nowDate + ' ' + nowTime).getTime();
+	  			playAudioAtTime(audioPath, playTime);
+	    });
     })
-
+    
+    
     $('#stop-button').click(function() {
     	audio.pause();
     })
+    
     $('#play-button').click(function() {
     	audio.play();
     })

@@ -34,5 +34,9 @@
 		savedPath = #{savedPath}
 		WHERE id = #{fileId}
 	</update>
+	
+	<select id="getLastId" resultType="Int">
+		SELECT LAST_INSERT_ID();
+	</select>
 
 </mapper>
