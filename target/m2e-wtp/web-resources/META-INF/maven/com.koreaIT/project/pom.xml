@@ -141,6 +141,13 @@
 		    <version>2.9.0</version>
 		</dependency>
 		
+		<!-- thymeleaf (문법 다 고칠때까지 일단 지우지 말기!) -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-thymeleaf</artifactId>
+		    <version>3.1.0</version>
+		</dependency>
+		
 		
 		
 	</dependencies>

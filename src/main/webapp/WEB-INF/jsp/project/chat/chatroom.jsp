@@ -1,3 +1,6 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -40,13 +43,13 @@
 
 <div id="username-page">
     <div class="username-page-container">
-        <h1 class="title">Type your username</h1>
+        <h1 class="title">닉네임을 정하세요</h1>
         <form id="usernameForm" name="usernameForm">
             <div class="form-group">
-                <input type="text" id="name" placeholder="Username" autocomplete="off" class="form-control"/>
+                <input type="text" id="name" placeholder="닉네임" autocomplete="off" class="form-control"/>
             </div>
             <div class="form-group">
-                <button type="submit" class="accent username-submit">Start Chatting</button>
+                <button type="submit" class="accent username-submit">채팅 시작</button>
             </div>
         </form>
     </div>
@@ -65,7 +68,7 @@
     </div>
     <div class="chat-container">
         <div class="chat-header">
-            <h2>[[${room.roomName}]]</h2>
+            <h2>[${room.roomName}]</h2>
         </div>
         <div class="connecting">
             Connecting...
@@ -78,7 +81,7 @@
                 <div class="input-group clearfix">
                     <input type="text" id="message" placeholder="Type a message..." autocomplete="off"
                            class="form-control"/>
-                    <button type="submit" class="primary">Send</button>
+                    <button type="submit" class="primary">보내기</button>
                 </div>
             </div>
         </form>

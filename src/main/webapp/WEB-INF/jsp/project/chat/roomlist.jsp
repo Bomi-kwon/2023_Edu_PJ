@@ -1,5 +1,8 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org" >
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
 <head>
    <meta charset="UTF-8">
    <!-- 파비콘 불러오기 -->
@@ -18,13 +21,13 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     
     
-    <script th:inline="javascript">
+    <script>
 
         function createRoom(){
             var name = $("#roomName").val();
 
             if(name === ""){
-                alert("Please write the name.")
+                alert("채팅방 이름을 입력해주세요.")
                 return false;
             }
             if ($("#" + name).length > 0){
@@ -43,19 +46,30 @@
     </style>
 </head>
 <body>
+
+<section class="mt-8 mx-auto text-xl">
+	<div class="container mx-auto px-3">
+	
+	
+	
+	
+	
+	
     <th:block th:fragment="content">
         <div class="container">
             <div>
-                <ul th:each="room : ${list}">
+                <ul>
+                <c:forEach var="room" items="${list }">
                     <li class="list-group-item d-flex justify-content-between align-items-start">
                         <div class="ms-2 me-auto">
                             <div class="fw-bold">
                                 <span class="hidden" th:id="${room.roomName}"></span>
-                                <a th:href="@{/project/chat/room(roomId=${room.roomId})}">[[${room.roomName}]]</a>
+                                <a href="/project/chat/room?roomId=${room.roomId}">채팅방 이름 : [${room.roomName}]</a>
                             </div>
                         </div>
-                        <span class="badge bg-primary rounded-pill">[[${room.userCount}]]명</span>
+                        <span class="badge bg-primary rounded-pill">채팅방 인원수 : [${room.userCount}]명</span>
                     </li>
+                </c:forEach>
                 </ul>
             </div>
         </div>
@@ -64,5 +78,8 @@
             <button class="btn btn-secondary" id="create">개설하기</button>
         </form>
     </th:block>
+    </div>
+    </section>
+    
 </body>
 </html>

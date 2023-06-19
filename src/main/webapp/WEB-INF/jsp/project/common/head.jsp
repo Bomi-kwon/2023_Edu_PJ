@@ -81,6 +81,7 @@
 	      </li>
 	      <li><a href="#">커뮤니티</a>
 	        <ul>
+	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/chat"><span>채팅방</span></a></li>
 	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/list?boardId=1"><span>알림장</span></a></li>
 	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/home/select"><span>메세지 발송</span></a></li>
 	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/home/entranceinfo"><span>입시 정보</span></a></li>
@@ -128,6 +129,7 @@
       </li>
       <li><a href="#">커뮤니티</a>
         <ul>
+          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/chat"><span>채팅방</span></a></li>
           <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/list?boardId=1"><span>알림장</span></a></li>
           <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/home/select"><span>메세지 발송</span></a></li>
           <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/home/entranceinfo"><span>입시 정보</span></a></li>
