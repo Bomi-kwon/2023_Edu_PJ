@@ -52,12 +52,12 @@ function connect(event) {
 
 function onConnected() {
 
-    // sub 할 url => /sub/chat/room/roomId 로 구독한다
-    stompClient.subscribe('/sub/chat/room/' + roomId, onMessageReceived);
+    // sub 할 url => /sub/project/chat/room/roomId 로 구독한다
+    stompClient.subscribe('/sub/project/chat/room/' + roomId, onMessageReceived);
 
     // 서버에 username 을 가진 유저가 들어왔다는 것을 알림
-    // /pub/chat/enterUser 로 메시지를 보냄
-    stompClient.send("/pub/chat/enterUser",
+    // /pub/project/chat/enterUser 로 메시지를 보냄
+    stompClient.send("/pub/project/chat/enterUser",
         {},
         JSON.stringify({
             "roomId": roomId,
@@ -75,7 +75,7 @@ function isDuplicateName() {
 
     $.ajax({
         type: "GET",
-        url: "/chat/duplicateName",
+        url: "/project/chat/duplicateName",
         data: {
             "username": username,
             "roomId": roomId
@@ -96,7 +96,7 @@ function getUserList() {
     
     $.ajax({
         type: "GET",
-        url: "/chat/userlist",
+        url: "/project/chat/userlist",
         data: {
             "roomId": roomId
         },
@@ -129,7 +129,7 @@ function sendMessage(event) {
             type: 'TALK'
         };
 
-        stompClient.send("/pub/chat/sendMessage", {}, JSON.stringify(chatMessage));
+        stompClient.send("/pub/project/chat/sendMessage", {}, JSON.stringify(chatMessage));
         messageInput.value = '';
     }
     event.preventDefault();

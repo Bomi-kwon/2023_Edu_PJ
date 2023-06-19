@@ -76,12 +76,12 @@
 	    	</table>
 	    	<div>
 	    		<div class="my-5">재생할 날짜와 시간</div>
-	    		<div><span>날짜 : </span><input class="input input-bordered input-success w-96" id="nowDate" type="date" min="2023-06-01" max="2023-07-31"/></div>
+	    		<div><span>날짜 : </span><input class="input input-bordered input-success w-96" id="nowDate" type="date" min="2022-06-01" max="2023-07-31"/></div>
 	    		<div><span>시간 : </span><input class="input input-bordered input-success w-96" id="nowTime" type="time" /></div>
 	    	</div>
-	    	<button id="reserve-button">예약</button>
-	    	<button id="play-button">재생</button>
-	    	<button id="stop-button">정지</button>
+	    	<button id="reserve-button" class="btn btn-active btn-ghost">예약</button>
+	    	<button id="play-button" class="btn btn-active btn-ghost"><i class="fa-regular fa-circle-play"></i></button>
+	    	<button id="stop-button" class="btn btn-active btn-ghost"><i class="fa-regular fa-circle-pause"></i></button>
 	    	</div>
 	    	</div>
     </div>
@@ -183,8 +183,13 @@
 	    let nowDate = $('#nowDate').val();
 	    let nowTime = $('#nowTime').val();
 	    console.log('입력한 날짜 : ' + nowDate);
-	    console.log('입력한 날짜 : ' + nowTime);
+	    console.log('입력한 시간 : ' + nowTime);
 	    console.log(nowDate + ' ' + nowTime);
+	    
+	    if(!nowDate || !nowDate) {
+	    	alert('예약할 날짜와 시간을 입력해주세요');
+	    	return;
+	    }
 	    
 	    var playTime = new Date(nowDate + ' ' + nowTime).getTime();
 	    var audioPath = "https://blog.kakaocdn.net/dn/GfTMk/btskfczI6z8/s9g8hbJUItpfUo87N30Opk/00_%EC%95%88%EB%82%B4%EB%A9%98%ED%8A%B8.mp3?attach=1&knm=tfile.mp3";

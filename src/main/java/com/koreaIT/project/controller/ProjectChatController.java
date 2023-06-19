@@ -31,10 +31,10 @@ public class ProjectChatController {
     @Autowired
     ChatService chatService;
 
-    // MessageMapping 을 통해 webSocket 로 들어오는 메시지를 발신 처리한다.
-    // 이때 클라이언트에서는 /pub/chat/message 로 요청하게 되고 이것을 controller 가 받아서 처리한다.
-    // 처리가 완료되면 /sub/chat/room/roomId 로 메시지가 전송된다.
-    @MessageMapping("/chat/enterUser")
+    // MessageMapping 을 통해 webSocket 로 들어오는 메시지를 발신 처리한다.(앞에 "/pub"가 생략됨)
+    // 이때 클라이언트에서는 /pub/project/chat/message 로 요청하게 되고 이것을 controller 가 받아서 처리한다.
+    // 처리가 완료되면 /sub/project/chat/room/roomId 로 메시지가 전송된다.
+    @MessageMapping("/project/chat/enterUser")
     public void enterUser(@Payload ChatDTO chat, SimpMessageHeaderAccessor headerAccessor) {
 
         // 채팅방 유저+1
@@ -48,16 +48,16 @@ public class ProjectChatController {
         headerAccessor.getSessionAttributes().put("roomId", chat.getRoomId());
 
         chat.setMessage(chat.getSender() + " 님 입장!!");
-        template.convertAndSend("/sub/chat/room/" + chat.getRoomId(), chat);
+        template.convertAndSend("/sub/project/chat/room/" + chat.getRoomId(), chat);
 
     }
 
     // 해당 유저
-    @MessageMapping("/chat/sendMessage")
+    @MessageMapping("/project/chat/sendMessage")
     public void sendMessage(@Payload ChatDTO chat) {
         //log.info("CHAT {}", chat);
         chat.setMessage(chat.getMessage());
-        template.convertAndSend("/sub/chat/room/" + chat.getRoomId(), chat);
+        template.convertAndSend("/sub/project/chat/room/" + chat.getRoomId(), chat);
 
     }
 
@@ -91,12 +91,12 @@ public class ProjectChatController {
                     .message(username + " 님 퇴장!!")
                     .build();
 
-            template.convertAndSend("/sub/chat/room/" + roomId, chat);
+            template.convertAndSend("/sub/project/chat/room/" + roomId, chat);
         }
     }
 
     // 채팅에 참여한 유저 리스트 반환
-    @GetMapping("/chat/userlist")
+    @GetMapping("/project/chat/userlist")
     @ResponseBody
     public ArrayList<String> userList(String roomId) {
 
@@ -104,7 +104,7 @@ public class ProjectChatController {
     }
 
     // 채팅에 참여한 유저 닉네임 중복 확인
-    @GetMapping("/chat/duplicateName")
+    @GetMapping("/project/chat/duplicateName")
     @ResponseBody
     public String isDuplicateName(@RequestParam("roomId") String roomId, @RequestParam("username") String username) {
 

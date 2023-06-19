@@ -59,7 +59,7 @@
 
                 $.ajax({
                     type : "post",
-                    url : "/chat/confirmPwd/"+roomId,
+                    url : "/project/chat/confirmPwd/"+roomId,
                     data : {
                         "roomPwd" : $confirmPwd
                     },
@@ -172,7 +172,7 @@
 
             $.ajax({
                 type : "post",
-                url : "/chat/confirmPwd/"+roomId,
+                url : "/project/chat/confirmPwd/"+roomId,
                 async : false,
                 data : {
                     "roomPwd" : $enterPwd
@@ -183,7 +183,7 @@
 
                     if(result){
                         if (chkRoomUserCnt(roomId)) {
-                            location.href = "/chat/room?roomId="+roomId;
+                            location.href = "/project/chat/room?roomId="+roomId;
                         }
                     }else{
                         alert("비밀번호가 틀립니다. \n 비밀번호를 확인해주세요")
@@ -194,7 +194,7 @@
 
         // 채팅방 삭제
         function delRoom(){
-            location.href = "/chat/delRoom/"+roomId;
+            location.href = "/project/chat/delRoom/"+roomId;
         }
 
         // 채팅방 입장 시 인원 수에 따라서 입장 여부 결정
@@ -206,7 +206,7 @@
             // 제대로된 값 - 원하는 값 - 이 return 되지 않아서 문제가 발생한다.
             $.ajax({
                 type : "GET",
-                url : "/chat/chkUserCnt/"+roomId,
+                url : "/project/chat/chkUserCnt/"+roomId,
                 async : false,
                 success : function(result){
 
