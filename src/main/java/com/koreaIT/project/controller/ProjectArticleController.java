@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,6 +49,7 @@ public class ProjectArticleController {
 	VisitHistoryService visitHistoryService;
 	Rq rq;
 	
+	@Autowired
 	public ProjectArticleController(ArticleService articleService, MemberService memberService,
 			BoardService boardService, ScoreService scoreService, HomeworkService homeworkService,
 			GroupService groupService, FileService fileService, ReplyService replyService, 

@@ -2,6 +2,7 @@ package com.koreaIT.project.controller;
 
 import java.util.ArrayList;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -33,10 +34,11 @@ public class ProjectChatController {
 
     private final MsgChatService msgChatService;
     private final ChatServiceMain chatServiceMain;
+    
 
     // MessageMapping 을 통해 webSocket 로 들어오는 메시지를 발신 처리한다.
-    // 이때 클라이언트에서는 /pub/chat/message 로 요청하게 되고 이것을 controller 가 받아서 처리한다.
-    // 처리가 완료되면 /sub/chat/room/roomId 로 메시지가 전송된다.
+    // 이때 클라이언트에서는 /pub/project/chat/message 로 요청하게 되고 이것을 controller 가 받아서 처리한다.
+    // 처리가 완료되면 /sub/project/chat/room/roomId 로 메시지가 전송된다.
     @MessageMapping("/project/chat/enterUser")
     public void enterUser(@Payload ChatDTO chat, SimpMessageHeaderAccessor headerAccessor) {
 
@@ -117,5 +119,7 @@ public class ProjectChatController {
 
         return userName;
     }
+
+
 	
 }

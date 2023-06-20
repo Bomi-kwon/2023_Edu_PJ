@@ -12,7 +12,6 @@ import com.koreaIT.project.dto.ChatRoomDto;
 import com.koreaIT.project.dto.ChatRoomMap;
 import com.koreaIT.project.dto.WebSocketMessage;
 
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 @Service

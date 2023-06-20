@@ -14,15 +14,23 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.koreaIT.project.dto.ChatRoomDto;
 import com.koreaIT.project.dto.ChatRoomMap;
 import com.koreaIT.project.service.ChatServiceMain;
+import com.koreaIT.project.vo.Rq;
 
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequiredArgsConstructor
 public class ProjectChatRoomController {
 
     // ChatService Bean 가져오기
-    private final ChatServiceMain chatServiceMain;
+    private ChatServiceMain chatServiceMain;
+    private Rq rq;
+    
+    
+    public ProjectChatRoomController(ChatServiceMain chatServiceMain, Rq rq) {
+		super();
+		this.chatServiceMain = chatServiceMain;
+		this.rq = rq;
+	}
 
  // 채팅 리스트 화면
     // / 로 요청이 들어오면 전체 채팅룸 리스트를 담아서 return
@@ -93,6 +101,10 @@ public class ProjectChatRoomController {
        // }
 
         ChatRoomDto room = ChatRoomMap.getInstance().getChatRooms().get(roomId);
+        
+        if(room == null ) {
+        	return rq.jsReturnOnView("해당 채팅방은 존재하지 않습니다.", true);
+        }
 
         model.addAttribute("room", room);
 
@@ -124,4 +136,7 @@ public class ProjectChatRoomController {
 
         return chatServiceMain.chkRoomUserCnt(roomId);
     }
+
+
+	
 }

@@ -63,6 +63,9 @@
     <h1>${room.roomName}</h1>
     <input type="hidden" id="id" name="id" value="${room.roomId}"/>
     <input type="hidden" id="uuid" name="uuid" value="${uuid}">
+    <div><span>방 번호 : ${room.roomId }</span></div>
+    <div><span>보내는 사람의 UUID : ${uuid}</span></div>
+    <div><span>채팅방 인원수 : ${room.userCount}</span></div>
     <div class="col-lg-12 mb-3">
         <div class="mb-3" th:text=" '@ Room #' + ${room.roomName}">
             Local User Id

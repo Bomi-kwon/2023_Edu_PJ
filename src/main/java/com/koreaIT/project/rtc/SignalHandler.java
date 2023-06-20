@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.apache.commons.codec.binary.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -44,7 +45,19 @@ public class SignalHandler extends TextWebSocketHandler{
     private static final String MSG_TYPE_JOIN = "join";
     // leave room data message
     private static final String MSG_TYPE_LEAVE = "leave";
-
+    
+    
+    // 참고한 블로그엔 없던 코드였는데
+    // 화상채팅방에서만 채팅방 인원수가 바뀌지 않아서 추가했더니
+    // 인원수는 잘 바뀐다!
+    @Autowired
+	public SignalHandler(RtcChatService rtcChatService, ChatServiceMain chatServiceMain,
+			Map<String, ChatRoomDto> rooms) {
+		this.rtcChatService = rtcChatService;
+		this.chatServiceMain = chatServiceMain;
+		this.rooms = rooms;
+	}
+    
     // 연결 끊어졌을 때 이벤트처리
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
@@ -192,4 +205,6 @@ public class SignalHandler extends TextWebSocketHandler{
             // logger.debug("An error occured: {}", e.getMessage());
         }
     }
+
+    
 }
