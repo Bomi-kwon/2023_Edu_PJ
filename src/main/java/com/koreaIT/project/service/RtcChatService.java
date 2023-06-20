@@ -13,9 +13,10 @@ import com.koreaIT.project.dto.ChatRoomMap;
 import com.koreaIT.project.dto.WebSocketMessage;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
-@Data
 @Service
+@RequiredArgsConstructor
 public class RtcChatService {
 
     // repository substitution since this is a very simple realization

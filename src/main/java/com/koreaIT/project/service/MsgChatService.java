@@ -11,14 +11,13 @@ import com.koreaIT.project.dto.ChatRoomDto;
 import com.koreaIT.project.dto.ChatRoomMap;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
-@Data
 @Service
+@RequiredArgsConstructor
 public class MsgChatService {
 
 
-    // 채팅방 삭제에 따른 채팅방의 사진 삭제를 위한 fileService 선언
-    private final FileService fileService;
 
     public ChatRoomDto createChatRoom(String roomName, String roomPwd, boolean secretChk, int maxUserCnt) {
         // roomName 와 roomPwd 로 chatRoom 빌드 후 return

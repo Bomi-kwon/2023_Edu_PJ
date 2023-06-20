@@ -1,5 +1,5 @@
 'use strict';
-const addr = "localhost:8443"
+const addr = "localhost:8081"
 
 // create and run Web Socket connection
 // 웹 소켓 연결 정보
@@ -88,7 +88,7 @@ function start() {
         let data;
 
         $.ajax({
-            url : "/webrtc/usercount",
+            url : "/project/webrtc/usercount",
             type : "POST",
             async : false,
             data : {

@@ -2,20 +2,13 @@ package com.koreaIT.project.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Service;
 
-import com.koreaIT.project.dto.ChatRoom;
 import com.koreaIT.project.dto.ChatRoomDto;
 import com.koreaIT.project.dto.ChatRoomMap;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -25,6 +18,7 @@ import lombok.Setter;
 @Setter
 @RequiredArgsConstructor
 public class ChatServiceMain {
+	
 	private final MsgChatService msgChatService;
     private final RtcChatService rtcChatService;
 
@@ -38,6 +32,7 @@ public class ChatServiceMain {
         List<ChatRoomDto> chatRooms = new ArrayList<>(ChatRoomMap.getInstance().getChatRooms().values());
         Collections.reverse(chatRooms);
 
+        
         return chatRooms;
     }
 

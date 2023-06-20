@@ -18,14 +18,5 @@ public class ProjectRtcController {
         // log.info("MESSAGE : {}", webSocketMessage.toString());
         return Boolean.toString(rtcChatService.findUserCount(webSocketMessage));
     }
-    
-    
-	// 화상채팅
-	
-	@RequestMapping("/project/webrtc/WebRTC")
-	public String WebRTC() {
-		return "project/webrtc/WebRTC";
-	}
-	
 	
 }
