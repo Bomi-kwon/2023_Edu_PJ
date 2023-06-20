@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.apache.commons.codec.binary.StringUtils;
+import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -17,6 +18,10 @@ import com.koreaIT.project.dto.WebSocketMessage;
 import com.koreaIT.project.service.ChatServiceMain;
 import com.koreaIT.project.service.RtcChatService;
 
+import lombok.RequiredArgsConstructor;
+
+@Component
+@RequiredArgsConstructor
 public class SignalHandler extends TextWebSocketHandler{
 	
 	 private RtcChatService rtcChatService;

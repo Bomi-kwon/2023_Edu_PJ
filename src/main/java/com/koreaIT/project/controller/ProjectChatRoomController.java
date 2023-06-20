@@ -1,7 +1,5 @@
 package com.koreaIT.project.controller;
 
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,19 +8,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.koreaIT.project.dto.ChatRoomDto;
-import com.koreaIT.project.dto.ChatRoomMap;
-import com.koreaIT.project.service.ChatServiceMain;
+import com.koreaIT.project.dto.ChatRoom;
+import com.koreaIT.project.service.ChatService;
 
 @Controller
 public class ProjectChatRoomController {
 	
 	// ChatService Bean 가져오기
     @Autowired
-    // private ChatService chatService;
-    private ChatServiceMain chatServiceMain;
+    private ChatService chatService;
 
-    /*
     // 채팅 리스트 화면
     // /chat 로 요청이 들어오면 전체 채팅룸 리스트를 담아서 return
     @GetMapping("/project/chat")
@@ -33,26 +28,13 @@ public class ProjectChatRoomController {
         //log.info("SHOW ALL ChatList {}", chatRepository.findAllRoom());
         return "project/chat/roomlist";
     }
-    */
 
     // 채팅방 생성
     // 채팅방 생성 후 다시 /chat 로 return
     @PostMapping("/project/chat/createroom")
-    public String createRoom(@RequestParam("roomName") String name,
-            @RequestParam("roomPwd") String roomPwd,
-            @RequestParam("secretChk") String secretChk,
-            @RequestParam(value = "maxUserCnt", defaultValue = "2") String maxUserCnt,
-            @RequestParam("chatType") String chatType,
-            RedirectAttributes rttr) {
-    	
-    	// 매개변수 : 방 이름, 패스워드, 방 잠금 여부, 방 인원수
-        ChatRoomDto room;
-
-        room = chatServiceMain.createChatRoom(name, roomPwd, Boolean.parseBoolean(secretChk), 
-        		Integer.parseInt(maxUserCnt), chatType);
-        
+    public String createRoom(@RequestParam String name, RedirectAttributes rttr) {
+        ChatRoom room = chatService.createChatRoom(name);
         //log.info("CREATE Chat Room {}", room);
-        
         rttr.addFlashAttribute("roomName", room);
         return "redirect:/project/chat";
     }
@@ -64,18 +46,8 @@ public class ProjectChatRoomController {
     public String roomDetail(Model model, String roomId){
 
         //log.info("roomId {}", roomId);
-    	
-    	ChatRoomDto room = ChatRoomMap.getInstance().getChatRooms().get(roomId);
-    	
-        model.addAttribute("room", room);
-        
-        if (ChatRoomDto.ChatType.MSG.equals(room.getChatType())) {
-            return "project/chat/chatroom";
-        }else{
-            model.addAttribute("uuid", UUID.randomUUID().toString());
-
-            return "project/chat/rtcroom";
-        }
+        model.addAttribute("room", chatService.findRoomById(roomId));
+        return "project/chat/chatroom";
     }
 	
 	

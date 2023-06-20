@@ -93,7 +93,7 @@ public class ProjectHomeController {
 		int width = 400;
 		int height = 400;
 		
-		String url = Util.f("http://192.168.200.32:8081/project/home/attendanceChk?todayDate=%s&classId=%d", todayDate, classId);
+		String url = Util.f("http://192.168.200.24:8081/project/home/attendanceChk?todayDate=%s&classId=%d", todayDate, classId);
 		BitMatrix matrix = new MultiFormatWriter().encode(url, BarcodeFormat.QR_CODE, width, height);
 		
 		System.out.println(todayDate);
