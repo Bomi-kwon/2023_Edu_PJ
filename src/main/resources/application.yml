@@ -1,11 +1,13 @@
 server:
-  port: 8081
+  port: 8443
   ssl:
-      enabled: true
-      key-store: classpath:ssl-server.jks
-      key-store-type: JKS
-      key-store-password: test1234
-      key-alias: selfsigned_localhost_sslserver
+    enabled: true
+    key-store: classpath:ssl-server.jks
+    key-store-type: JKS
+    key-store-password: test1234
+    key-alias: selfsigned_localhost_sslserver
+  http:
+    port: 8081
 spring:
   servlet:
     multipart:

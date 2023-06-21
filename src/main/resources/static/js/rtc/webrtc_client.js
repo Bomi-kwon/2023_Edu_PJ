@@ -1,5 +1,5 @@
 'use strict';
-const addr = "localhost:8081"
+const addr = "localhost:8443"
 
 // create and run Web Socket connection
 // 웹 소켓 연결 정보

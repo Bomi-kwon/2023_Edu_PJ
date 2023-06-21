@@ -26,6 +26,13 @@ public class ProjectRtcController {
 	@PostMapping("/project/webrtc/usercount")
     public String webRTC(@ModelAttribute WebSocketMessage webSocketMessage) {
         // log.info("MESSAGE : {}", webSocketMessage.toString());
+		
+		try {
+    		System.out.println(webSocketMessage.toString());
+    	} catch (Exception e) {
+    		e.printStackTrace();
+		}
+		
         return Boolean.toString(rtcChatService.findUserCount(webSocketMessage));
     }
 	

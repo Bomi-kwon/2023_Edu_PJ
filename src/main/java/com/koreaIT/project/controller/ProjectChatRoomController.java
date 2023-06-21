@@ -16,7 +16,7 @@ import com.koreaIT.project.dto.ChatRoomMap;
 import com.koreaIT.project.service.ChatServiceMain;
 import com.koreaIT.project.vo.Rq;
 
-import lombok.RequiredArgsConstructor;
+
 
 @Controller
 public class ProjectChatRoomController {
@@ -93,6 +93,12 @@ public class ProjectChatRoomController {
     	
     	
         // log.info("roomId {}", roomId);
+    	
+    	try {
+    		System.out.println(roomId);
+    	} catch (Exception e) {
+    		e.printStackTrace();
+		}
 
         // principalDetails 가 null 이 아니라면 로그인 된 상태!!
        // if (principalDetails != null) {
