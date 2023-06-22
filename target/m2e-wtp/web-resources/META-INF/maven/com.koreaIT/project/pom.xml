@@ -97,12 +97,11 @@
 		    <version>1.16.1</version>
 		</dependency>
 		
-		<!-- 웹 크롤링을 위한 selenium -->
+		<!-- 셀레니움 웹크롤링을 위한 -->
 		<dependency>
 		    <groupId>org.seleniumhq.selenium</groupId>
 		    <artifactId>selenium-java</artifactId>
-		    <version>3.141.59</version>
-		</dependency>
+	    </dependency>
 
 		<!-- QR코드 생성기를 위한 zxing -->
 		<dependency>
@@ -115,8 +114,6 @@
 		    <artifactId>javase</artifactId>
 		    <version>3.5.1</version>
 		</dependency>
-		
-		<!-- webRTC 관련 -->
 		
 		<!-- WebSocket -->
 		<dependency>

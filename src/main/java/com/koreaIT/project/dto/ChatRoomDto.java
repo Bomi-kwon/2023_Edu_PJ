@@ -2,8 +2,6 @@ package com.koreaIT.project.dto;
 
 import java.util.Map;
 
-import org.jetbrains.annotations.NotNull;
-
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -31,9 +29,9 @@ public class ChatRoomDto {
 	// 메시지를 다른 세션의 클라이언트에게 발송하는 것도 구현 필요가 없다!
 	
 	// notnull import 확인하기!!!
+	// 갑자기 @NOTNULL annotation 빨간줄 뜨고 import도 안되길래 걍 삭제해버림!!!!
 	
-	@NotNull
-	 private String roomId; // 채팅방 아이디
+	private String roomId; // 채팅방 아이디
     private String roomName; // 채팅방 이름 
     private int userCount; // 채팅방 인원수
     private int maxUserCnt; // 채팅방 최대 인원 제한
