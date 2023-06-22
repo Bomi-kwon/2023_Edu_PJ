@@ -63,17 +63,16 @@ public class ProjectChatRoomController {
     // 채팅방 생성 후 다시 / 로 return
     @PostMapping("/project/chat/createroom")
     public String createRoom(@RequestParam("roomName") String name,
-                             @RequestParam("roomPwd") String roomPwd,
                              @RequestParam(value = "maxUserCnt", defaultValue = "2") String maxUserCnt,
                              @RequestParam("chatType") String chatType,
                              RedirectAttributes rttr) {
 
         // log.info("chk {}", secretChk);
 
-        // 매개변수 : 방 이름, 패스워드, 방 잠금 여부, 방 인원수
+        // 매개변수 : 방 이름, 패스워드(1234로 통일), 방 잠금 여부, 방 인원수
         ChatRoomDto room;
 
-        room = chatServiceMain.createChatRoom(name, roomPwd, false, Integer.parseInt(maxUserCnt), chatType);
+        room = chatServiceMain.createChatRoom(name, "1234", false, Integer.parseInt(maxUserCnt), chatType);
 
 
         // log.info("CREATE Chat Room [{}]", room);
@@ -121,7 +120,7 @@ public class ProjectChatRoomController {
 
     // 채팅방 삭제
     @GetMapping("/project/chat/delRoom")
-    public String delChatRoom(@PathVariable String roomId){
+    public String delChatRoom(String roomId){
 
         // roomId 기준으로 chatRoomMap 에서 삭제, 해당 채팅룸 안에 있는 사진 삭제
         chatServiceMain.delChatRoom(roomId);

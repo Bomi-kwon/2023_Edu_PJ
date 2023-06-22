@@ -22,7 +22,7 @@ public class MsgChatService {
     public ChatRoomDto createChatRoom(String roomName, String roomPwd, boolean secretChk, int maxUserCnt) {
         // roomName 와 roomPwd 로 chatRoom 빌드 후 return
         ChatRoomDto room = ChatRoomDto.builder()
-                .roomId(UUID.randomUUID().toString())
+                .roomId(UUID.randomUUID().toString().replace("-", ""))
                 .roomName(roomName)
                 .roomPwd(roomPwd) // 채팅방 패스워드
                 .secretChk(secretChk) // 채팅방 잠금 여부

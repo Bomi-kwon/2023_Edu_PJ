@@ -1,8 +1,15 @@
 package com.koreaIT.project.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -169,21 +176,6 @@ public class ProjectHomeController {
 	}
 	
 	
-	public static String WEB_DRIVER_ID = "webdriver.chrome.driver"; // 드라이버 ID
-	public static String WEB_DRIVER_PATH = "C:\\bbomi\\chromedriver_win32\\chromedriver.exe"; // 드라이버 ID
-	
-	// 입시정보
-	
-	@RequestMapping("/project/home/entranceinfo")
-	public String entranceinfo() {
-		
-		System.setProperty(WEB_DRIVER_ID, WEB_DRIVER_PATH);
-		
-		
-		return "project/home/entranceinfo";
-	
-	}
-	
 	// 오디오 파일 업로드 하기
 	@RequestMapping(value="/project/home/uploadAudioFile", method=RequestMethod.POST)
 	@ResponseBody
@@ -203,5 +195,70 @@ public class ProjectHomeController {
 		return audioFileId;
 
 	}
+	
+	/*
+	
+	public static String WEB_DRIVER_ID = "webdriver.chrome.driver"; // 드라이버 ID
+	public static String WEB_DRIVER_PATH = "C:\\bbomi\\chromedriver_win32\\chromedriver.exe"; // 드라이버 ID
+	
+	// 입시정보
+	
+	@RequestMapping("/project/home/entranceinfo")
+	public String entranceinfo(Model model) {
+		
+		// 드라이버 설정
+		System.setProperty(WEB_DRIVER_ID, WEB_DRIVER_PATH);
+		
+		// 크롬 설정을 담을 객체 생성
+		ChromeOptions options = new ChromeOptions();
+		
+		//브라우저가 눈에 보이지 않고 내부적으로 돈다.
+		//설정하지 않을 시 실제 크롬 창이 생성되고, 어떤 순서로 진행되는지 확인할 수 있다.
+		options.addArguments("headless");
+		
+		// 위에서 설정한 옵션은 담은 드라이버 객체 생성
+		//옵션을 설정하지 않았을 때에는 생략 가능하다.
+		//WebDriver객체가 곧 하나의 브라우저 창이라 생각한다.
+		WebDriver driver = new ChromeDriver(options);
+		
+		//이동을 원하는 url
+		String url = "https://cafe.naver.com/suhui?iframe_url=/ArticleList.nhn%3Fsearch.clubid=10197921%26search.menuid=2016%26search.boardtype=L";
+				
+		
+		//브라우저 이동시 생기는 로드시간을 기다린다.
+		//HTTP응답속도보다 자바의 컴파일 속도가 더 빠르기 때문에 임의적으로 1초를 대기한다.
+		try {
+			//WebDriver을 해당 url로 이동한다.
+			driver.get(url);
+			
+			Thread.sleep(2000);
+			
+			// class="nav" 인 모든 태그를 가진 WebElement리스트를 받아온다.
+			// WebElement는 html의 태그를 가지는 클래스이다.
+			WebElement el = driver.findElement(By.xpath("//*[@id=\"upperArticleList\"]/table/tbody/tr[19]/td[1]/div[2]/div/a[1]"));
+			
+			System.out.println(el.getText());
+			
+			
+			List<String> titles = new ArrayList<>();
+			for(int i = 0 ; i < els.size() ; i++) {
+				titles.add(els.get(i).findElement(By.className("article")).getText());
+			}
+			
+			model.addAttribute("titles",titles);
+			
+			
+			
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} finally {
+			driver.close();
+			driver.quit();
+		}
+		
+		return "project/home/entranceinfo";
+	}
+	
+	*/
 	
 }

@@ -39,7 +39,7 @@
 .roomModal {
 	position: absolute;
 	height: 500px;
-	width: 700px;
+	width: 400px;
 	background-color: white;
 	top: 50%;
 	left: 50%;
@@ -68,6 +68,7 @@
         	<h5>사용자 이름 : ${rq.getLoginedMember().getName()}</h5>
         </c:if>
         
+    <!-- 채팅방 리스트표 보여주기 -->
 	<div class="table-box-type-1">
         <table class="table w-full" id="table">
             <thead>
@@ -92,8 +93,8 @@
                 <tr>
                     <td>
 	                    <span class="hidden" id="${room.roomName}"></span>
-	                        <a href="/project/chat/room?roomId=${room.roomId}" data-roomId="${room.roomId}" 
-	                        onclick="return chkRoomUserCnt(${room.roomId});">[${room.roomName}]</a>
+                        <a href="/project/chat/room?roomId=${room.roomId}" data-roomId="${room.roomId}" 
+                        onclick="return chkRoomUserCnt(${room.roomId});">${room.roomName}</a>
                     </td>
                     <td>
                         <span class="badge badge-primary">현재 ${room.userCount}명 / 최대 ${room.maxUserCnt}명</span>
@@ -102,8 +103,8 @@
                        <span>일반채팅/화상채팅</span>
                     </td>
                     <td>
-                        <button class="btn btn-primary btn-sm" id="configRoom" data-id="${room.roomId}" 
-                        onclick="openConfigRoom(${room.roomId});">채팅방 설정</button>
+                        <a class="btn btn-primary btn-sm" href="/project/chat/delRoom?roomId=${room.roomId }" 
+                        onclick="if(confirm('정말 삭제하시겠습니까?')==false) return false;">채팅방 삭제</a>
                     </td>
                 </tr>
                 </c:forEach>
@@ -119,48 +120,40 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title">채팅방 생성</h1>
+                <h1 class="modal-title text-2xl mt-5">채팅방 생성</h1>
                 <button type="button" class="btn-close"></button>
             </div>
             <form method="post" action="/project/chat/createroom" onsubmit="return createRoom()">
                 <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="roomName" class="col-form-label">방 이름</label>
+                    <div class="mb-5">
+                        <div class="col-form-label mb-2">방 이름</div>
                         <input type="text" class="form-control input input-bordered input-info w-full max-w-xs" 
                         id="roomName" name="roomName" placeholder="채팅방 이름을 설정해주세요.">
                     </div>
-                    <div class="mb-3">
-                        <label for="roomPwd" class="col-form-label">방 비밀번호(방 삭제시 필요합니다)</label>
-                        <div class="input-group">
-                            <input type="password" name="roomPwd" id="roomPwd" class="form-control input input-bordered input-info w-full max-w-xs" 
-                            data-toggle="password" placeholder="채팅방 비밀번호를 설정해주세요.">
-                            <div class="input-group-append">
-                                <span class="input-group-text"><i class="fa fa-eye"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <div class="form-check">
+                    <div class="mb-5">
+                        <div class="form-check flex items-center">
                             <input class="form-check-input radio radio-primary" type="radio" name="chatType" id="msgType" value="msgChat">
+                            &nbsp;&nbsp;
                             <label class="form-check-label " for="msgType">
                                 일반 채팅(최대 100명)
                             </label>
                         </div>
-                        <div class="form-check">
+                        <div class="form-check flex items-center">
                             <input class="form-check-input radio radio-primary" type="radio" name="chatType" id="rtcType" value="rtcChat">
+                            &nbsp;&nbsp;
                             <label class="form-check-label" for="rtcType">
                                 화상 채팅(1:1 Only)
                             </label>
                         </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="maxUserCnt" class="col-form-label">채팅방 최대인원 설정
-                            <!--<input class="form-check-input" type="checkbox" id="maxChk">--></label>
+                    <div class="mb-7">
+                        <div class="col-form-label mb-2">채팅방 최대인원 설정
+                            <!--<input class="form-check-input" type="checkbox" id="maxChk">--></div>
                         <input type="text" class="form-control input input-bordered input-info w-full max-w-xs" 
                         id="maxUserCnt" name="maxUserCnt" placeholder="채팅방 최대인원을 설정해주세요.">
                     </div>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer flex justify-end">
                     <button type="button" class="btn btn-secondary roomModal-close-btn">Close</button>
                     <input type="submit" class="btn btn-primary" value="방 생성하기">
                 </div>
@@ -169,77 +162,6 @@
     </div>
 </div>
 
-
-<div class="hidden" id="confirmPwdModal">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">채팅방 설정을 위한 패스워드 확인</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <label for="confirmPwd" class="col-form-label" id="confirmLabel">비밀번호 확인</label>
-                <div class="input-group">
-                    <input type="password" name="confirmPwd" id="confirmPwd" class="form-control" data-toggle="password">
-                    <div class="input-group-append">
-                        <span class="input-group-text"><i class="fa fa-eye"></i></span>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button id="configRoomBtn" class="btn btn-primary disabled" data-bs-target="#configRoomModal" data-bs-toggle="modal" aria-disabled="true">채팅방 설정하기</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- 채팅방설정 누르면 나오는 설정 변경 모달창 -->
-<div class="hidden configRoomModal" id="configRoomModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">채팅방 설정</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-3">
-                    <label for="chPwd" class="col-form-label">비밀번호 변경</label>
-                    <div class="input-group">
-                        <input type="password" name="confirmPwd" id="chPwd" class="form-control" data-toggle="password">
-                        <div class="input-group-append">
-                            <span class="input-group-text"><i class="fa fa-eye"></i></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label for="chRoomName" class="col-form-label">채팅방 이름 변경</label>
-                    <input type="text" class="form-control" id="chRoomName" name="chRoomName">
-                </div>
-                <div class="mb-3">
-                    <label for="chRoomUserCnt" class="col-form-label">채팅방 인원 변경</label>
-                    <input type="text" class="form-control" id="chRoomUserCnt" name="chUserCnt">
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="chSecret">
-                    <input type="hidden" name="secretChk" id="chSecretChk" value="">
-                    <label class="form-check-label" for="secret">
-                        채팅방 잠금
-                    </label>
-                </div>
-                <div class="mb-3">
-                    <button type="button" class="btn btn-primary" onclick="delRoom()">방 삭제</button>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-      </div>
-</div>
-   
-   
-   
-   
    
     </div>
     </section>
@@ -313,15 +235,15 @@
             // console.log("pwd : " + pwd);
 
             if (name === "") {
-                alert("방 이름은 필수입니다")
+                alert("방 이름은 필수입니다");
                 return false;
             }
-            if ($("#" + name).length > 0) {
-                alert("이미 존재하는 방입니다")
+            if ($('#' + name).length) {
+                alert("이미 존재하는 방입니다");
                 return false;
             }
             if (pwd === "") {
-                alert("비밀번호는 필수입니다")
+                alert("비밀번호는 필수입니다");
                 return false;
             }
 
@@ -330,7 +252,7 @@
                 alert("채팅은 최소 2명 이상!!");
                 return false;
             }else if ($("#maxUserCnt").val() > 100) {
-                alert("100명 이상은 서버가 못 버텨요ㅠ.ㅠ");
+                alert("채팅은 최대 100명까지만!!");
                 return false;
             }
 
@@ -349,14 +271,18 @@
             if(!numberChk()){
                 return false;
             }
+            
+            console.log($('#' + name).length);
 
             return true;
         }
         
 
         // 채팅방 삭제
-        function delRoom(){
-            location.href = "/project/chat/delRoom/"+roomId;
+        function delRoom(roomId){
+        	alert('채팅방 삭제 눌림');
+            location.href = "/project/chat/delRoom?roomId="+roomId;
+            return false;
         }
 
         // 채팅방 입장 시 인원 수에 따라서 입장 여부 결정
@@ -400,6 +326,7 @@
 		function openConfigRoom(roomId) {
 			alert('채팅방 설정 버튼 눌림');
 			$('.configRoomModal').show();
+			return false;
 		}
         
     </script>
