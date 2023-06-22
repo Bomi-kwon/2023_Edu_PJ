@@ -1,8 +1,8 @@
 package com.koreaIT.project.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.koreaIT.project.dto.WebSocketMessage;
 import com.koreaIT.project.service.RtcChatService;
@@ -15,8 +15,9 @@ public class ProjectRtcController {
 
     private final RtcChatService rtcChatService;
     
-	@PostMapping("/project/webrtc/usercount")
-    public String webRTC(@ModelAttribute WebSocketMessage webSocketMessage) {
+	@RequestMapping("/project/webrtc/usercount")
+	@ResponseBody
+    public String webRTC(WebSocketMessage webSocketMessage) {
 
 		System.out.println("== usercount 인포로깅 시작 ==");
 		System.out.println("MESSAGE : "+webSocketMessage.toString());

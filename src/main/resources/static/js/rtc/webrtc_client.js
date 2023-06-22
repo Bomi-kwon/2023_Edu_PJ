@@ -116,8 +116,9 @@ function start() {
                 console.log('usercount 아작스 요청 실패');
                 console.log("error : "+result);
             }
+            
         });
-
+        
 		return data;
     }
 
