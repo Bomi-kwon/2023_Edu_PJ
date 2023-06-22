@@ -2,6 +2,7 @@ package com.koreaIT.project.controller;
 
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +18,6 @@ import com.koreaIT.project.service.ChatServiceMain;
 import com.koreaIT.project.vo.Rq;
 
 
-
 @Controller
 public class ProjectChatRoomController {
 
@@ -25,18 +25,18 @@ public class ProjectChatRoomController {
     private ChatServiceMain chatServiceMain;
     private Rq rq;
     
+    // rq땜에 어차피 생성자 필요해서
+    // chatservicemain에 final 빼고 class에 @requiredargscontroller annotation도 뺐음
     
-    public ProjectChatRoomController(ChatServiceMain chatServiceMain, Rq rq) {
-		super();
-		this.chatServiceMain = chatServiceMain;
+    @Autowired
+    public ProjectChatRoomController(Rq rq, ChatServiceMain chatServiceMain) {
+    	this.chatServiceMain = chatServiceMain;
 		this.rq = rq;
 	}
 
- // 채팅 리스트 화면
-    // / 로 요청이 들어오면 전체 채팅룸 리스트를 담아서 return
-
-    // 스프링 시큐리티의 로그인 유저 정보는 Security 세션의 PrincipalDetails 안에 담긴다
-    // 정확히는 PrincipalDetails 안에 ChatUser 객체가 담기고, 이것을 가져오면 된다.
+    // 채팅 리스트 화면
+    // "/project/chat" 로 요청이 들어오면 전체 채팅룸 리스트를 담아서 return
+    // 참고한 블로그 주인은 이 함수를 MainController 만들어서 따로 뺐음.
     @GetMapping("/project/chat")
     public String goChatRoom(Model model){
 
@@ -93,12 +93,6 @@ public class ProjectChatRoomController {
     	
     	
         // log.info("roomId {}", roomId);
-    	
-    	try {
-    		System.out.println(roomId);
-    	} catch (Exception e) {
-    		e.printStackTrace();
-		}
 
         // principalDetails 가 null 이 아니라면 로그인 된 상태!!
        // if (principalDetails != null) {
@@ -126,7 +120,7 @@ public class ProjectChatRoomController {
 
 
     // 채팅방 삭제
-    @GetMapping("/project/chat/delRoom/{roomId}")
+    @GetMapping("/project/chat/delRoom")
     public String delChatRoom(@PathVariable String roomId){
 
         // roomId 기준으로 chatRoomMap 에서 삭제, 해당 채팅룸 안에 있는 사진 삭제
@@ -142,6 +136,9 @@ public class ProjectChatRoomController {
 
         return chatServiceMain.chkRoomUserCnt(roomId);
     }
+
+
+	
 
 
 	

@@ -49,13 +49,12 @@ public class RtcChatService {
         // NullPointException 을 방지하기 위하여 반환 형태에 따라 List 나 Map 의 인스턴스를 생성하여 반환하여 처리해야하는 경우
         // size 메서드 등을 체크하고 추가적인 값을 변경하지 않는 경우 Collections.emptyMap() 를 사용하면 매번 동일한 정적 인스턴스가
         // 변환되므로 각 호출에 대한 불필요한 인스턴스 생성하지 않게 되어 메모리 사용량을 줄일 수 있다
+
+        Optional<ChatRoomDto> roomDto = Optional.ofNullable(room);
+        
 //        return (Map<String, WebSocketSession>) Optional.ofNullable(room)
 //                .map(r -> Collections.unmodifiableMap(r.getUserList()))
 //                .orElse(Collections.emptyMap());
-
-
-
-        Optional<ChatRoomDto> roomDto = Optional.ofNullable(room);
 
         return (Map<String, WebSocketSession>) roomDto.get().getUserList();
     }
@@ -72,9 +71,15 @@ public class RtcChatService {
     }
 
     // 유저 카운터 return
+    // 가장 중요
+    // 참여한 room에 또 다른 유저가 있는지 판별해준다.
+    // userList의 size가 나를 포함해 2명 이상이라면 다른 유저와 통신이 필요하다는걸 확인해준다.
     public boolean findUserCount(WebSocketMessage webSocketMessage){
         ChatRoomDto room = ChatRoomMap.getInstance().getChatRooms().get(webSocketMessage.getData());
         // log.info("ROOM COUNT : [{} ::: {}]",room.toString(),room.getUserList().size());
+        System.out.println("== findUserCount 인포로깅 시작 ==");
+        System.out.println("room.toString : "+room.toString()+", room.getUserList().size() : "+room.getUserList().size());
+        System.out.println("== findUserCount 인포로깅 끝 ==");
         return room.getUserList().size() > 1;
     }
 

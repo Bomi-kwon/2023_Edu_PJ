@@ -23,7 +23,7 @@ public class ChatServiceMain {
     private final RtcChatService rtcChatService;
 
     // 채팅방 삭제에 따른 채팅방의 사진 삭제를 위한 fileService 선언
-    private final FileService fileService;
+    // private final FileService fileService;
 
 
     // 전체 채팅방 조회

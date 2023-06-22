@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class WebSocketMessage {
 	
 	// webRTC 연결시 사용되는 클래스
-	// websocke 연결 정보를 주고 받을때 사용
+	// websocket 연결 정보를 주고 받을때 사용
 	
     private String from; // 보내는 유저 UUID
     private String type; // 메시지 타입

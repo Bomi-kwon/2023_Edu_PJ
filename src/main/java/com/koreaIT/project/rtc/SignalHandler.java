@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.apache.commons.codec.binary.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -25,8 +24,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SignalHandler extends TextWebSocketHandler{
 
-    private RtcChatService rtcChatService;
-    private ChatServiceMain chatServiceMain;
+    private final RtcChatService rtcChatService;
+    private final ChatServiceMain chatServiceMain;
 
     // private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -41,15 +40,38 @@ public class SignalHandler extends TextWebSocketHandler{
     private static final String MSG_TYPE_ANSWER = "answer";
     // New ICE Candidate message
     private static final String MSG_TYPE_ICE = "ice";
+    
+    /*
+     * OFFER, ANSWER, ICE 의 경우 roomDTO 에서 roomID 를 기준으로 room 정보를 가져온다. 
+     * 해당 room 의 userList key 정보들을 가져와서 확인한다. 
+     * userList key 중 현재 유저의 uuid 와 다른 uuid 가 있다면 다른 유저가 존재하는것으로 판단하고 
+     * 해당 유저의 session 에(나와 다른 유저의 session 정보) 에 
+     * 현재 유저의 UUID, message.type, roomID, 상태, sdp 를 담아서 보내게 된다.
+     */
+    
     // join room data message
     private static final String MSG_TYPE_JOIN = "join";
     // leave room data message
     private static final String MSG_TYPE_LEAVE = "leave";
     
+    /*
+     * JOIN 은 유저가 방에 참가했을 때 실행되며
+     * roomId 를 기준으로 room 을 가져온 후 현재 유저를 추가한다. 
+     * 또한 room 의 userCnt 도 +1한다.
+     * LEAVE 는 유저가 방에서 떠났을 때의 이벤트 처리이다.  
+     * 떠났을 때의 기준은 웹 브라우저에서 '방을 나간경우' 로 취급한다. 
+     * 즉 exit 버튼을 눌렀거나 브라우저를 종료한 경우 모두 방을 떠났다고 판단하여 LEAVE 메시지를 보내게 된다. 
+     * 여기에서는 room 정보를 찾아온 후 userList 에서 key 값만 가져와서 떠난 유저와 동일한 uuid 가 있는지 확인한다. 
+     * 만약 있다면 해당 유저를 userList 에서 제거한다.
+     */
+    
     
     // 참고한 블로그엔 없던 코드였는데
     // 화상채팅방에서만 채팅방 인원수가 바뀌지 않아서 추가했더니
     // 인원수는 잘 바뀐다!
+    // 근데 새로고침 해야지 인원수가 바뀜;; 실시간 통신인데
+    // 그래서 잠시 지워놓겠음
+    /*
     @Autowired
 	public SignalHandler(RtcChatService rtcChatService, ChatServiceMain chatServiceMain,
 			Map<String, ChatRoomDto> rooms) {
@@ -57,10 +79,19 @@ public class SignalHandler extends TextWebSocketHandler{
 		this.chatServiceMain = chatServiceMain;
 		this.rooms = rooms;
 	}
+	*/
     
     // 연결 끊어졌을 때 이벤트처리
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
+    	
+    	// slf4j 로그 대신 println으로 내가 씀
+    	
+    	System.out.println("== 연결 끊어짐 ==");
+    	System.out.println(status);
+    	System.out.println(session);
+    	System.out.println("====");
+    	
         // logger.info("[ws] Session has been closed with status [{} {}]", status, session);
     }
 
@@ -85,11 +116,23 @@ public class SignalHandler extends TextWebSocketHandler{
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage textMessage) {
         // a message has been received
+    	// 이 함수를 기준으로 ICE와 SDP 통신이 일어남.
+    	// 이 함수가 실행되며 userUUID와 roomID를 저장함.
+    	// 이후 전달받은 메세지의 타입에 따라 시그널링 서버 기능 시작.
         try {
             // 웹 소켓으로부터 전달받은 메시지
             // 소켓쪽에서는 socket.send 로 메시지를 발송한다 => 참고로 JSON 형식으로 변환해서 전달해온다
             WebSocketMessage message = objectMapper.readValue(textMessage.getPayload(), WebSocketMessage.class);
             // logger.debug("[ws] Message of {} type from {} received", message.getType(), message.getFrom());
+            
+            
+            // 로깅 대신 println으로 처리
+            // 디버그 아니어도 항상 나올것임
+            System.out.println("== 디버그 로깅 시작 ==");
+            System.out.println(message.getType());
+            System.out.println(message.getFrom());
+            System.out.println("== 디버그 로깅 끝 ==");
+            
             // 유저 uuid 와 roomID 를 저장
             String userUUID = message.getFrom(); // 유저 uuid
             String roomId = message.getData(); // roomId
@@ -113,6 +156,18 @@ public class SignalHandler extends TextWebSocketHandler{
                                     ? candidate.toString().substring(0, 64)
                                     : sdp.toString().substring(0, 64));
                     */
+                    
+                    if(candidate != null) {
+                    	System.out.println("== candidate 존재할 때 디버그 로깅 시작 ==");
+                    	System.out.println("Signal : "+candidate.toString().substring(0, 64));
+                    	System.out.println("== candidate 존재할 때 디버그 로깅 끝 ==");
+                    }
+                    
+                    else {
+                    	System.out.println("== candidate 존재 안 할때 디버그 로깅 시작 ==");
+                    	System.out.println("Signal : "+sdp.toString().substring(0, 64));
+                    	System.out.println("== candidate 존재 안 할 때 디버그 로깅 끝 ==");
+                    }
 
                     /* 여기도 마찬가지 */
                     ChatRoomDto roomDto = rooms.get(roomId);
@@ -148,6 +203,10 @@ public class SignalHandler extends TextWebSocketHandler{
                 case MSG_TYPE_JOIN:
                     // message.data contains connected room id
                     // logger.debug("[ws] {} has joined Room: #{}", userUUID, message.getData());
+                	
+                	System.out.println("== JOIN 디버그로깅 시작 ==");
+                	System.out.println(userUUID+" has joined Room : "+message.getData());
+                	System.out.println("== JOIN 디버그로깅 끝 ==");
 
 //                    room = rtcChatService.findRoomByRoomId(roomId)
 //                            .orElseThrow(() -> new IOException("Invalid room number received!"));
@@ -159,13 +218,20 @@ public class SignalHandler extends TextWebSocketHandler{
                     // 채팅방 입장 후 유저 카운트+1
                     chatServiceMain.plusUserCnt(roomId);
 
-                    rooms.put(roomId, room);
+                    // 새롭게 변경한 코드
+                    // 혹시 이것때문에 상대방 화면 안 나오거나 방인원수 안 늘어난건가..?
+                    // 이 부분에서 session.getID 대신 roomID 를 사용하면 문제 생김
+                    rooms.put(session.getId(), room);
                     break;
 
                 case MSG_TYPE_LEAVE:
                     // message data contains connected room id
                    // logger.info("[ws] {} is going to leave Room: #{}", userUUID, message.getData());
 
+                	System.out.println("== LEAVE 인포로깅 시작 ==");
+                	System.out.println(userUUID+" is going to leave Room : "+message.getData());
+                	System.out.println("== LEAVE 인포로깅 끝 ==");
+                	
                     // roomID 기준 채팅방 찾아오기
                     room = rooms.get(message.getData());
 
@@ -184,26 +250,42 @@ public class SignalHandler extends TextWebSocketHandler{
                     chatServiceMain.minusUserCnt(roomId);
 
                     // logger.debug("삭제 완료 [{}] ",client);
+                    
+                    System.out.println("== LEAVE 디버그로깅 시작 ==");
+                    System.out.println("삭제 완료 : " + client);
+                    System.out.println("== LEAVE 디버그로깅 끝 ==");
+                    
                     break;
 
                 // something should be wrong with the received message, since it's type is unrecognizable
                 default:
                     // logger.debug("[ws] Type of the received message {} is undefined!", message.getType());
+                	
+                	System.out.println("== type이 OFFER,ANSWER,ICE,JOIN,LEAVE 중에 없을때 ==");
+                	System.out.println("Type of the received message "+message.getType()+" is undefined!");
+                	System.out.println("====");
+                	
                     // handle this if needed
             }
 
         } catch (IOException e) {
             // logger.debug("An error occured: {}", e.getMessage());
+        	System.out.println(e.getMessage());
         }
     }
 
     private void sendMessage(WebSocketSession session, WebSocketMessage message) {
-        try {
-            String json = objectMapper.writeValueAsString(message);
-            session.sendMessage(new TextMessage(json));
-        } catch (IOException e) {
-            // logger.debug("An error occured: {}", e.getMessage());
-        }
+    	
+    		// slf4j를 사용한 로그 지우고 내가 만든 try-catch 구문임
+    	
+			try {
+				String json = objectMapper.writeValueAsString(message);
+				session.sendMessage(new TextMessage(json));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        
     }
 
     

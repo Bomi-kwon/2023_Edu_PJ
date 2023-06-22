@@ -43,23 +43,25 @@ $(function(){
 });
 
 function start() {
+	console.log('hello');
+	
     // 페이지 시작시 실행되는 메서드 -> socket 을 통해 server 와 통신한다
     socket.onmessage = function(msg) {
         let message = JSON.parse(msg.data);
         switch (message.type) {
 
             case "offer":
-                log('Signal OFFER received');
+                console.log('Signal OFFER received');
                 handleOfferMessage(message);
                 break;
 
             case "answer":
-                log('Signal ANSWER received');
+                console.log('Signal ANSWER received');
                 handleAnswerMessage(message);
                 break;
 
             case "ice":
-                log('Signal ICE Candidate received');
+                console.log('Signal ICE Candidate received');
                 handleNewICECandidateMessage(message);
                 break;
 
@@ -67,8 +69,14 @@ function start() {
                 // ajax 요청을 보내서 userList 를 다시 확인함
                 message.data = chatListCount();
 
-                log('Client is starting to ' + (message.data === "true)" ? 'negotiate' : 'wait for a peer'));
-                log("messageDATA : "+message.data)
+				if(message.data === "true") {
+					console.log('Client is starting to negotiate');
+				}
+				else {
+					console.log('Client is starting to wait for a peer');
+				}
+				
+                console.log("messageDATA : "+message.data)
                 handlePeerConnection(message);
                 break;
 
@@ -84,6 +92,8 @@ function start() {
 
     // ICE 를 위한 chatList 인원 확인
     function chatListCount(){
+		console.log('localRoom 값 : '+localRoom);
+		console.log('lacalUserName 값 : '+localUserName);
 
         let data;
 
@@ -100,20 +110,22 @@ function start() {
             },
             success(result){
                 data = result;
+                console.log('usercount 아작스 요청 성공');
             },
             error(result){
+                console.log('usercount 아작스 요청 실패');
                 console.log("error : "+result);
             }
         });
 
-        return data;
+		return data;
     }
 
 
     // add an event listener to get to know when a connection is open
     // 웹 소켓 연결 되었을 때 - open - 상태일때 이벤트 처리
     socket.onopen = function() {
-        log('WebSocket connection opened to Room: #' + localRoom);
+        console.log('WebSocket connection opened to Room: #' + localRoom);
         // send a message to the server to join selected room with Web Socket
         sendToServer({
             from: localUserName,
@@ -125,8 +137,7 @@ function start() {
     // a listener for the socket being closed event
     // 소켓이 끊겼을 때 이벤트처리
     socket.onclose = function(message) {
-        log('Socket has been closed');
-
+        console.log('Socket has been closed');
     };
 
     // an event listener to handle socket errors
@@ -147,7 +158,7 @@ window.onhashchange = function(){
 
 function stop() {
     // send a message to the server to remove this client from the room clients list
-    log("Send 'leave' message to server");
+    console.log("Send 'leave' message to server");
     sendToServer({
         from: localUserName,
         type: 'leave',
@@ -155,7 +166,7 @@ function stop() {
     });
 
     if (myPeerConnection) {
-        log('Close the RTCPeerConnection');
+        console.log('Close the RTCPeerConnection');
 
         // disconnect all our event listeners
         myPeerConnection.onicecandidate = null;
@@ -184,7 +195,7 @@ function stop() {
         myPeerConnection.close();
         myPeerConnection = null;
 
-        log('Close the socket');
+        console.log('Close the socket');
         if (socket != null) {
             socket.close();
         }
@@ -199,22 +210,22 @@ videoButtonOff.onclick = () => {
     localVideoTracks = localStream.getVideoTracks();
     localVideoTracks.forEach(track => localStream.removeTrack(track));
     $(localVideo).css('display', 'none');
-    log('Video Off');
+    console.log('Video Off');
 };
 videoButtonOn.onclick = () => {
     localVideoTracks.forEach(track => localStream.addTrack(track));
     $(localVideo).css('display', 'inline');
-    log('Video On');
+    console.log('Video On');
 };
 
 // mute audio buttons handler
 audioButtonOff.onclick = () => {
     localVideo.muted = true;
-    log('Audio Off');
+    console.log('Audio Off');
 };
 audioButtonOn.onclick = () => {
     localVideo.muted = false;
-    log('Audio On');
+    console.log('Audio On');
 };
 
 // room exit button handler
@@ -223,7 +234,7 @@ exitButton.onclick = () => {
 };
 
 function log(message) {
-    // console.log(message);
+    console.log(message);
 }
 
 function handleErrorMessage(message) {
@@ -247,6 +258,7 @@ function getMedia(constraints) {
         .then(getLocalMediaStream).catch(handleGetUserMediaError);
 }
 
+
 // create peer connection, get media, start negotiating when second participant appears
 // 두번째 클라이언트가 들어오면 피어 연결을 생성 + 미디어 생성
 function handlePeerConnection(message) {
@@ -269,10 +281,27 @@ function createPeerConnection() {
 
     // the following events are optional and could be realized later if needed
     // myPeerConnection.onremovetrack = handleRemoveTrackEvent;
-    // myPeerConnection.oniceconnectionstatechange = handleICEConnectionStateChangeEvent;
+    myPeerConnection.oniceconnectionstatechange = handleICEConnectionStateChangeEvent;
     // myPeerConnection.onicegatheringstatechange = handleICEGatheringStateChangeEvent;
     // myPeerConnection.onsignalingstatechange = handleSignalingStateChangeEvent;
 }
+
+/** peerConnection 과 관련된 이벤트 처리
+ * 다른 peer 와 연결되었을 때 remote_video show 상태로로, 끊졌을때는 remote_video 를 hide 상태로 변경
+ * **/
+function handleICEConnectionStateChangeEvent(){
+    let status = myPeerConnection.iceConnectionState;
+
+    if(status === "connected"){
+        console.log("status : "+status)
+        $("#remote_video").show();
+    }else if(status === "disconnected"){
+        console.log("status : "+status)
+        $("#remote_video").hide();
+    }
+}
+
+
 // add MediaStream to local video element and to the Peer
 function getLocalMediaStream(mediaStream) {
     localStream = mediaStream;
@@ -280,9 +309,11 @@ function getLocalMediaStream(mediaStream) {
     localStream.getTracks().forEach(track => myPeerConnection.addTrack(track, localStream));
 }
 
+
+
 // handle get media error
 function handleGetUserMediaError(error) {
-    log('navigator.getUserMedia error: ', error);
+    console.log('navigator.getUserMedia error: ', error);
     switch(error.name) {
         case "NotFoundError":
             alert("Unable to open your call because no camera and/or microphone were found.");
@@ -308,12 +339,12 @@ function handleICECandidateEvent(event) {
             type: 'ice',
             candidate: event.candidate
         });
-        log('ICE Candidate Event: ICE candidate sent');
+        console.log('ICE Candidate Event: ICE candidate sent');
     }
 }
 
 function handleTrackEvent(event) {
-    log('Track Event: set stream to remote video element');
+    console.log('Track Event: set stream to remote video element');
     remoteVideo.srcObject = event.streams[0];
 }
 
@@ -333,7 +364,7 @@ function handleNegotiationNeededEvent() {
                 type: 'offer',
                 sdp: myPeerConnection.localDescription
             });
-            log('Negotiation Needed Event: SDP offer sent');
+            console.log('Negotiation Needed Event: SDP offer sent');
         })
         .catch(function(reason) {
             // an error occurred, so handle the failure to connect
@@ -342,18 +373,18 @@ function handleNegotiationNeededEvent() {
 }
 
 function handleOfferMessage(message) {
-    log('Accepting Offer Message');
-    log(message);
+    console.log('Accepting Offer Message');
+    console.log(message);
     let desc = new RTCSessionDescription(message.sdp);
     //TODO test this
     if (desc != null && message.sdp != null) {
-        log('RTC Signalling state: ' + myPeerConnection.signalingState);
+        console.log('RTC Signalling state: ' + myPeerConnection.signalingState);
         myPeerConnection.setRemoteDescription(desc).then(function () {
-            log("Set up local media stream");
+            console.log("Set up local media stream");
             return navigator.mediaDevices.getUserMedia(mediaConstraints);
         })
             .then(function (stream) {
-                log("-- Local video stream obtained");
+                console.log("-- Local video stream obtained");
                 localStream = stream;
                 try {
                     localVideo.srcObject = localStream;
@@ -361,11 +392,11 @@ function handleOfferMessage(message) {
                     localVideo.src = window.URL.createObjectURL(stream);
                 }
 
-                log("-- Adding stream to the RTCPeerConnection");
+                console.log("-- Adding stream to the RTCPeerConnection");
                 localStream.getTracks().forEach(track => myPeerConnection.addTrack(track, localStream));
             })
             .then(function () {
-                log("-- Creating answer");
+                console.log("-- Creating answer");
                 // Now that we've successfully set the remote description, we need to
                 // start our stream up locally then create an SDP answer. This SDP
                 // data describes the local end of our call, including the codec
@@ -373,14 +404,14 @@ function handleOfferMessage(message) {
                 return myPeerConnection.createAnswer();
             })
             .then(function (answer) {
-                log("-- Setting local description after creating answer");
+                console.log("-- Setting local description after creating answer");
                 // We now have our answer, so establish that as the local description.
                 // This actually configures our end of the call to match the settings
                 // specified in the SDP.
                 return myPeerConnection.setLocalDescription(answer);
             })
             .then(function () {
-                log("Sending answer packet back to other peer");
+                console.log("Sending answer packet back to other peer");
                 sendToServer({
                     from: localUserName,
                     data: localRoom,
@@ -395,7 +426,7 @@ function handleOfferMessage(message) {
 }
 
 function handleAnswerMessage(message) {
-    log("The peer has accepted request");
+    console.log("The peer has accepted request");
 
     // Configure the remote description, which is the SDP payload
     // in our "video-answer" message.
@@ -405,6 +436,6 @@ function handleAnswerMessage(message) {
 
 function handleNewICECandidateMessage(message) {
     let candidate = new RTCIceCandidate(message.candidate);
-    log("Adding received ICE candidate: " + JSON.stringify(candidate));
+    console.log("Adding received ICE candidate: " + JSON.stringify(candidate));
     myPeerConnection.addIceCandidate(candidate).catch(handleErrorMessage);
 }
