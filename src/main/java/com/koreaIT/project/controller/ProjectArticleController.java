@@ -38,16 +38,16 @@ import com.koreaIT.project.vo.visitHistory;
 
 @Controller
 public class ProjectArticleController {
-	ArticleService articleService;
-	MemberService memberService;
-	BoardService boardService;
-	ScoreService scoreService;
-	HomeworkService homeworkService;
-	GroupService groupService;
-	FileService fileService;
-	ReplyService replyService;
-	VisitHistoryService visitHistoryService;
-	Rq rq;
+	private ArticleService articleService;
+	private MemberService memberService;
+	private BoardService boardService;
+	private ScoreService scoreService;
+	private HomeworkService homeworkService;
+	private GroupService groupService;
+	private FileService fileService;
+	private ReplyService replyService;
+	private VisitHistoryService visitHistoryService;
+	private Rq rq;
 	
 	@Autowired
 	public ProjectArticleController(ArticleService articleService, MemberService memberService,
