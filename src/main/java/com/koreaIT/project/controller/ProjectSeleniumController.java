@@ -11,7 +11,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,18 +24,20 @@ import com.koreaIT.project.vo.Rq;
 public class ProjectSeleniumController {
 	
 	private Rq rq;
+	private String url = null;
 	
 	@Autowired
 	public ProjectSeleniumController(Rq rq) {
 		this.rq = rq;
 	}
 
-	private String url = "https://cafe.naver.com/suhui";
 
 	@RequestMapping("/project/selenium/entranceinfo")
 	public String entranceinfo(Model model) throws InterruptedException {
 		
 		System.out.println("까꿍");
+		
+		url = "https://cafe.naver.com/suhui";
 
 		Path path = Paths.get("C:\\bbomi\\chromedriver\\chromedriver.exe");
 
@@ -66,19 +67,18 @@ public class ProjectSeleniumController {
 		// iframe 태그에 갇혀있는 요소들 데려오려면 거기로 switch 해줘야함!!
 
 		driver.switchTo().frame(driver.findElement(By.cssSelector("iframe#cafe_main")));
-
-		List<WebElement> contents = driver.findElements(By.cssSelector("#main-area > div:nth-child(4) > table > tbody > tr"));
+		List<WebElement> contents = new ArrayList<>();
+		List<InfoArticle> infoArticleList = new ArrayList<>();
 		
-		List<InfoArticle> infoArticleList = new ArrayList();
-
-		
-		if(contents.size() > 0) {
-
+		for(int i = 0 ; i < 5 ; i++) {
+			
+			contents = driver.findElements(By.cssSelector("#main-area > div:nth-child(4) > table > tbody > tr"));
+				
 			for(WebElement content : contents) {
 				String title = content.findElement(By.cssSelector("td.td_article > div.board-list > div > a.article")).getText();
 				String date = content.findElement(By.cssSelector("td.td_date")).getText();
 				String url = content.findElement(By.cssSelector("td.td_article > div.board-list > div > a.article")).getAttribute("href");
-
+				
 				InfoArticle infoArticle = new InfoArticle();
 				
 				infoArticle.setTitle(title);
@@ -88,11 +88,15 @@ public class ProjectSeleniumController {
 				infoArticleList.add(infoArticle);
 				
 			}
-
-			model.addAttribute("infoArticleList", infoArticleList);
+			
+			driver.findElement(By.cssSelector("#main-area > div.prev-next > a.on + a")).click();
 
 		}
-		rq.jsReturnOnView("웹페이지에서 정보를 가져오지 못했습니다.", true);
+		model.addAttribute("infoArticleList", infoArticleList);
+		
+		if(infoArticleList.isEmpty()) {
+			rq.jsReturnOnView("웹페이지에서 정보를 가져오지 못했습니다.", true);
+		}
 
 		driver.quit();
 
