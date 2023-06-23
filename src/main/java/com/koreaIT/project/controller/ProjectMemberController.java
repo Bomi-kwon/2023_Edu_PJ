@@ -633,4 +633,39 @@ public class ProjectMemberController {
 	}
 	
 	
+	// 반 생성
+	
+	@RequestMapping("/project/member/makeGroup")
+	public String makeGroup(Model model) {
+		
+		List<Member> teachers = memberService.getMembersByAuthLevel(1);
+		model.addAttribute("teachers", teachers);
+		
+		return "project/member/makeGroup";
+	}
+	
+	
+	// 반 최종 생성
+	
+	@RequestMapping("/project/member/doMakeGroup")
+	@ResponseBody
+	public String doMakeGroup(String grade, String groupName, String groupDay, int groupTeacherId, String textbook) {
+		
+		groupService.doMakeGroup(grade, groupName, groupDay, groupTeacherId, textbook);
+			
+		return Util.jsReplace(Util.f("%s반 생성이 완료되었습니다.", groupName), "membergroup");
+	}
+	
+	
+	// 반 삭제
+	
+	@RequestMapping("/project/member/doDeleteGroup")
+	@ResponseBody
+	public String doDeleteGroup(int classId, String groupName) {
+		
+		groupService.doDeleteGroup(classId);
+		
+		return Util.jsReplace("반이 삭제되었습니다.", "membergroup");
+	}
+	
 }

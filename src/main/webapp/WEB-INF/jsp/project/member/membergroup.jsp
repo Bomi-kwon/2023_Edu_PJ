@@ -93,6 +93,13 @@
 		</c:forEach>
 	  </table>
 	  </div>
+	  
+	  <c:if test="${rq.getLoginedMember().getAuthLevel() == 1 }">
+		  <div class="flex justify-end mt-2">
+		  	<a href="makeGroup" class="btn btn-success">반 생성</a>
+		  </div>
+	  </c:if>
+	  
 	</div>
 </section>
 	

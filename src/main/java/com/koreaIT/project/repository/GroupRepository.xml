@@ -56,5 +56,19 @@
 		GROUP BY G.id
 		HAVING G.id = #{id};
 	</select>
+	
+	<insert id="doMakeGroup" >
+		INSERT INTO `group`
+		SET grade = #{grade},
+		groupName = #{groupName},
+		groupDay = #{groupDay},
+		groupTeacherId = #{groupTeacherId},
+		textbook = #{textbook};
+	</insert>
+	
+	<delete id="doDeleteGroup">
+		DELETE FROM `group`
+		WHERE id = #{classId}
+	</delete>
 
 </mapper>

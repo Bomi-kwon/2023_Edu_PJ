@@ -7,11 +7,10 @@
 
 	<section class="">
 		<div class="container mx-auto px-3 h-full ">
-			<span class="mb-3">수만휘 BEST 수기 글 모음</span>
+			<div class="mb-3">수만휘 BEST 수기 글 모음</div>
+			<div class="mb-3">글 갯수 : ${infoArticleList.size() }</div>
 			<br />
 			<br />
-			
-			
 			
 		<div class="table-box-type-1">
 		  <table class="table w-full">
@@ -30,8 +29,8 @@
 	        	<td>${infoArticle.title }</td>
 		        <td>
 		        	<div class="badge badge-accent badge-outline">
-		        		<a href="${infoArticle.url }" target="_blank">
-		        			해당 글로 이동
+		        		<a href="${infoArticle.url }">
+		        			해당 글 상세보기
 		        		</a>
 		        	</div>
 		        </td>

@@ -35,6 +35,14 @@ public class GroupService {
 		return groupRepository.getStudentNumById(id);
 	}
 
+	public void doMakeGroup(String grade, String groupName, String groupDay, int groupTeacherId, String textbook) {
+		groupRepository.doMakeGroup(grade, groupName, groupDay, groupTeacherId, textbook);
+	}
+
+	public void doDeleteGroup(int classId) {
+		groupRepository.doDeleteGroup(classId);
+	}
+
 
 
 }

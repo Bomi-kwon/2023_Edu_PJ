@@ -8,6 +8,7 @@
 
 <section class="mt-8 mx-auto text-xl">
 	<div class="container mx-auto px-3">
+	<c:if test="${students.isEmpty() == false }">
 		<div class="table-box-type-1">
 	  <table class="table w-full" id="memberlisttable">
 	    <thead>
@@ -36,10 +37,22 @@
 	  </table>
 	  </div>
 	  
-	  <div class="flex justify-end">
-	  	<a class="btn mt-2" href="excelDownload?classId=${classId }">출석부 파일 다운로드</a>
-	  </div>
 	  
+	  <div class="flex justify-end mt-2">
+	  	<a href="doDeleteGroup?classId=${classId }" class="btn btn-success mr-1" 
+				onclick="if(confirm('정말 삭제하시겠습니까?')==false) return false;">반 삭제</a>
+	  	<a class="btn" href="excelDownload?classId=${classId }">출석부 파일 다운로드</a>
+	  </div>
+	  </c:if>
+	  
+	  <c:if test="${students.isEmpty() }">
+	  	<div>이 반에는 아직 수강생이 없습니다.</div>
+	  	<div class="flex justify-end">
+			<a href="doDeleteGroup?classId=${classId }" class="btn btn-success mr-1" 
+				onclick="if(confirm('정말 삭제하시겠습니까?')==false) return false;">반 삭제</a>
+			<button class="btn btn-success" type="button" onclick="history.back();">뒤로</button>
+		</div>
+	  </c:if>
 	</div>
 </section>
 	

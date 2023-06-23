@@ -17,4 +17,8 @@ public interface GroupRepository {
 	public Group getGroupById(int id);
 
 	public int getStudentNumById(int id);
+
+	public void doMakeGroup(String grade, String groupName, String groupDay, int groupTeacherId, String textbook);
+
+	public void doDeleteGroup(int classId);
 }
