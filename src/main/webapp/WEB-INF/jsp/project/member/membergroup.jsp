@@ -8,6 +8,8 @@
 <script type="text/javascript" src="js/jquery.battatech.excelexport.js"></script>
 
 <script>
+
+	<!-- 대상 학년 고르면 그에 맞는 반 리스트만 보여주기 -->
 	function getGroupsByGrade(grade) {
 		$('#grouplisttable').html(`<thead>
 			      <tr>
@@ -22,6 +24,7 @@
 		
 		let gradeVal = grade.value;
 		
+		<!-- ajax로 선택한 학년 groups들만 가져오기 -->
 		$.get('getGroupsByGrade', {
 			grade : gradeVal
 		}, function(data) {
@@ -66,6 +69,7 @@
 		</select>
 	</div>
 	  
+    <!-- 페이지를 처음 들어오면 전체 명단 다 보여주기 -->
 	  <table class="table w-full" id="grouplisttable">
 	    <thead>
 	      <tr>

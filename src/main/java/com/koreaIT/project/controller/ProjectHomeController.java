@@ -1,15 +1,8 @@
 package com.koreaIT.project.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -92,29 +85,57 @@ public class ProjectHomeController {
 	}
 	
 	
-	// QR코드 최종 생성
-	
+	/**
+	 * QR코드 생성
+	 * @param todayDate (qr코드에 들어갈 정보)
+	 * @param classId (qr코드에 들어갈 정보)
+	 * @return QR코드 리턴함
+	 * @throws WriterException
+	 * @throws IOException
+	 * google.zxing maven dependancy 추가
+	 */
 	@RequestMapping("/project/home/doMakeQR")
 	@ResponseBody
 	public Object doMakeQR(String todayDate, int classId) throws WriterException, IOException {
 		int width = 400;
 		int height = 400;
 		
-		String url = Util.f("http://192.168.219.103:8081/project/home/attendanceChk?todayDate=%s&classId=%d", todayDate, classId);
+		// 아직 배포를 하지 않아 localhost로만 이용할 수 있어서
+		// 일단 서버가 있는 컴퓨터의 ip주소로 연결해놓음
+		// 즉 핸드폰 또는 다른 컴퓨터가 localhost 컴퓨터와 같은 와이파이를 사용한다면 내 사이트 들어올 수 있음
+		// 대신 이 장소의 ip 주소가 주기적으로 바뀌므로 시연하기 직전에
+		// Window + R -> cmd -> ipconfig로 ipv4 주소 확인후
+		// 이 url을 업데이트 해줘야함 꼭!!!
+		String url = Util.f("http://192.168.200.18:8081/project/home/attendanceChk?todayDate=%s&classId=%d", todayDate, classId);
+		
+		// zxing 라이브러리를 이용해 바코드 또는 QR코드를 생성할 수 있음!!
+		// url을 특정 높이와 너비의 bitmatrix로 생성한 후
+		// multiformatwriter.encode()를 이용해 boolean형 2차원 배열로 표현된 QR코드를 만든다.
 		BitMatrix matrix = new MultiFormatWriter().encode(url, BarcodeFormat.QR_CODE, width, height);
 		
-		System.out.println(todayDate);
-		System.out.println(classId);
-		
+		// ByteArrayOutputStream을 선언한 시점에 그것만의 `Buffer(byte[])`가 자동으로 켜지고
+		// 그것의 저장소에 .write()하여 내용을 적게 되는것이다.
+		// toByteArray()를 이용하여 Array화 할 수도 있다.
+		// ByteArrayOutputStream 은 Stream과는 크게 상관이 없어 flush, close하는것은 의미가 없다.
+		// 선언후 값이 아무것도 없으면 초기값을 가지게되고
+		// 만약 값을 넣게되면 필요한만큼 사이즈를 증가시킨다.
 		try (ByteArrayOutputStream out = new ByteArrayOutputStream();) {
+			
 			MatrixToImageWriter.writeToStream(matrix, "PNG", out);
+			
+			// QR코드를 함수에서 바이트 배열로 반환 후 이미지로 출력해준다.
 			return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(out.toByteArray());
 		}
 	}
 	
 	
-	// 출석체크를 위한 이름 입력
-	
+	/**
+	 * 출석체크를 위한 이름 입력
+	 * @param model
+	 * @param todayDate (출석체크 전 최종 확인 : 오늘 날짜 맞는지)
+	 * @param classId (출석체크 전 최종 확인 : 내가 수강하는 반 정보 맞는지)
+	 * @return 학생이 출석체크하는 화면을 보여줌
+	 */
 	@RequestMapping("/project/home/attendanceChk")
 	public String attendanceChk(Model model, String todayDate, int classId) {
 		
@@ -127,8 +148,12 @@ public class ProjectHomeController {
 	}
 	
 	
-	// 최종 출석체크 확정
-	
+	/**
+	 * 최종 출석체크 확정
+	 * @param classId (우리 반 수강생에 그 이름이 있는지 확인)
+	 * @param name (input에 적은 이름 받아오기)
+	 * @return 출석체크 결과를 alert로 알려주고 메인으로 돌아감
+	 */
 	@RequestMapping("/project/home/doAttendanceChk")
 	@ResponseBody
 	public String doAttendanceChk(int classId, String name){

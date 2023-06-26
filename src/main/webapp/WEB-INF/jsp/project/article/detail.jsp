@@ -211,10 +211,12 @@ function getStudentsByClass(relId,classId) {
 	
 }
 
+// 과제확인에서 수정 버튼 누르면 실행할 함수
 function hwmodify() {
 	$('.getHwsmodal-bg, .getHwsmodal').hide();
 	$('.hwChkmodal-bg, .hwChkmodal-form, .hwChkmodal').show();
-	
+
+	// 과제검사 폼의 타겟 url doHwModify로 바꿔주기
 	$('.hwChkmodal-form').attr('action','doHwModify');
 	
 	$('#hwChktable').html(`<thead>
@@ -226,6 +228,7 @@ function hwmodify() {
 	    </thead>`);
 	
 	$('#hwChktable').append(`<tbody>
+			
 			<c:forEach var="homework" items="${homeworks }" varStatus="status">
 			  <tr>
 			  <input type="hidden" name="homeworklist[${status.index}].id" value="${homework.id }"/>
@@ -320,6 +323,8 @@ function replyModify_cancle(i) {
 	<div class="hwChkmodal">
 		<h1>과제검사</h1>
 		<a class="close-btn"><i class="fa-regular fa-circle-xmark"></i></a>
+		
+		<input type="hidden" name="relId" value="${article.id }"/>
 		
 		<table class="table w-full" id="hwChktable">
   	 	 </table>

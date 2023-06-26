@@ -12,6 +12,7 @@ import com.koreaIT.project.interceptor.NeedLogoutInterceptor;
 
 @Configuration
 public class MyWebMvcConfigurer implements WebMvcConfigurer{
+	// interceptor를 실행시켜 줌.
 
 	private BeforeActionInterceptor beforeActionInterceptor;
 	private NeedLoginInterceptor needLoginInterceptor;
@@ -25,15 +26,18 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer{
 		this.needLogoutInterceptor = needLogoutInterceptor;
 	}
 
+	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		
 		InterceptorRegistration ir;
 		
+		// addinterceptor로 애플리케이션 내에 인터셉터 드옥해주기
+		
 		ir = registry.addInterceptor(beforeActionInterceptor);
-		ir.addPathPatterns("/**");
+		ir.addPathPatterns("/**"); // 인터셉터 호출하는 주소와 경로를 추가하겠다.
 		ir.addPathPatterns("/favicon.ico");
-		ir.excludePathPatterns("/resource/**");
+		ir.excludePathPatterns("/resource/**"); // 얘는 인터셉터 호출에서 ignore 하겠다.
 		
 		ir = registry.addInterceptor(needLoginInterceptor);
 		ir.addPathPatterns("/project/home/select");
@@ -91,8 +95,6 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer{
 		ir.addPathPatterns("/project/member/doFindLoginID");
 		ir.addPathPatterns("/project/member/findLoginPW");
 		ir.addPathPatterns("/project/member/doFindLoginPW");
-		
-		
 	}
 	
 	

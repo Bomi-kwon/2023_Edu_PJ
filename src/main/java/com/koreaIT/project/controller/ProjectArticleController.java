@@ -130,11 +130,16 @@ public class ProjectArticleController {
 	}
 	
 	
-	// 게시물 상세보기
-	
+	/**
+	 * 게시물 상세보기
+	 * @param id (id로 article 찾아와야함)
+	 * @param model (model로 여러정보들을 물고)
+	 * @return detail.jsp 페이지에 정보 뿌리기
+	 */
 	@RequestMapping("/project/article/detail")
 	public String detail(int id, Model model) {
 		
+		// detail을 누르는 순간 조회수 증가
 		articleService.increaseHit(id);
 		
 		Article article = articleService.getArticleById(id);
@@ -146,17 +151,27 @@ public class ProjectArticleController {
 		Group group = groupService.getGroupById(article.getClassId());
 		
 		List<Reply> replies = replyService.getReplies("article", id);
-		List<Homework> homeworks = homeworkService.getHwsByRelId(id);
 		
+		// 숙제 게시판이면 숙제 정보도 jsp로 전달
+		if(article.getBoardId() == 2) {
+			List<Homework> homeworks = homeworkService.getHwsByRelId(id);
+			model.addAttribute("homeworks",homeworks);
+		}
+		
+		// 연결된 파일이 있으면 걔도 jsp로 전달
 		FileVO file = fileService.getFileByRelId("article", id);
+		if(file != null) {
+			model.addAttribute("file",file);
+		}
 		
+		// 만약 현재 로그인된 사람 있으면 detail 클릭시 바로 방문 기록하기
 		if(rq.getLoginedMemberId() != 0) {
 			visitHistoryService.insertVisit(rq.getLoginedMemberId(),id);
 		}
 		
+		// 이 게시물의 방문자 명단 가져오기
 		List<visitHistory> visitorList =  visitHistoryService.getVisitorsByArticleId(id);
 		List<Member> visitors = new ArrayList<>();
-		
 		if(visitorList.isEmpty() == false) {
 			for(visitHistory visitHistory : visitorList) {
 				visitors.add(memberService.getMemberById(visitHistory.getMemberId()));
@@ -166,8 +181,6 @@ public class ProjectArticleController {
 
 		model.addAttribute("article",article);
 		model.addAttribute("group",group);
-		model.addAttribute("homeworks",homeworks);
-		model.addAttribute("file",file);
 		model.addAttribute("replies",replies);
 		
 		return "project/article/detail";
@@ -578,15 +591,18 @@ public class ProjectArticleController {
 	}
 	
 	
-	// 숙제 수정
-	
+	/**
+	 * 숙제 수정
+	 * @param relId (article번호 가져오기)
+	 * @param homeworklist (숙제 수정 내용 리스트로 가져오기)
+	 * @return (숙제 업데이트 후 가져온 relId로 다시 detail 페이지 그려주기)
+	 */
 	@RequestMapping("/project/article/doHwModify")
 	@ResponseBody
-	public String doHwModify(HomeworkList homeworklist) {
+	public String doHwModify(int relId, HomeworkList homeworklist) {
 		
 		List<Homework> homeworkList = homeworklist.getHomeworklist();
 		
-		int relId = 0;
 		if(homeworkList.isEmpty()) {
 			return Util.jsHistoryBack("숙제 검사 결과를 작성해주세요.");
 		}
@@ -595,7 +611,6 @@ public class ProjectArticleController {
 			
 			if(homework != null) {
 				homeworkService.updateHw(homework.getId(), homework.getHwPerfection(), homework.getHwMsg());
-				relId = homework.getRelId();
 			}
 		}
 		

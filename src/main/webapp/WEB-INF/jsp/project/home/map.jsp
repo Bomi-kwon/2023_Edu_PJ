@@ -8,8 +8,11 @@
 		<div class="container mx-auto mt-20 px-3 h-full">
 			<nav class="kakaomap flex">
 				<div id="map" style="width:500px;height:500px;" class="mr-40 ml-60"></div>
-	
+				
+				<!-- 카카오 api 불러오기 -->
+				<!-- 맵 생성후 https 주소도 추가해줌 -->
 				<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=36ad0dce027e7f00d0cf41818b68dc45"></script>
+				
 				<script>
 				var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 				    mapOption = { 
@@ -19,7 +22,7 @@
 				
 				var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 				
-				// 마커가 표시될 위치입니다 
+				// 마커가 표시될 위치
 				var markerPosition  = new kakao.maps.LatLng(36.352127, 127.389771); 
 				
 				// 마커를 생성합니다
@@ -30,9 +33,8 @@
 				// 마커가 지도 위에 표시되도록 설정합니다
 				marker.setMap(map);
 				
-				// 아래 코드는 지도 위의 마커를 제거하는 코드입니다
-				// marker.setMap(null);    
 				</script>
+				
 				<nav class="">
 					<div class="mt-20 mb-10">
 						<span class="text-4xl">찾아오시는 길</span>

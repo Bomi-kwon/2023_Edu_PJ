@@ -23,6 +23,11 @@ public class NeedLoginInterceptor implements HandlerInterceptor{
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		
+		/**
+		 * 이 함수는 return 타입이 boolean이고 responsebody같은게 없으므로
+		 * 여기서 바로 출력하는 것 불가능함
+		 * 그래서 rq.jsprinthistoryback을 사용해서 alert 하고 return false로 ㅎ마수 끝내주기
+		 */
 		if(rq.getLoginedMemberId() == 0) {
 			rq.jsPrintHistoryBack("로그인 후 이용해 주세요.");
 			return false;
