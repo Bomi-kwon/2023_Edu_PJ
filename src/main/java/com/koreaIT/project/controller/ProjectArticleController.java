@@ -96,6 +96,18 @@ public class ProjectArticleController {
 		return "project/article/write";
 	}
 	
+	/**
+	 * 게시물 최종 작성
+	 * @param title 제목
+	 * @param classId 반 번호
+	 * @param deadLine 제출 기한(null 가능)
+	 * @param body 내용
+	 * @param boardId 게시판 번호
+	 * @param file 파일(있으면)
+	 * @param youTubeLink 동영상 링크 (있으면)
+	 * @return 게시물 작성 결과 보여주고 list 페이지로 돌아가기
+	 * @throws Exception
+	 */
 	@RequestMapping("/project/article/doWrite")
 	@ResponseBody
 	public String doWrite(String title, int classId, String deadLine, String body, int boardId, 
@@ -115,13 +127,17 @@ public class ProjectArticleController {
 			}
 		}
 		
+		// 일단 게시물 먼저 작성!!
 		articleService.doWrite(rq.getLoginedMemberId(),title, classId, deadLine, body, boardId);
 		int id = articleService.getLastId();
 		
+		
+		// 만약 파일을 첨부했다면 파일 table에 따로 article id를 relId로 해서 insert
 		if(!file.isEmpty() || file != null) {
 			fileService.saveFile(file, "article", id);
 		}
 		
+		// 만약 동영상 링크 첨부했다면 그 정보만 update
 		if(!Util.empty(youTubeLink)) {
 			articleService.addYouTubeLink(id, youTubeLink);
 		}
@@ -174,7 +190,10 @@ public class ProjectArticleController {
 		List<Member> visitors = new ArrayList<>();
 		if(visitorList.isEmpty() == false) {
 			for(visitHistory visitHistory : visitorList) {
-				visitors.add(memberService.getMemberById(visitHistory.getMemberId()));
+				Member member = memberService.getMemberById(visitHistory.getMemberId());
+				if(member != null) {
+					visitors.add(member);
+				}
 			}
 			model.addAttribute("visitors",visitors);
 		}
@@ -601,14 +620,15 @@ public class ProjectArticleController {
 	@ResponseBody
 	public String doHwModify(int relId, HomeworkList homeworklist) {
 		
+		// 내가 form안에서 리스트로 받아온 숙제정보 다시 꺼내서 리스트에 담기
 		List<Homework> homeworkList = homeworklist.getHomeworklist();
 		
 		if(homeworkList.isEmpty()) {
 			return Util.jsHistoryBack("숙제 검사 결과를 작성해주세요.");
 		}
 		
+		// 리스트 돌면서 숙제 정보 하나씩 업데이트 해주기
 		for(Homework homework : homeworkList) {
-			
 			if(homework != null) {
 				homeworkService.updateHw(homework.getId(), homework.getHwPerfection(), homework.getHwMsg());
 			}

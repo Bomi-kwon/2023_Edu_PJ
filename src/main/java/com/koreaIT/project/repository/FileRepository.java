@@ -17,4 +17,6 @@ public interface FileRepository {
 
 	int getLastId();
 
+	void deleteFile(int fileId);
+
 }

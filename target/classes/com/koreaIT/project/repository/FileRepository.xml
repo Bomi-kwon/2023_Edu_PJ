@@ -38,5 +38,10 @@
 	<select id="getLastId" resultType="Int">
 		SELECT LAST_INSERT_ID();
 	</select>
+	
+	<delete id="deleteFile">
+		DELETE FROM `file`
+		WHERE id = #{fileId}
+	</delete>
 
 </mapper>

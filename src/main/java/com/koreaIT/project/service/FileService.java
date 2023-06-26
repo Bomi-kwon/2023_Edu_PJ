@@ -15,6 +15,7 @@ import com.koreaIT.project.vo.FileVO;
 @Service
 public class FileService {
 	
+	// application.yml에 미리 파일을 업로드할 폴더 경로 설정해놓기!
 	@Value("${file.dir}")
 	private String fileDir;
 	
@@ -25,25 +26,39 @@ public class FileService {
 		this.fileRepository = fileRepository;
 	}
 
+	
+	/**
+	 * 사용자가 올린 파일을 서버(upload 폴더)에 저장후 DB에 저장
+	 * @param file 파일
+	 * @param relTypecode (article,profile,audio 세 가지로 구분)
+	 * @param relId (연결되는 자료의 번호)
+	 * @throws IOException
+	 */
 	public void saveFile(MultipartFile file, String relTypecode, int relId) throws IOException {
 		
 		if (file.isEmpty()) {
 			return;
 		}
 		
+		// 사용자 컴퓨터에서 파일 올렸을때 이름
 		String orgName = file.getOriginalFilename();
-
-		// 파일 이름 중복되면 안되서 랜덤으로 난수 발생
+		
+		// 저장할 파일 이름 중복되면 안되서 랜덤으로 난수 발생
 		String uuid = UUID.randomUUID().toString();
+		
 		// 확장자명(jpeg 같은거)
 		String extension = orgName.substring(orgName.lastIndexOf("."));
 
+		// 저장할 파일 이름
 		String savedName = uuid + extension;
 
+		// yml에 설정해놓은 경로에 저장할 파일 이름만 추가
 		String savedPath = fileDir + "/" + savedName;
 
+		// DB에 파일 정보 INSERT
 		fileRepository.insertFileInfo(orgName, savedName, savedPath, relTypecode, relId);
 
+		// 설정한 경로와 이름으로 file을 실제로 업로드 (내 서버의 폴더에 저장)
 		file.transferTo(new File(savedPath));
 		
 	}
@@ -56,28 +71,47 @@ public class FileService {
 		return fileRepository.getFileById(id);
 	}
 
+	
+	/**
+	 * 파일 다른걸로 바꾸면 업데이트 해주기
+	 * @param file
+	 * @param relTypecode
+	 * @param relId
+	 * @param fileId 그 파일의 번호
+	 * @throws IOException
+	 */
 	public void updateFile(MultipartFile file, String relTypecode, int relId, int fileId) throws IOException {
 		
 		if (file.isEmpty()) {
 			return;
 		}
 		
-		String orgName = file.getOriginalFilename();
-
-		// 파일 이름 중복되면 안되서 랜덤으로 난수 발생
-		String uuid = UUID.randomUUID().toString();
-		// 확장자명(jpeg 같은거)
-		String extension = orgName.substring(orgName.lastIndexOf("."));
-
-		String savedName = uuid + extension;
-
-		String savedPath = fileDir + "/" + savedName;
-
-		fileRepository.updateFileInfo(orgName, savedName, savedPath, fileId);
-
-		file.transferTo(new File(savedPath));
+		deleteFile(fileId);
+		
+		saveFile(file, relTypecode, relId);
 	
 	}
+	
+	
+	/**
+	 * 파일 다른걸로 바꾸면 기존꺼 삭제 해주기
+	 * @param fileId 그 파일의 번호
+	 * @throws IOException
+	 */
+	public void deleteFile(int fileId) throws IOException {
+		
+		FileVO deleteFile = fileRepository.getFileById(fileId);
+		
+		File deletefile = new File(deleteFile.getSavedPath());
+		
+		if(deletefile.exists()) {
+			deletefile.delete();
+		}
+		
+		fileRepository.deleteFile(fileId);
+	
+	}
+	
 
 	// 프로필 이미지 등록 안 했을때 기본 이미지 저장하기
 	public void saveBasicFile(String relTypecode, int relId) {
