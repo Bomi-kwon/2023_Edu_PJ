@@ -66,7 +66,6 @@
 		</select>
 	</div>
 	  
-	  <div class="table-box-type-1">
 	  <table class="table w-full" id="grouplisttable">
 	    <thead>
 	      <tr>
@@ -81,7 +80,7 @@
 	    
 		<c:forEach var="group" items="${groups }">
 	    <tbody>
-	      <tr>
+	      <tr class="hover">
 	        <td>${group.grade }</td>
 	      	<td><div class="font-bold"><a href="getMemberByClassId?classId=${group.id }">${group.groupName }</a></div></td>
 	        <td>${group.groupDay }</td>
@@ -92,7 +91,6 @@
 	    </tbody>
 		</c:forEach>
 	  </table>
-	  </div>
 	  
 	  <c:if test="${rq.getLoginedMember().getAuthLevel() == 1 }">
 		  <div class="flex justify-end mt-2">

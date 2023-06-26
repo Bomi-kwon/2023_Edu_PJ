@@ -528,7 +528,7 @@ public class ProjectMemberController {
 		int i = 2;
 		for(Member student : students) {
 			data.put(String.valueOf(i), new Object[]{student.getName(), student.getGroupName(), 
-					student.getCellphoneNum(), student.getEmail()});
+					student.getCellphoneNum(), student.getParentPhoneNum()});
 			i++;
 		}
 		

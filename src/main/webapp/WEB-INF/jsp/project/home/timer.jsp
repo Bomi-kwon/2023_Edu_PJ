@@ -82,8 +82,8 @@
 					    <input class="input input-bordered input-success w-96" type="file" name="file">
 					</form>
 				</div>
-	    		<div><span>날짜 : </span><input class="input input-bordered input-success w-96" id="nowDate" type="date" min="2022-06-01" max="2023-07-31"/></div>
-	    		<div><span>시간 : </span><input class="input input-bordered input-success w-96" id="nowTime" type="time" /></div>
+	    		<div><span>날짜 : </span><input class="input input-bordered input-success w-96" id="reserveDate" type="date" min="2022-06-01" max="2023-07-31"/></div>
+	    		<div><span>시간 : </span><input class="input input-bordered input-success w-96" id="reserveTime" type="time" /></div>
 	    	</div>
 	    	<button id="reserve-button" class="btn btn-active btn-ghost">예약</button>
 	    	<button id="play-button" class="btn btn-active btn-ghost"><i class="fa-regular fa-circle-play"></i></button>
@@ -121,6 +121,7 @@
       if (seconds < 10) {
     	  seconds = '0' + seconds;
       }
+      
       $('#time').html(year + "년 " + month + "월 " + date + "일" +'<br />'+ hours + "시 " + minutes + "분 " + seconds + "초");
       
       let degHour = hours * (360/12) + minutes * (360/12/60);
@@ -130,7 +131,11 @@
       $('.minute').css('transform','rotate('+degMinute+'deg)');
       $('.second').css('transform','rotate('+degSecond+'deg)');
 
-      
+      let nowTime = hours + "" + minutes + "" + seconds;
+      // console.clear();
+      // console.log('현재 : ' + now);
+      // console.log('시간만(밀리초): ' + now.getTime());
+      // console.log('시간만: ' + nowTime);
       
       if(nowTime >= 084000 && nowTime <= 100000) {
     	  $('.korean').css('color','red');
@@ -186,16 +191,18 @@
     
     $('#reserve-button').click(function() {
     	
-	    let nowDate = $('#nowDate').val();
-	    let nowTime = $('#nowTime').val();
-	    console.log('입력한 날짜 : ' + nowDate);
-	    console.log('입력한 시간 : ' + nowTime);
-	    console.log(nowDate + ' ' + nowTime);
+    	
+	    let reserveDate = $('#reserveDate').val();
+	    let reserveTime = $('#reserveTime').val();
+	    console.log('입력한 날짜 : ' + reserveDate);
+	    console.log('입력한 시간 : ' + reserveTime);
+	    console.log(reserveDate + ' ' + reserveTime);
 	    
-	    if(!nowDate || !nowDate) {
+	    if(!reserveDate || !reserveDate) {
 	    	alert('예약할 날짜와 시간을 입력해주세요');
 	    	return;
 	    }
+	    
 	    
 	    var formData = new FormData($('#fileForm')[0]);
 	    
@@ -210,8 +217,10 @@
 	    }).done(function(data){
 	    		var audioPath = "/project/home/file/" + data;
 	    		console.log(audioPath);
-	   			var playTime = new Date(nowDate + ' ' + nowTime).getTime();
+	   			var playTime = new Date(reserveDate + ' ' + reserveTime).getTime();
 	  			playAudioAtTime(audioPath, playTime);
+    	        alert('듣기평가 파일 재생이' + reserveDate + ' ' + reserveTime + '으로 예약되었습니다.');
+    	        $('#reserve-button').html('예약완료');
 	    });
     })
     
