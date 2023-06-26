@@ -4,11 +4,14 @@
 
 <%@ include file="../common/head.jsp" %>
 
+<!-- 카카오 메시지 보내기 api -->
 <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.1.0/kakao.min.js"></script>
 <script>
+	// 자바스크립트 키 입력
 	Kakao.init('3cd0bf471b4db0d6b9dbe54cae524038')
 	
 	function action(){
+		// 메시지 템플릿 id 입력
 		Kakao.Share.sendCustom({templateId: 94364})
 	}
 </script>

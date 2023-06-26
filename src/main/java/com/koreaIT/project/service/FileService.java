@@ -120,12 +120,17 @@ public class FileService {
 
 		String savedName = orgName;
 
-		String savedPath = "C:/bbomi/upload/" + savedName;
+		String savedPath = fileDir + "/" + savedName;
 
 		fileRepository.insertFileInfo(orgName, savedName, savedPath, relTypecode, relId);
 		
 	}
 
+	/**
+	 * 탑바에 현재 로그인한 멤버의 사진 보여주게 하기
+	 * @param memberId 이걸로 사진 파일을 가져와야함
+	 * @return 그 파일의 id를 리턴함
+	 */
 	public int getImageByMemberId(int memberId) {
 		
 		FileVO file = fileRepository.getFileByRelId("profile", memberId);

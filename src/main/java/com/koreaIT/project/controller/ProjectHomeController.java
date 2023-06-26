@@ -174,18 +174,26 @@ public class ProjectHomeController {
 	}
 	
 	
-	// 이미지 파일 연결
 	
-	// 이미지에서 src에 보통은 경로를 적지만 이렇게 컨트롤러 함수를 적어줘도 됨
-	// 단 이미지마다 달라지는 id를 표현하기 위해 경로의 마지막 부분을 ${file.id} 이렇게 적어주고
-	// 함수에서 걔를 이런식으로 parameter로 받아올 수 있음!!
+	
+	/**
+	 * 업로드한 파일은 번호로 절대경로 연결
+	 * @param id 파일번호
+	 * @param model 
+	 * @return 파일의 경로를 리턴
+	 * @throws IOException
+	 */
 	@RequestMapping("/project/home/file/{fileId}")
 	@ResponseBody
 	public Resource downloadImage(@PathVariable("fileId") int id, Model model) throws IOException {
 		
+		// 파일의 src에 보통은 경로를 적지만 이렇게 컨트롤러 함수를 적어줘도 됨
+		// 단 이미지마다 달라지는 id를 표현하기 위해 경로의 마지막 부분을 ${file.id} 이렇게 적어주고
+		// 함수에서 걔를 이런식으로 parameter로 받아올 수 있음!!
+		
 		FileVO fileVo = fileService.getFileById(id);
 
-		// 그럼 그 id로 file을 찾아와서 걔의 경로를 적어서 이렇게 나타내주면 이미지가 잘 나옴
+		// 그럼 그 id로 file을 찾아와서 걔의 경로를 적어서 이렇게 나타내주면 파일이 잘 나옴
 		return new UrlResource("file:" + fileVo.getSavedPath()); 
 	}
 	
