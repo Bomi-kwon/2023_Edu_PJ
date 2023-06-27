@@ -64,12 +64,8 @@
     <input type="hidden" id="id" name="id" value="${room.roomId}"/>
     <input type="hidden" id="uuid" name="uuid" value="${uuid}">
     <div><span>방 번호 : ${room.roomId }</span></div>
-    <div><span>나의 UUID : ${uuid}</span></div>
-    <div><span>채팅방 인원수 : ${room.userCount}</span></div>
+    <div><span>내 이름 : ${uuid}</span></div>
     <div class="col-lg-12 mb-3">
-        <div class="mb-3" th:text=" '@ Room #' + ${room.roomName}">
-            Local User Id
-        </div>
         <div class="col-lg-12 mb-3">
             <div class="d-flex justify-content-around mb-3">
                 <div id="buttons" class="row">
@@ -125,6 +121,6 @@
 </div>
 </section>
 
-<script src="/js/chat/webrtc_client.js"></script>
+<script src="/js/chat/rtcroom.js"></script>
 </body>
 </html>

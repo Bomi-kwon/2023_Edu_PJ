@@ -21,7 +21,7 @@ public interface ArticleRepository {
 
 	public void doModify(int id, String title, String body, String youTubeLink);
 
-	public void doScoreArticleModify(int id, String title, int classId, String regDate);
+	public void doScoreArticleModify(int id, String title, int classId, String regDate, String body);
 
 	public void addYouTubeLink(int id, String youTubeLink);
 

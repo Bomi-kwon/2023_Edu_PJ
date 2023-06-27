@@ -40,8 +40,8 @@
 <section class="login-page">
 	<div class="form">
 			<form action="doMemberLogin" class="login-form">
-				<input class="" type="text" name="loginID" placeholder="아이디를 입력해주세요."/>
-				<input class="" type="password" name="loginPW" placeholder="비밀번호를 입력해주세요."/>
+				<input class="" type="text" name="loginID" placeholder="아이디를 입력해주세요." required/>
+				<input class="" type="password" name="loginPW" placeholder="비밀번호를 입력해주세요." required/>
 				<button class="">로그인</button>
 				<p class="message">아직 회원가입을 안 했나요? <a href="memberjoin">회원가입하기</a></p>
 				<p class="message">아이디/비밀번호를 잊었나요? <a href="findLoginID">아이디/비밀번호 찾기</a></p>

@@ -39,8 +39,8 @@ public class ArticleService {
 		articleRepository.doModify(id, title, body, youTubeLink);
 	}
 
-	public void doScoreArticleModify(int id, String title, int classId, String regDate) {
-		articleRepository.doScoreArticleModify(id, title, classId, regDate);
+	public void doScoreArticleModify(int id, String title, int classId, String regDate, String body) {
+		articleRepository.doScoreArticleModify(id, title, classId, regDate, body);
 	}
 
 	public void addYouTubeLink(int id, String youTubeLink) {

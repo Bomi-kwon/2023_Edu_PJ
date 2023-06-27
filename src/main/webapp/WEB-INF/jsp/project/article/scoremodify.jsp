@@ -8,7 +8,7 @@
 
 <section class="mt-8 mx-auto text-xl">
 	<div class="container mx-auto px-3">
-				<div class="table-box-type-1 overflow-x-auto">
+			<div class="table-box-type-1 overflow-x-auto">
 				<div>성적 입력</div>
 						<table border="1" class="mx-auto able w-full bg-gray-100">
 						<colgroup>
@@ -27,6 +27,10 @@
 							<th>시험일자</th>
 							<td>${article.deadLine.substring(0,10) }</td>
 						</tr>
+						<tr>
+							<th>교사의견</th>
+							<td>${article.getForPrintBody() }</td>
+						</tr>
 					</table>
 				</div>
 				<div class="flex justify-end">
@@ -34,7 +38,7 @@
 				</div>
 				
 				<form action="doModifyScoreArticle">
-				<input type="hidde" name="articleId" value="${article.id }"/>
+				<input type="hidden" name="articleId" value="${article.id }"/>
 				<div class="table-box-type-1 mt-5">
 					<table class="table w-full" id="scoretable">
 						<thead>
@@ -45,8 +49,8 @@
 					     	 </tr>
 					    </thead>
 					    
+						<tbody>
 					    <c:forEach var="score" items="${scores }" varStatus="status">
-						    <tbody>
 							<input type="hidden" name="scorelist[${status.index }].id" value="${score.id }"/>
 							<input type="hidden" name="scorelist[${status.index }].memberId" value="${score.memberId }"/>
 						      <tr id="${status.count }">
@@ -60,17 +64,8 @@
 									</select>
 						        </td>
 						      </tr>
-						    </tbody>
-						    
 						</c:forEach>
-						<tr>
-						      	<td colspan="4">
-						      	<div class="flex flex-col">
-							      	<span class="mb-3">교사의견</span>
-							      	<textarea class="textarea textarea-success w-full" name="body" placeholder="내용을 입력해주세요.">${article.body }</textarea>
-						      	</div>
-						      	</td>
-						      </tr>
+						</tbody>
 				  </table>
 				  <button class="btn btn-success mr-2" onsubmit="check(this); return false;">수정하기</button>
 	  		</div>

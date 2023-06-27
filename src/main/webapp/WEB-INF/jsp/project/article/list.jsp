@@ -32,7 +32,7 @@
 
 
 <!-- 숙제, 알림장, 수학강의 등 게시판 리스트 -->
-<c:if test="${board.id != 5 }">
+<c:if test="${board.id != 5 && board.id != 3}">
 <section class="mt-8 mx-auto text-xl">
 	<div class="container mx-auto px-3">
 	  <div class="table-box-type-1">
@@ -98,6 +98,71 @@
 	</div>
 </section>
 </c:if>
+
+<!-- 성적 게시판 리스트 -->
+<c:if test="${board.id == 3 }">
+<section class="mt-8 mx-auto text-xl">
+	<div class="container mx-auto px-3">
+	  <div class="table-box-type-1">
+	  <table class="table w-full">
+	    <thead>
+	      <tr>
+	        <th><input type="checkbox" class="checkbox checkbox-all-article-id" /></th>
+	        <th>시험명</th>
+	        <th>시험대상반</th>
+	        <th>시험일자</th>
+	        <th>작성자</th>
+	        <th>응시현황</th>
+	        <th>평가방식</th>
+	      </tr>
+	    </thead>
+	    
+	    <tbody>
+		<c:forEach var="article" items="${articles }">
+	      <tr class="hover">
+	        <c:choose>
+	        	<c:when test="${rq.getLoginedMemberId() == article.memberId }">
+			        <th><input type="checkbox" class="checkbox checkbox-article-id" value="${article.id }"/></th>
+	        	</c:when>
+	        	<c:otherwise>
+			        <th><input type="checkbox" class="checkbox checkbox-article-id" value="${article.id }" disabled/></th>
+	        	</c:otherwise>
+	        </c:choose>
+	      
+	        <td>
+	          <div class="flex items-center space-x-3">
+	            <div>
+	              <div class="font-bold"><a href="scoredetail?relId=${article.id }">${article.title }</a></div>
+	            </div>
+	          </div>
+	        </td>
+	        <td>${article.groupName }</td>
+	        <td>${article.regDate }</td>
+	        <td>${article.writerName }</td>
+	        <td>2/4</td>
+	        <td>만점기준:100점</td>
+	      </tr>
+		</c:forEach>
+	    </tbody>
+	  </table>
+	  </div>
+	  <c:if test="${rq.getLoginedMember().getAuthLevel() == 1 }">
+	<div class="flex justify-end">
+		<button class="btn btn-success mr-2 btn-delete-selected-articles">성적 삭제</button>
+		<a href="write?boardId=3" class="btn btn-success" >성적 입력</a>
+	
+		<form action="doDeleteArticles?boardId=${board.id }" method="POST" name="do-delete-articles-form">
+			<input type="hidden" name="ids" value="" />
+		</form>
+	
+	</div>
+	</c:if>
+	</div>
+</section>
+
+</c:if>
+
+
 
 <!-- 공부인증 게시판 리스트 -->
 <!-- 다른 게시판들과 다르게 사진 위주로 나열해야함 -->

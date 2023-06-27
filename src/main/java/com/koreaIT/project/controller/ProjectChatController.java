@@ -37,7 +37,7 @@ public class ProjectChatController {
 
     // MessageMapping 을 통해 webSocket 로 들어오는 메시지를 발신 처리한다.
     // 이때 클라이언트에서는 /pub/project/chat/message 로 요청하게 되고 이것을 controller 가 받아서 처리한다.
-    // 처리가 완료되면 /sub/project/chat/room/roomId 로 메시지가 전송된다.
+    // 처리가 완료되면 /sub/project/chat/enterRoom/roomId 로 메시지가 전송된다.
     @MessageMapping("/project/chat/enterUser")
     public void enterUser(@Payload ChatDTO chat, SimpMessageHeaderAccessor headerAccessor) {
 
@@ -52,7 +52,7 @@ public class ProjectChatController {
         headerAccessor.getSessionAttributes().put("roomId", chat.getRoomId());
 
         chat.setMessage(chat.getSender() + " 님 입장!!");
-        template.convertAndSend("/sub/project/chat/room/" + chat.getRoomId(), chat);
+        template.convertAndSend("/sub/project/chat/enterRoom/" + chat.getRoomId(), chat);
 
     }
 
@@ -61,7 +61,7 @@ public class ProjectChatController {
     public void sendMessage(@Payload ChatDTO chat) {
         // log.info("CHAT {}", chat);
         chat.setMessage(chat.getMessage());
-        template.convertAndSend("/sub/project/chat/room/" + chat.getRoomId(), chat);
+        template.convertAndSend("/sub/project/chat/enterRoom/" + chat.getRoomId(), chat);
 
     }
 
@@ -95,7 +95,7 @@ public class ProjectChatController {
                     .message(username + " 님 퇴장!!")
                     .build();
 
-            template.convertAndSend("/sub/project/chat/room/" + roomId, chat);
+            template.convertAndSend("/sub/project/chat/enterRoom/" + roomId, chat);
         }
     }
 

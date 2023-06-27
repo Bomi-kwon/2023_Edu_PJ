@@ -81,7 +81,8 @@
 		UPDATE article
 		SET regDate = #{regDate},
 		title = #{title},
-		classId = #{classId}
+		classId = #{classId},
+		body = #{body}
 		WHERE id = #{id}
 	</update>
 	

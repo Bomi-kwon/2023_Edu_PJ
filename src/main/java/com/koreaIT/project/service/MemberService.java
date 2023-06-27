@@ -81,18 +81,31 @@ public class MemberService {
 		return memberRepository.getMemberByNameAndEmail(name, email);
 	}
 
+	/**
+	 * 새로운 비밀번호 멤버의 이메일로 보내기
+	 * @param member 멤버 정보
+	 * @return 성공 메시지 (resultdata)
+	 * @todo 나중에 사이트 배포하면 yml의 siteMainUri 바꿔주기
+	 */
 	public ResultData notifyTempLoginPwByEmail(Member member) {
 		String title = "[" + siteName + "] 임시 패스워드 발송";
+		
+		// 8자리 문자+숫자 조합 랜덤 문자열 발생시키기!!
 		String tempPassword = Util.getTempPassword(8);
+		
+		// 메일 내용은 웹사이트에서 보여질 것이므로
+		// html문법으로 작성하기
 		String body = "<h1>임시 패스워드 : " + tempPassword + "</h1>";
 		body += "<a style='font-size:2rem;' href=\"" + siteMainUri + "/project/member/memberlogin\" target=\"_blank\">로그인 하러가기</a>";
 
+		
 		ResultData sendRd = mailService.send(member.getEmail(), title, body);
 
 		if (sendRd.isFail()) {
 			return sendRd;
 		}
 
+		// DB에 저장된 비밀번호도 새로운 비밀번호로 바꿔줘야함!!
 		setTempPassword(member, tempPassword);
 
 		return ResultData.from("S-1", "계정의 이메일주소로 임시 패스워드가 발송되었습니다");

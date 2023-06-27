@@ -58,8 +58,7 @@
                 <tr class="hover">
                     <td>
 	                    <span class="hidden" id="${room.roomName}"></span>
-                        <a href="/project/chat/room?roomId=${room.roomId}" data-roomId="${room.roomId}" 
-                        onclick="return chkRoomUserCnt(${room.roomId});">${room.roomName}</a>
+                        <a href="#" onclick="return chkRoomUserCnt('${room.roomId}');">${room.roomName}</a>
                     </td>
                     <td>
                     	<span>${room.roomId }</span>
@@ -122,7 +121,6 @@
 		                    </div>
 		                    <div class="mb-7">
 		                        <div class="col-form-label mb-2">채팅방 최대인원 설정
-		                            <!--<input class="form-check-input" type="checkbox" id="maxChk">--></div>
 		                        <input type="text" class="form-control input input-bordered input-info w-full max-w-xs" 
 		                        id="maxUserCnt" name="maxUserCnt" placeholder="채팅방 최대인원을 설정해주세요.">
 		                    </div>
@@ -131,6 +129,7 @@
 		                    <button type="button" class="btn btn-secondary roomModal-close-btn">Close</button>
 		                    <input type="submit" class="btn btn-primary" value="방 생성하기">
 		                </div>
+		            </div>
 		            </form>
 		        </div>
 		    </div>

@@ -52,8 +52,8 @@ function connect(event) {
 
 function onConnected() {
 
-    // sub 할 url => /sub/project/chat/room/roomId 로 구독한다
-    stompClient.subscribe('/sub/project/chat/room/' + roomId, onMessageReceived);
+    // sub 할 url => /sub/project/chat/enterRoom/roomId 로 구독한다
+    stompClient.subscribe('/sub/project/chat/enterRoom/' + roomId, onMessageReceived);
 
     // 서버에 username 을 가진 유저가 들어왔다는 것을 알림
     // /pub/project/chat/enterUser 로 메시지를 보냄

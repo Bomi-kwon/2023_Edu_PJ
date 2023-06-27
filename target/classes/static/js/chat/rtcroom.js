@@ -47,7 +47,6 @@ $(function(){
 });
 
 function start() {
-	console.log('hello');
 	
     // 페이지 시작시 실행되는 메서드 -> socket 을 통해 server 와 통신한다
     socket.onmessage = function(msg) {
@@ -75,13 +74,15 @@ function start() {
 
 				if(message.data === "true") {
 					console.log('Client is starting to negotiate');
-				}
-				else {
+				} else {
 					console.log('Client is starting to wait for a peer');
 				}
 				
                 console.log("messageDATA : "+message.data)
+                
+                // 나 말고 상대방 있다? -> 상대방과 통신하기
                 handlePeerConnection(message);
+                
                 break;
 
             case "leave":
@@ -120,7 +121,6 @@ function start() {
                 console.log('usercount 아작스 요청 실패');
                 console.log("error : "+result);
             }
-            
         });
         
 		return data;
@@ -128,7 +128,7 @@ function start() {
 
 
     // add an event listener to get to know when a connection is open
-    // 웹 소켓 연결 되었을 때 - open - 상태일때 이벤트 처리
+    // 웹 소켓 연결 되었을 때 (open 상태)일때 이벤트 처리
     socket.onopen = function() {
         console.log('WebSocket connection opened to Room: #' + localRoom);
         // send a message to the server to join selected room with Web Socket
@@ -267,12 +267,13 @@ function getMedia(constraints) {
 // create peer connection, get media, start negotiating when second participant appears
 // 두번째 클라이언트가 들어오면 피어 연결을 생성 + 미디어 생성
 function handlePeerConnection(message) {
+	
     createPeerConnection();
 
+	// vedio와 audio
     getMedia(mediaConstraints);
 
     if (message.data === "true") {
-
         myPeerConnection.onnegotiationneeded = handleNegotiationNeededEvent;
     }
 }
@@ -357,7 +358,7 @@ function handleTrackEvent(event) {
 // WebRTC called handler to begin ICE negotiation
 // WebRTC 의 ICE 통신 순서
 // 1. WebRTC offer 생성
-// 2. local media description 생성?
+// 2. local media description 생성
 // 3. 미디어 형식, 해상도 등에 대한 내용을 서버에 전달
 function handleNegotiationNeededEvent() {
     myPeerConnection.createOffer().then(function(offer) {

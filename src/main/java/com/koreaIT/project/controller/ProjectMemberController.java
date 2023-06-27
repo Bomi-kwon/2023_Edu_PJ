@@ -51,8 +51,11 @@ public class ProjectMemberController {
 		this.rq = rq;
 	}
 	
-	// 회원 명단
-	
+	/**
+	 * 회원 명단 리스트 (선생님만 볼 수 있음)
+	 * @param model 전체 회원 명단 리스트 보내주기
+	 * @return memberlist.jsp 페이지
+	 */
 	@RequestMapping("/project/member/memberlist")
 	public String memberlist(Model model) {
 		
@@ -63,44 +66,35 @@ public class ProjectMemberController {
 	}
 	
 	
-	//회원가입
-	
+	/**
+	 * 회원가입
+	 * @return memberjoin.jsp 페이지
+	 */
 	@RequestMapping("/project/member/memberjoin")
 	public String memberjoin() {
 		return "project/member/memberjoin";
 	}
 	
+	
+	/**
+	 * 최종 회원가입
+	 * @param authLevel (선생,학생,학부모 등급 구분)
+	 * @param loginID 아이디
+	 * @param loginPW 비밀번호
+	 * @param loginPWCheck 비밀번호 확인
+	 * @param name 이름
+	 * @param cellphoneNum 휴대폰번호
+	 * @param email 이메일
+	 * @param file 프로필 이미지파일
+	 * @return 완료메시지 > 로그인 페이지
+	 */
 	@RequestMapping("/project/member/doMemberJoin")
 	@ResponseBody
 	public String doMemberJoin(int authLevel, String loginID, String loginPW, String loginPWCheck, 
 			String name, String cellphoneNum, String email, MultipartFile file) {
 		
-		if(Util.empty(loginID)) {
-			return Util.jsHistoryBack("로그인 아이디를 입력하세요.");
-		}
-		
-		if(Util.empty(loginPW)) {
-			return Util.jsHistoryBack("로그인 비밀번호를 입력하세요.");
-		}
-		
-		if(Util.empty(loginPWCheck)) {
-			return Util.jsHistoryBack("로그인 비밀번호를 입력하세요.");
-		}
-		
 		if(!loginPW.equals(loginPWCheck)) {
 			return Util.jsHistoryBack("비밀번호가 일치하지 않습니다.");
-		}
-		
-		if(Util.empty(name)) {
-			return Util.jsHistoryBack("이름을 입력하세요.");
-		}
-		
-		if(Util.empty(cellphoneNum)) {
-			return Util.jsHistoryBack("전화번호를 입력하세요.");
-		}
-		
-		if(Util.empty(email)) {
-			return Util.jsHistoryBack("이메일을 입력하세요.");
 		}
 		
 		memberService.doMemberJoin(loginID, Util.sha256(loginPW), name, cellphoneNum, email, authLevel);
@@ -111,31 +105,33 @@ public class ProjectMemberController {
 					fileService.saveFile(file, "profile", relId);
 				}
 				else {
+					// 프로필 이미지 입력 안 하면 기본 이미지로 저장
 					fileService.saveBasicFile("profile", relId);
 				}
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			
 		
 		return Util.jsReplace(Util.f("%s님, 회원가입을 축하합니다.", name), "memberlogin");
 	}
 	
 	
-	// 회원 로그인
-	
+	/**
+	 * 회원 로그인
+	 * @return memberlogin 페이지
+	 */
 	@RequestMapping("/project/member/memberlogin")
 	public String memberlogin() {
-		
-		if(rq.getLoginedMemberId() != 0) {
-			return Util.jsReplace("이미 로그인된 상태입니다.", "/");
-		}
-		
 		return "project/member/memberlogin";
 	}
 	
+	
+	/**
+	 * 최종 로그인
+	 * @param loginID 아이디
+	 * @param loginPW 비밀번호
+	 * @return 완료 메시지 > 메인 페이지
+	 */
 	@RequestMapping("/project/member/doMemberLogin")
 	@ResponseBody
 	public String doMemberLogin(String loginID, String loginPW) {
@@ -158,15 +154,17 @@ public class ProjectMemberController {
 			return Util.jsHistoryBack("비밀번호가 일치하지 않습니다.");
 		}
 		
+		// 누가 로그인했는지 rq에 꼭 저장해야함!!!
 		rq.login(member);
-		
 		
 		return Util.jsReplace(Util.f("%s님, 로그인되었습니다.", member.getName()), "/");
 	}
 	
 	
-	// 회원 로그아웃
-	
+	/**
+	 * 회원 로그아웃
+	 * @return 완료메시지 > 메인페이지
+	 */
 	@RequestMapping("/project/member/doMemberLogout")
 	@ResponseBody
 	public String doMemberLogout() {
@@ -174,26 +172,36 @@ public class ProjectMemberController {
 		if(rq.getLoginedMemberId() == 0) {
 			return Util.jsReplace("이미 로그아웃된 상태입니다.", "/");
 		}
+		
+		// rq에서 현재 로그인된 멤버 없애주기!!
 		rq.logout();
 		return Util.jsReplace("로그아웃되었습니다.", "/");
 	}
 	
 	
-	// 회원 탈퇴
-	
+	/**
+	 * 회원 탈퇴
+	 * @param id 회원 번호
+	 * @return 완료 메시지 > 메인 페이지
+	 */
 	@RequestMapping("/project/member/doMemberDrop")
 	@ResponseBody
 	public String doMemberDrop(int id) {
 		
+		// 로그아웃 먼저 하고
 		rq.logout();
+		// DB에 멤버 정보 지우기
 		memberService.doMemberDrop(id);
 		
 		return Util.jsReplace("탈퇴되었습니다.", "/");
 	}
 	
 	
-	// 회원 마이페이지
-	
+	/**
+	 * 회원 마이페이지
+	 * @param model 현재 로그인된 멤버 정보 보내주기
+	 * @return memberprofile 페이지
+	 */
 	@RequestMapping("/project/member/memberprofile")
 	public String memberprofile(Model model) {
 		
@@ -250,8 +258,12 @@ public class ProjectMemberController {
 	}
 	
 	
-	// 회원 정보 수정 전 비밀번호 체크
-
+	/**
+	 * 회원 정보 수정 전 비밀번호 체크
+	 * @param id 회원 번호
+	 * @param model 회원 정보 보내주기
+	 * @return checkpassword 페이지
+	 */
 	@RequestMapping("/project/member/checkpassword")
 	public String checkpassword(Model model, int id) {
 		
@@ -261,8 +273,13 @@ public class ProjectMemberController {
 		return "project/member/checkpassword";
 	}
 	
-	// 회원 정보 수정
-	
+	/**
+	 * 비밀번호 맞게 입력했는지 확인 > 회원 정보 수정
+	 * @param id 회원 번호
+	 * @param loginPW 비밀번호
+	 * @param model 회원 정보 보내주기
+	 * @return membermodify 페이지
+	 */
 	@RequestMapping("/project/member/membermodify")
 	public String membermodify(Model model, int id, String loginPW) {
 		
@@ -280,6 +297,16 @@ public class ProjectMemberController {
 		return "project/member/membermodify";
 	}
 	
+	/**
+	 * 회원 정보 최종 수정
+	 * @param id 회원 번호
+	 * @param name 이름
+	 * @param cellphoneNum 휴대폰 번호
+	 * @param email 이메일
+	 * @param fileId 기존 이미지파일 번호
+	 * @param file 새로운 이미지파일
+	 * @return 완료메시지 > memberprofile 페이지
+	 */
 	@RequestMapping("/project/member/doMemberModify")
 	@ResponseBody
 	public String doMemberModify(int id, String name, String cellphoneNum, String email, int fileId, MultipartFile file) {
@@ -295,13 +322,16 @@ public class ProjectMemberController {
 			}
 		}
 		
-		
 		return Util.jsReplace("회원정보를 수정하였습니다.", "memberprofile");
 	}
 	
 	
-	// 회원 비밀번호 수정
-	
+	/**
+	 * 회원 비밀번호 수정
+	 * @param id 회원 번호
+	 * @param model 멤버 정보 보내주기
+	 * @return passwordmodify 페이지
+	 */
 	@RequestMapping("/project/member/passwordmodify")
 	public String passwordmodify(Model model, int id) {
 		
@@ -314,18 +344,28 @@ public class ProjectMemberController {
 		return "project/member/passwordmodify";
 	}
 	
+	/**
+	 * 회원 비밀번호 최종 수정
+	 * @param id 회원 번호
+	 * @param loginPW 비밀번호
+	 * @return 완료메시지 > 메인페이지
+	 */
 	@RequestMapping("/project/member/doPasswordModify")
 	@ResponseBody
 	public String doPasswordModify(int id, String loginPW) {
 		
+		// 비밀번호 암호화해서 DB에 저장
 		memberService.doPasswordModify(id, Util.sha256(loginPW));
 		
 		return Util.jsReplace("비밀번호를 수정하였습니다.", "/");
 	}
 	
 	
-	// 회원명단에서 선생/학생/학부모 별로 구분해서 보기
-	
+	/**
+	 * 회원명단에서 선생/학생/학부모 별로 구분해서 보여주는 ajax 함수
+	 * @param authLevel 멤버 등급
+	 * @return 회원 리스트 (resultdata)
+	 */
 	@RequestMapping("/project/member/getMembersByAuthLevel")
 	@ResponseBody
 	public ResultData getMembersByAuthLevel(int authLevel) {
@@ -347,13 +387,21 @@ public class ProjectMemberController {
 	}
 	
 	
-	// 회원 아이디 찾기
-	
+	/**
+	 * 회원 아이디 찾기
+	 * @return findloginID 페이지
+	 */
 	@RequestMapping("/project/member/findLoginID")
 	public String findLoginID() {
 		return "project/member/findLoginID";
 	}
 	
+	/**
+	 * 회원 아이디 찾기 최종
+	 * @param name 이름
+	 * @param email 이메일
+	 * @return 아이디 alert해주고 로그인 페이지
+	 */
 	@RequestMapping("/project/member/doFindLoginID")
 	@ResponseBody
 	public String doFindLoginID(String name, String email) {
@@ -368,13 +416,22 @@ public class ProjectMemberController {
 	}
 	
 	
-	// 회원 비밀번호 찾기
-	
+	/**
+	 * 회원 비밀번호 찾기
+	 * @return findLoginPW 페이지
+	 */
 	@RequestMapping("/project/member/findLoginPW")
 	public String findLoginPW() {
 		return "project/member/findLoginPW";
 	}
 	
+	/**
+	 * 회원 비밀번호 찾기 최종
+	 * @param name 이름
+	 * @param loginID 아이디
+	 * @param email 이메일
+	 * @return 비밀번호 이메일 발송 후 로그인 페이지
+	 */
 	@RequestMapping("/project/member/doFindLoginPW")
 	@ResponseBody
 	public String doFindLoginPW(String name, String loginID, String email) {
@@ -393,13 +450,17 @@ public class ProjectMemberController {
 			return Util.jsHistoryBack("이름과 이메일 정보가 일치하지 않습니다.");
 		}
 		
+		// 난수 발생시켜 새로운 비밀번호 만들고 회원의 이메일로 전송하기!!
 		ResultData notifyTempLoginPwByEmailRd = memberService.notifyTempLoginPwByEmail(member);
 		
 		return Util.jsReplace(notifyTempLoginPwByEmailRd.getMsg(), "memberlogin");
 	}
 	
-	// 학생이 수강신청할 때
-	
+	/**
+	 * 학생이 수강신청할 때
+	 * @param model 반과 선생님 정보를 보내주기
+	 * @return 수강신청 페이지
+	 */
 	@RequestMapping("/project/member/groupregistration")
 	public String groupregistration(Model model) {
 		
@@ -421,8 +482,11 @@ public class ProjectMemberController {
 	}
 	
 	
-	// 선생님 별로 수강신청 반 구분
-	
+	/**
+	 * 선생님 별로 수강신청 반 구분해서 보여주는 ajax 함수
+	 * @param groupTeacherId 선생님 번호
+	 * @return 해당 선생님이 가르치는 반 리스트 (resultdata)
+	 */
 	@RequestMapping("/project/member/getGroupsByTeacherID")
 	@ResponseBody
 	public ResultData getGroupsByTeacherID(int groupTeacherId) {
@@ -608,11 +672,14 @@ public class ProjectMemberController {
 	}
 	
 	
-	// 선생님이 학생한테 쿠폰줄 때
-	
+	/**
+	 * 선생님이 학생한테 쿠폰줄 때
+	 * @return 쿠폰주기 페이지
+	 */
 	@RequestMapping("/project/member/givecoupon")
 	public String givecoupon() {
 		
+		// 선생님만 쿠폰주기 페이지 들어갈 수 있음
 		if(rq.getLoginedMember().getAuthLevel() != 1) {
 			return rq.jsReturnOnView("선생님 회원만 이용할 수 있는 탭입니다.", true);
 		}
@@ -696,8 +763,11 @@ public class ProjectMemberController {
 	}
 	
 	
-	// 반 생성
-	
+	/**
+	 * 반 생성
+	 * @param model 선생님 명단 보내주기
+	 * @return 반 생성 페이지
+	 */
 	@RequestMapping("/project/member/makeGroup")
 	public String makeGroup(Model model) {
 		
@@ -708,8 +778,15 @@ public class ProjectMemberController {
 	}
 	
 	
-	// 반 최종 생성
-	
+	/**
+	 * 반 최종 생성
+	 * @param grade 학년
+	 * @param groupName 반 이름
+	 * @param groupDay 수강 요일
+	 * @param groupTeacherId 선생님 번호
+	 * @param textbook 수업 교재
+	 * @return 완료 메시지 > 반 안내 페이지
+	 */
 	@RequestMapping("/project/member/doMakeGroup")
 	@ResponseBody
 	public String doMakeGroup(String grade, String groupName, String groupDay, int groupTeacherId, String textbook) {
@@ -720,15 +797,19 @@ public class ProjectMemberController {
 	}
 	
 	
-	// 반 삭제
-	
+	/**
+	 * 반 삭제
+	 * @param classId 반 번호
+	 * @param groupName 반 이름 (alert 메시지에 쓰려고)
+	 * @return 반 안내 페이지
+	 */
 	@RequestMapping("/project/member/doDeleteGroup")
 	@ResponseBody
 	public String doDeleteGroup(int classId, String groupName) {
 		
 		groupService.doDeleteGroup(classId);
 		
-		return Util.jsReplace("반이 삭제되었습니다.", "membergroup");
+		return Util.jsReplace(Util.f("%d반이 삭제되었습니다.", groupName), "membergroup");
 	}
 	
 }

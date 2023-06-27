@@ -42,28 +42,18 @@
 					<table class="table w-full" id="scoretable">
 						<thead>
 						      <tr>
-						        <th>
-						          <label>
-						            <input type="checkbox" class="checkbox" />
-						          </label>
-						        </th>
 						        <th>원생명</th>
 						        <th>총점</th>
 						        <th>응시여부</th>
 					     	 </tr>
 					    </thead>
 					    
+						<tbody>
 					    <c:forEach var="member" items="${members }" varStatus="status">
-						    <tbody>
 							<input type="hidden" name="scorelist[${status.index }].relId" value="${article.id }"/>
 							<input type="hidden" name="scorelist[${status.index }].classId" value="${article.classId }"/>
 							<input type="hidden" name="scorelist[${status.index }].memberId" value="${member.id }"/>
 						      <tr id="${status.count }">
-						        <th>
-						          <label>
-						            <input type="checkbox" class="checkbox" />
-						          </label>
-						        </th>
 						        <td>${member.name }</td>
 						        <td><input class="input input-bordered input-success w-full" type="text"
 						        name="scorelist[${status.index }].score" required/></td>
@@ -74,9 +64,9 @@
 									</select>
 						        </td>
 						      </tr>
-						    </tbody>
 						    
 						</c:forEach>
+						</tbody>
 				  </table>
 				  <button class="btn btn-success mr-2" onsubmit="check(this); return false;">작성</button>
 	  		</div>

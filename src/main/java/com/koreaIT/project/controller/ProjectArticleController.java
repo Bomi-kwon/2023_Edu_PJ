@@ -90,8 +90,12 @@ public class ProjectArticleController {
 	}
 	
 	
-	// 게시물 작성
-	
+	/**
+	 * 게시물 작성
+	 * @param boardId 어떤 게시판인지
+	 * @param model 게시판 번호를 담아 보내기
+	 * @return 작성 페이지
+	 */
 	@RequestMapping("/project/article/write")
 	public String write(Model model, int boardId) {
 		
@@ -210,7 +214,13 @@ public class ProjectArticleController {
 	}
 	
 	
-	// 게시물 삭제
+	/**
+	 * 게시물 삭제
+	 * @param id 게시물 번호
+	 * @param boardId 게시판 번호(를 이용해서 해당 게시판으로 location)
+	 * @param memberId 게시물 작성자(와 현재 로그인된 멤버가 일치하는지 확인하려고)
+	 * @return 완료 메시지 보여주고 다시 게시판 리스트 페이지 보여주기
+	 */
 	@RequestMapping("/project/article/doDelete")
 	@ResponseBody
 	public String doDelete(int id, int boardId, int memberId) {
@@ -225,6 +235,10 @@ public class ProjectArticleController {
 		}
 		
 		articleService.doDelete(id);
+		
+		if(boardId == 3) {
+			scoreService.doScoreDelete(id);
+		}
 		
 		return Util.jsReplace(Util.f("%d번 게시물을 삭제했습니다.", id),Util.f("list?boardId=%d", boardId));
 	}
@@ -259,8 +273,13 @@ public class ProjectArticleController {
 	}
 	
 	
-	// 게시물 수정
-	
+	/**
+	 * 게시물 수정
+	 * @param id 게시물 번호
+	 * @param memberId 게시물 작성자
+	 * @param model 게시물 정보 보내주기 (수정 전 원래 내용 보여줘야 하니까)
+	 * @return 수정 페이지
+	 */
 	@RequestMapping("/project/article/modify")
 	public String modify(Model model, int id, int memberId) {
 		
@@ -276,12 +295,38 @@ public class ProjectArticleController {
 		
 		FileVO file = fileService.getFileByRelId("article", id);
 		
+		if(file != null) {
+			model.addAttribute("file",file);
+		}
+		
 		model.addAttribute("article", article);
-		model.addAttribute("file",file);
+		
+		if(article.getBoardId() == 3) {
+			Group group = groupService.getGroupById(article.getClassId());
+			
+			List<Group> groupList = groupService.getGroupsByGrade(group.getGrade());
+			
+			model.addAttribute("group", group);
+			model.addAttribute("groupList", groupList);
+		}
 		
 		return "project/article/modify";
 	}
 	
+	
+	/**
+	 * 게시물 최종 수정
+	 * @param id 게시물 번호
+	 * @param title 제목
+	 * @param body 내용
+	 * @param memberId 작성자 (권한 체크)
+	 * @param boardId 게시판 (권한 없으면 list로 돌아가야되서 필요)
+	 * @param fileId 기존 파일 번호
+	 * @param file 새로운 파일
+	 * @param youTubeLink 유튜브링크
+	 * @return 완료메시지 보여주고 수정된 detail 보여주기
+	 * @throws IOException
+	 */
 	@RequestMapping("/project/article/doModify")
 	@ResponseBody
 	public String doModify(int id, String title, String body, int memberId, int boardId, 
@@ -321,23 +366,17 @@ public class ProjectArticleController {
 	}
 	
 	
-	// 성적 게시물 리스트
 	
-	@RequestMapping("/project/article/scorelist")
-	public String scorelist(Model model) {
-		
-		int boardId = 3;
-		
-		List<Article> articles = articleService.getArticles(boardId);
-		
-		model.addAttribute("articles", articles);
-		
-		return "project/article/scorelist";
-	}
-	
-	
-	// 성적 게시물 디테일
-	
+	/**
+	 * 성적 게시물 detail
+	 * @param relId 게시물번호(를 이용해서 성적 가져오기)
+	 * @param model 성적(+평균,최고,최저 점수), 학생 수, 방문자들, 게시물 보내주기
+	 * @return 성적 게시물 detail 페이지
+	 * 
+	 * 왜 성적 게시물만 detail 함수 따로 뺌??
+	 * 성적을 입력하는 방식 : 1.게시물 작성 2.성적 작성 이렇게 동기로 처리해서
+	 * 그리고 detail 페이지에서 보여줘야 되는 정보도 너무 달라 이것만 따로 빼서 처리
+	 */
 	@RequestMapping("/project/article/scoredetail")
 	public String scoredetail(int relId, Model model) {
 		
@@ -380,8 +419,13 @@ public class ProjectArticleController {
 	}
 	
 	
-	// 성적 게시물 대상반 소분류
-	
+	/**
+	 * 학년 선택하면 반 나오게 하기 ajax 함수
+	 * @param grade 학년 입력
+	 * @return 그 학년에 맞는 반 리스트
+	 * 
+	 * 아주 여러곳에서 쓰이는 함수!
+	 */
 	@RequestMapping("/project/article/setSelectBox")
 	@ResponseBody
 	public ResultData setSelectBox(String grade) {
@@ -395,16 +439,16 @@ public class ProjectArticleController {
 	}
 	
 	
-	// 성적 '게시물' 작성
 	
-	@RequestMapping("/project/article/scorearticlewrite")
-	public String scorearticlewrite() {
-		return "project/article/scorearticlewrite";
-	}
-	
-	
-	// 성적 '점수' 작성
-	
+	/**
+	 * 성적게시물 입력후, '점수' 작성 페이지로 넘겨주기
+	 * @param title 시험제목
+	 * @param classId 대상 반
+	 * @param regDate 시험일자
+	 * @param body 교사의견
+	 * @param model 성적게시물과 반학생 명단 넘겨주기
+	 * @return 점수 작성 페이지
+	 */
 	@RequestMapping("/project/article/score")
 	public String score(Model model, String title, int classId, String regDate, String body) {
 		
@@ -414,10 +458,10 @@ public class ProjectArticleController {
 			return rq.jsReturnOnView("이 반에는 학생이 없습니다.", true);
 		}
 		
+		// 게시물 먼저 저장하고 점수 작성 페이지로 바로 넘겨주기
 		articleService.doWrite(rq.getLoginedMemberId(), title, classId, regDate, body, 3);
 		
 		Article article = articleService.getArticleById(articleService.getLastId());
-		
 		
 		model.addAttribute("article", article);
 		model.addAttribute("members", members);
@@ -426,102 +470,50 @@ public class ProjectArticleController {
 	}
 	
 	
-	// 성적 최종 작성
-	
+	/**
+	 * 성적 게시물과 연결된 score 최종 작성
+	 * @param scorelist score.jsp에서 리스트로 받아온 성적들
+	 * @return 완료 메시지 보여주고 성적게시판 리스트 보여주기
+	 */
 	@RequestMapping("/project/article/doWriteScoreArticle")
 	@ResponseBody
 	public String doWriteScoreArticle(ScoreList scorelist) {
 		
+		// 사람마다 한 세트씩 받아온 리스트를 재가공하고
 		List<Score> scoreList = scorelist.getScorelist();
 		
 		for(Score score : scoreList) {
 			
 			if(score != null) {
+				// 하나씩 풀어서 score 테이블에 insert 해주기
 				scoreService.insertScore(score.getMemberId(), score.getScore(), score.getClassId(), score.getRelId());
 			}
 		}
 		
-		return Util.jsReplace("성적을 입력했습니다.", "scorelist");
+		return Util.jsReplace("성적을 입력했습니다.", "list?boardId=3");
 	}
 	
 	
-	// 성적 점수 + 게시물 삭제
 	
-	@RequestMapping("/project/article/doScoreDelete")
-	@ResponseBody
-	public String doScoreDelete(int id, int memberId) {
-		
-		if(rq.getLoginedMemberId() != memberId) {
-			return Util.jsHistoryBack("성적 삭제 권한이 없습니다.");
-		}
-		
-		Article article = articleService.getArticleById(id);
-		
-		if(article == null) {
-			return Util.jsHistoryBack(Util.f("%d번 게시물은 존재하지 않습니다.", id));
-		}
-		
-		articleService.doDelete(id);
-		scoreService.doScoreDelete(id);
-		
-		return Util.jsReplace(Util.f("%d번 게시물을 삭제했습니다.", id), "scorelist");
-	}
-	
-	
-	// 성적 점수 + 게시물 삭제 (체크박스로 여러개 선택)
-	
-	@RequestMapping("/project/article/doDeleteScoresArticles")
-	@ResponseBody
-	public String doDeleteScoresArticles(@RequestParam(defaultValue = "") String ids) {
-		
-		// 체크된 박스들 번호를 String으로 받아오기
-		
-		if (Util.empty(ids)) {
-			return Util.jsHistoryBack("선택한 게시물이 없습니다");
-		}
-		
-		List<Integer> articleIds = new ArrayList<>();
-		
-		// 콤마 기준으로 다시 구분해서 하나씩 리스트에 담기 (int로 형변환해서)
-		for (String idStr : ids.split(",")) {
-			articleIds.add(Integer.parseInt(idStr));
-		}
-		
-		articleService.deleteArticles(articleIds);
-		scoreService.deleteScores(articleIds);
-		
-		return Util.jsReplace("선택한 성적 게시물들이 삭제되었습니다", "scorelist");
-	}
-	
-	// 성적 '게시물' 수정
-	
-	@RequestMapping("/project/article/scorearticlemodify")
-	public String scorearticlemodify(Model model, int id) {
-		
-		Article article = articleService.getArticleById(id);
-		
-		Group group = groupService.getGroupById(article.getClassId());
-		
-		List<Group> groupList = groupService.getGroupsByGrade(group.getGrade());
-		
-		model.addAttribute("article", article);
-		model.addAttribute("group", group);
-		model.addAttribute("groupList", groupList);
-		
-		return "project/article/scorearticlemodify";
-	}
-	
-	
-	//성적 '점수' 수정
-	
+	/**
+	 * 성적 게시글 수정 후 '점수' 수정 페이지로 넘겨주기
+	 * @param id 글 번호
+	 * @param memberId 작성자
+	 * @param title 제목
+	 * @param classId 수정한 대상반
+	 * @param regDate 시험일자
+	 * @param body 내용
+	 * @param model 을 반영해서 게시물을 바꾸고 그 글과 연결된 성적 수정 페이지로 넘겨줌
+	 * @return 성적 수정 페이지
+	 */
 	@RequestMapping("/project/article/scoremodify")
-	public String scoremodify(Model model, int id, int memberId, String title, int classId, String regDate) {
+	public String scoremodify(Model model, int id, int memberId, String title, int classId, String regDate, String body) {
 		
 		if(rq.getLoginedMemberId() != memberId) {
 			rq.jsPrintHistoryBack("성적 게시물 수정 권한이 없습니다.");
 		}
 		
-		articleService.doScoreArticleModify(id, title, classId, regDate);
+		articleService.doScoreArticleModify(id, title, classId, regDate, body);
 		
 		Article article = articleService.getArticleById(id);
 		
@@ -534,11 +526,15 @@ public class ProjectArticleController {
 	}
 	
 	
-	// 성적 최종 수정
-	
+	/**
+	 * 성적 '점수' 최종 수정
+	 * @param articleId 점수와 연결된 글 번호
+	 * @param scorelist form에서 받아온 점수 리스트
+	 * @return 완료메시지 보여주고 성적 게시판 리스트 보여주기
+	 */
 	@RequestMapping("/project/article/doModifyScoreArticle")
 	@ResponseBody
-	public String doModifyScoreArticle(int articleId, ScoreList scorelist, String body) {
+	public String doModifyScoreArticle(int articleId, ScoreList scorelist) {
 		
 		List<Score> scoreList = scorelist.getScorelist();
 		
@@ -549,18 +545,15 @@ public class ProjectArticleController {
 			}
 		}
 		
-		Article article = articleService.getArticleById(articleId);
-		
-		if(article != null) {
-			articleService.doModify(articleId, article.getTitle(), body, null);
-		}
-		
-		return Util.jsReplace("성적을 수정했습니다.", "scorelist");
+		return Util.jsReplace("성적을 수정했습니다.", "list?boardId=3");
 	}
 	
 	
-	// 성적 게시물과 숙제검사 모달창에서 해당 반 학생 명단 가져오기
-	
+	/**
+	 * 성적 게시물과 숙제검사 모달창에서 해당 반 학생 명단 가져오는 ajax 함수
+	 * @param classId 반 번호
+	 * @return 로 가져온 학생 리스트
+	 */
 	@RequestMapping("/project/article/getStudentsByClass")
 	@ResponseBody
 	public ResultData getStudentsByClass(int classId) {
@@ -576,8 +569,11 @@ public class ProjectArticleController {
 	}
 
 	
-	// 숙제검사 최종 작성
-	
+	/**
+	 * 숙제검사 최종 작성
+	 * @param homeworklist 모달창에 적은 숙제 리스트
+	 * @return 완료메시지 보낸후 그 게시물 detail 페이지 보여주기
+	 */
 	@RequestMapping("/project/article/doHwCheck")
 	@ResponseBody
 	public String doHwCheck(HomeworkList homeworklist) {
@@ -598,8 +594,12 @@ public class ProjectArticleController {
 	}
 		
 		
-	// 숙제 삭제
-	
+	/**
+	 * 숙제 삭제
+	 * @param relId 숙제 게시물 번호
+	 * @param memberId 작성자 (권한 체크에 필요)
+	 * @return 완료메시지 보여준 후 그 게시물 페이지 다시 보여주기
+	 */
 	@RequestMapping("/project/article/doHwDelete")
 	@ResponseBody
 	public String doHwDelete(int relId, int memberId) {

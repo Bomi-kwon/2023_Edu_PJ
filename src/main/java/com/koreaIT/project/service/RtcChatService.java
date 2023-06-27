@@ -20,13 +20,16 @@ public class RtcChatService {
 
     // repository substitution since this is a very simple realization
 
-    public ChatRoomDto createChatRoom(String roomName, String roomPwd, boolean secretChk, int maxUserCnt) {
-        // roomName 와 roomPwd 로 chatRoom 빌드 후 return
+	/**
+	 * roomlist > chatServiceMain > RtcChatService로 넘어온 방 생성하기
+	 * @param roomName 방 이름
+	 * @param maxUserCnt 최대 입장 인원
+	 * @return 방금 생성한 방
+	 */
+    public ChatRoomDto createChatRoom(String roomName, int maxUserCnt) {
         ChatRoomDto room = ChatRoomDto.builder()
                 .roomId(UUID.randomUUID().toString().replace("-", ""))
                 .roomName(roomName)
-                .roomPwd(roomPwd) // 채팅방 패스워드
-                .secretChk(secretChk) // 채팅방 잠금 여부
                 .userCount(0) // 채팅방 참여 인원수
                 .maxUserCnt(maxUserCnt) // 최대 인원수 제한
                 .build();
@@ -42,6 +45,12 @@ public class RtcChatService {
         return room;
     }
 
+    
+    /**
+     * 화상채팅방의 유저 리스트 가져오는 기능
+     * @param room 방
+     * @return 방에 있는 유저 리스트
+     */
     public Map<String, WebSocketSession> getClients(ChatRoomDto room) {
         // 공부하기 좋은 기존 코드
         // unmodifiableMap : read-only 객체를 만들고 싶을 때 사용
@@ -52,16 +61,22 @@ public class RtcChatService {
 
         Optional<ChatRoomDto> roomDto = Optional.ofNullable(room);
         
-//        return (Map<String, WebSocketSession>) Optional.ofNullable(room)
-//                .map(r -> Collections.unmodifiableMap(r.getUserList()))
-//                .orElse(Collections.emptyMap());
-
         return (Map<String, WebSocketSession>) roomDto.get().getUserList();
     }
 
-    public Map<String, WebSocketSession> addClient(ChatRoomDto room, String name, WebSocketSession session) {
+    
+    /**
+     * rtc 채팅방 userList에 유저 추가
+     * @param room 방
+     * @param userUUID 유저아이디
+     * @param session 세션
+     * @return 유저 리스트
+     */
+    public Map<String, WebSocketSession> addClient(ChatRoomDto room, String userUUID, WebSocketSession session) {
         Map<String, WebSocketSession> userList = (Map<String, WebSocketSession>) room.getUserList();
-        userList.put(name, session);
+        
+        userList.put(userUUID, session);
+        
         return userList;
     }
 
@@ -70,10 +85,12 @@ public class RtcChatService {
         room.getUserList().remove(userUUID);
     }
 
-    // 유저 카운터 return
-    // 가장 중요
-    // 참여한 room에 또 다른 유저가 있는지 판별해준다.
-    // userList의 size가 나를 포함해 2명 이상이라면 다른 유저와 통신이 필요하다는걸 확인해준다.
+    
+    /**
+     * 유저가 2명 이상인지 아닌지 판단해주는 기능
+     * @param webSocketMessage rtcroom.js > ProjectRtcController > RtcChatService로 넘어온 메시지(방과 유저 정보 담고있음)
+     * @return 내가 참여한 room에 나 포함 2명 이상이면 true (그럼 다른 유저와 통신이 필요해진다.)
+     */
     public boolean findUserCount(WebSocketMessage webSocketMessage){
         ChatRoomDto room = ChatRoomMap.getInstance().getChatRooms().get(webSocketMessage.getData());
         // log.info("ROOM COUNT : [{} ::: {}]",room.toString(),room.getUserList().size());

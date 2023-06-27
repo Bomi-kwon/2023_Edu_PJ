@@ -76,12 +76,12 @@
 	        <ul>
 	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/home/setqrurl"><span>출결QR</span></a></li>
 	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/list?boardId=2"><span>숙제</span></a></li>
-	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/scorelist"><span>성적</span></a></li>
+	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/list?boardId=3"><span>성적</span></a></li>
 	        </ul>
 	      </li>
 	      <li><a href="#">커뮤니티</a>
 	        <ul>
-	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/chat"><span>채팅방</span></a></li>
+	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/chat/roomlist"><span>채팅방</span></a></li>
 	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/list?boardId=1"><span>알림장</span></a></li>
 	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/home/select"><span>메세지 발송</span></a></li>
 	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/selenium/entranceinfo"><span>입시 정보</span></a></li>
@@ -91,7 +91,7 @@
 	        <ul>
 	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/member/groupregistration"><span>수강신청</span></a></li>
 	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/member/givecoupon"><span>쿠폰발행</span></a></li>
-	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/chat"><span>실시간 강의</span></a></li>
+	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/chat/roomlist"><span>실시간 강의</span></a></li>
 	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/list?boardId=4"><span>수학인강</span></a></li>
 	        </ul>
 	      </li>
@@ -124,12 +124,12 @@
           <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/home/setqrurl"><span>출결QR</span></a></li>
           <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/home/attendanceChk"><span>출석체크(학생용)</span></a></li>
           <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/list?boardId=2"><span>숙제</span></a></li>
-          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/scorelist"><span>성적</span></a></li>
+          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/list?boardId=3"><span>성적</span></a></li>
         </ul>
       </li>
       <li><a href="#">커뮤니티</a>
         <ul>
-          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/chat"><span>채팅방</span></a></li>
+          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/chat/roomlist"><span>채팅방</span></a></li>
           <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/list?boardId=1"><span>알림장</span></a></li>
           <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/home/select"><span>메세지 발송</span></a></li>
           <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/selenium/entranceinfo"><span>입시 정보</span></a></li>
@@ -139,7 +139,7 @@
         <ul>
           <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/member/groupregistration"><span>수강신청</span></a></li>
           <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/member/givecoupon"><span>쿠폰발행</span></a></li>
-          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/chat"><span>실시간 강의</span></a></li>
+          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/chat/roomlist"><span>실시간 강의</span></a></li>
           <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/list?boardId=4"><span>수학인강</span></a></li>
         </ul>
       </li>

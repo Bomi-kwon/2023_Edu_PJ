@@ -46,12 +46,12 @@
 					<input type="radio" name="authLevel" value="2" checked/><span>학생</span>
 					<input type="radio" name="authLevel" value="3"/><span>학부모</span>
 				</div>
-				<input class="" type="text" name="loginID" placeholder="아이디를 입력해주세요." />
-				<input class="" type="text" name="loginPW" placeholder="비밀번호를 입력해주세요." />
-				<input class="" type="text" name="loginPWCheck" placeholder="비밀번호 확인을 입력해주세요." />
-				<input class="" type="text" name="name" placeholder="이름을 입력해주세요." />
-				<input class="" type="text" name="cellphoneNum" placeholder="전화번호를 입력해주세요." />
-				<input class="" type="text" name="email" placeholder="이메일을 입력해주세요." />
+				<input class="" type="text" name="loginID" placeholder="아이디를 입력해주세요." required/>
+				<input class="" type="text" name="loginPW" placeholder="비밀번호를 입력해주세요."  required/>
+				<input class="" type="text" name="loginPWCheck" placeholder="비밀번호 확인을 입력해주세요."  required/>
+				<input class="" type="text" name="name" placeholder="이름을 입력해주세요."  required/>
+				<input class="" type="text" name="cellphoneNum" placeholder="전화번호를 입력해주세요."  required/>
+				<input class="" type="text" name="email" placeholder="이메일을 입력해주세요."  required/>
 				<input class="" type="file" name="file"/>
 				<button class="">가입하기</button>
 				<p class="message">이미 회원가입을 했나요? <a href="memberlogin">로그인하기</a></p>

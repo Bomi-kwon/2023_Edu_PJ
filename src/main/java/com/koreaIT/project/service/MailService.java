@@ -63,6 +63,13 @@ public class MailService {
 		}
 	}
 
+	/**
+	 * 새로운 비밀번호 메일로 보내주기 기능
+	 * @param email 이메일
+	 * @param title 제목
+	 * @param body 내용
+	 * @return 성공/실패 메시지 (resultdata)
+	 */
 	public ResultData send(String email, String title, String body) {
 
 		MailHandler mail;

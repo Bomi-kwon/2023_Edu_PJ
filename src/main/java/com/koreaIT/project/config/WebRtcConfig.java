@@ -22,8 +22,8 @@ public class WebRtcConfig implements WebSocketConfigurer{
     // 요청은 클라이언트 접속, close, 메시지 발송 등에 대해 특정 메서드를 호출한다
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(signalHandler, "/signal")
-                .setAllowedOrigins("*");
+        registry.addHandler(signalHandler, "/signal")		// webRTC 서버의 엔드포인트는 ~~/signal 으로 정의하였다.
+                .setAllowedOrigins("*");	// 클라이언트에서 웹소켓 서버에 요청시 모든 요청을 수용한다.
     }
 
     // 웹 소켓에서 rtc 통신을 위한 최대 텍스트 버퍼와 바이너리 버퍼 사이즈를 설정한다?
