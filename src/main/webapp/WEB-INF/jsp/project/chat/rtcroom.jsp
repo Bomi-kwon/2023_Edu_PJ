@@ -125,6 +125,6 @@
 </div>
 </section>
 
-<script src="/js/rtc/webrtc_client.js"></script>
+<script src="/js/chat/webrtc_client.js"></script>
 </body>
 </html>

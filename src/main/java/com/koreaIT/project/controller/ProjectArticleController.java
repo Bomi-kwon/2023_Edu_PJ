@@ -66,8 +66,12 @@ public class ProjectArticleController {
 		this.rq = rq;
 	}
 
-	// 게시물 리스트
-	
+	/**
+	 * 게시물 리스트
+	 * @param model
+	 * @param boardId 어떤 게시판인지가 중요 (공부인증 게시판은 형식 다름)
+	 * @return 게시물 리스트
+	 */
 	@RequestMapping("/project/article/list")
 	public String showList(Model model, @RequestParam(defaultValue = "2") int boardId) {
 		
@@ -226,11 +230,16 @@ public class ProjectArticleController {
 	}
 	
 	
-	// 게시물들 여러개 체크해서 삭제
+	/**
+	 * 리스트에서 게시물들 여러개 체크해서 삭제
+	 * @param ids 체크한 게시물 번호들 (콤마로 구분해서 한줄의 문자열로 만들어놨음)
+	 * @param boardId 어떤 게시판인지
+	 * @return 게시물 삭제 여부 alert로 보여주고 페이지 새로고침
+	 */
 	@RequestMapping("/project/article/doDeleteArticles")
 	@ResponseBody
 	public String doDeleteArticles(@RequestParam(defaultValue = "") String ids, int boardId) {
-		// 체크된 박스들 번호를 String으로 받아오기
+		// 체크된 박스들 번호를 나열해서 String으로 받아왔음
 		
 		if (Util.empty(ids)) {
 			return Util.jsHistoryBack("선택한 게시물이 없습니다");
@@ -238,14 +247,15 @@ public class ProjectArticleController {
 		
 		List<Integer> articleIds = new ArrayList<>();
 		
-		// 콤마 기준으로 다시 구분해서 하나씩 리스트에 담기 (int로 형변환해서)
+		// 콤마 기준으로 다시 구분하고 int로 형변환해서 하나씩 리스트에 담기
 		for (String idStr : ids.split(",")) {
 			articleIds.add(Integer.parseInt(idStr));
 		}
 		
+		// 삭제할 글 번호들을 모은 리스트를 한꺼번에 보내주기
 		articleService.deleteArticles(articleIds);
 		
-		return Util.jsReplace("선택한 게시물이 삭제되었습니다", Util.f("list?boardId=%d", boardId) );
+		return Util.jsReplace("선택한 게시물들이 삭제되었습니다", Util.f("list?boardId=%d", boardId) );
 	}
 	
 	
@@ -638,20 +648,26 @@ public class ProjectArticleController {
 	}
 	
 	
-	// 게시판 당 게시물 하루 한개 작성 제한 - 오늘 내가 쓴 글 있나 확인하기
-	
-		@RequestMapping("/project/article/getArticleNumLimit")
-		@ResponseBody
-		public ResultData getArticleNumLimit(String today, int boardId, int loginedMemberId) {
+	/**
+	 * 게시판 당 게시물 하루 한개 작성 제한. 오늘 내가 쓴 글 있나 확인하기
+	 * @param today 오늘날짜
+	 * @param boardId 게시판
+	 * @param loginedMemberId 현재 로그인한 멤버의 아이디
+	 * @return 글 쓸 수 있는지 여부 (type : resultdata)
+	 */
+	@RequestMapping("/project/article/getArticleNumLimit")
+	@ResponseBody
+	public ResultData getArticleNumLimit(String today, int boardId, int loginedMemberId) {
 
-			List<Article> articles = articleService.getArticleNumLimit(today, boardId, loginedMemberId);
-			
-			if(articles.size() != 0) {
-				return ResultData.from("F-1", "게시판 당 하루에 게시물 하나씩만 쓸 수 있습니다.");
-			}
-			
-			return ResultData.from("S-1", "오늘 이 게시판에 쓴 글이 없으므로 글 쓰기가 가능합니다.");
+		// 오늘 내가 이 게시판에 쓴 글 있나 확인하기
+		List<Article> articles = articleService.getArticleNumLimit(today, boardId, loginedMemberId);
+		
+		if(articles.size() != 0) {
+			return ResultData.from("F-1", "공부인증 게시판에는 하루에 글 하나씩만 쓸 수 있습니다.");
 		}
+		
+		return ResultData.from("S-1", "오늘 이 게시판에 쓴 글이 없으므로 글 쓰기가 가능합니다.");
+	}
 	
 	
 	

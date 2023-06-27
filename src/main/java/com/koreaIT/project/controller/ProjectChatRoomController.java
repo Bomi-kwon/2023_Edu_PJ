@@ -74,7 +74,6 @@ public class ProjectChatRoomController {
 
         room = chatServiceMain.createChatRoom(name, "1234", false, Integer.parseInt(maxUserCnt), chatType);
 
-
         // log.info("CREATE Chat Room [{}]", room);
 
         rttr.addFlashAttribute("roomName", room);
@@ -106,7 +105,6 @@ public class ProjectChatRoomController {
         }
 
         model.addAttribute("room", room);
-
 
         if (ChatRoomDto.ChatType.MSG.equals(room.getChatType())) {
             return "project/chat/chatroom";

@@ -188,7 +188,7 @@ public class ProjectHomeController {
 	public Resource downloadImage(@PathVariable("fileId") int id, Model model) throws IOException {
 		
 		// 파일의 src에 보통은 경로를 적지만 이렇게 컨트롤러 함수를 적어줘도 됨
-		// 단 이미지마다 달라지는 id를 표현하기 위해 경로의 마지막 부분을 ${file.id} 이렇게 적어주고
+		// 단, 파일마다 달라지는 id를 표현하기 위해 경로의 마지막 부분을 ${file.id} 이렇게 적어주고
 		// 함수에서 걔를 이런식으로 parameter로 받아올 수 있음!!
 		
 		FileVO fileVo = fileService.getFileById(id);
@@ -203,13 +203,16 @@ public class ProjectHomeController {
 	@RequestMapping("/project/home/select")
 	public String select() {
 		
-		System.out.println("까꿍");
-		
 		return "project/home/select";
 	}
 	
 	
-	// 오디오 파일 업로드 하기
+	/**
+	 * 오디오 파일 업로드 하기 (ajax 함수)
+	 * @param request (timer.jsp의 form에서 받아온 오디오 파일)
+	 * @return 그 파일을 DB에 저장하고 가져온 id
+	 * @throws Exception
+	 */
 	@RequestMapping(value="/project/home/uploadAudioFile", method=RequestMethod.POST)
 	@ResponseBody
 	public int uploadAudioFile(MultipartHttpServletRequest request) throws Exception{
@@ -219,14 +222,16 @@ public class ProjectHomeController {
 		int audioFileId = 0;
 		
 		if(!audioFile.isEmpty() || audioFile != null) {
+			
+			// 어차피 id로 오디오 파일들이 잘 구분되고
+			// relId가 특별한 의미가 없으므로 1로 고정
 			fileService.saveFile(audioFile, "audio", 1);
 			
+			// 방금 DB에 추가된 file의 id 가져와서 리턴할 것임
 			audioFileId = fileService.getLastId();
-			
 		}
 		
 		return audioFileId;
-
 	}
 	
 	

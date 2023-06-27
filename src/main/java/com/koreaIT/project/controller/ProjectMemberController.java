@@ -444,8 +444,12 @@ public class ProjectMemberController {
 	}
 	
 	
-	// 수강신청 페이지 상세보기
-	
+	/**
+	 * 수강신청 페이지 상세보기
+	 * @param model
+	 * @param id 반 번호
+	 * @return 반 정보와 쿠폰여부를 담아 jsp 페이지로 보내기
+	 */
 	@RequestMapping("/project/member/groupregisterdetail")
 	public String groupregisterdetail(Model model, int id) {
 		
@@ -460,8 +464,11 @@ public class ProjectMemberController {
 	}
 	
 	
-	// 수강신청하기
-	
+	/**
+	 * 수강신청하기 (쿠폰 사용 후)
+	 * @param classId 반 번호
+	 * @return 완료메시지를 alert하고 메인페이지로 돌리기
+	 */
 	@RequestMapping("/project/member/doRegister")
 	@ResponseBody
 	public String doRegister(int classId) {
@@ -473,8 +480,13 @@ public class ProjectMemberController {
 	}
 	
 	
-	// 결제 후 수강신청하기
-	
+	/**
+	 * 수강신청하기 (결제 후 ajax 함수로)
+	 * @param classId 학생이 어느반에 수강신청한건지 알아야함
+	 * @param paymentComplete 결제가 성공적으로 된건지 알아야함
+	 * @return 문자열을 리턴해서 jsp에서 alert창으로 보여줌!
+	 * return 타입 String이라서 ajax 타입 text로 바꿔줘야함
+	 */
 	@RequestMapping("/project/member/doRegisterAfterPayment")
 	@ResponseBody
 	public String doRegisterAfterPayment(int classId, boolean paymentComplete) {
@@ -609,12 +621,16 @@ public class ProjectMemberController {
 	}
 	
 	
-	// 이름 검색해서 학생 명단 가져오기
-	
+	/**
+	 * 쿠폰 주기전 이름 검색해서 학생 명단 가져오기
+	 * @param keyWord 검색어
+	 * @return 학생명단(type : resultData)
+	 */
 	@RequestMapping("/project/member/getStudentsByNameKeyWord")
 	@ResponseBody
 	public ResultData getStudentsByNameKeyWord(String keyWord) {
 		
+		// 이름에 검색어를 포함한 학생 명단을 가져온다.
 		List<Member> students = memberService.getStudentsByNameKeyWord(keyWord);
 		
 		if(students.isEmpty()) {
@@ -625,8 +641,13 @@ public class ProjectMemberController {
 	}
 	
 	
-	// 학생한테 최종적으로 쿠폰 발행
-	
+	/**
+	 * 학생한테 최종적으로 쿠폰 발행
+	 * @param deadLine 유효기간
+	 * @param studentId 어떤 학생에게 쿠폰을 줄건지
+	 * @return 성공여부 메시지 alert하고 메인페이지로 이동
+	 * @throws Exception
+	 */
 	@RequestMapping("/project/member/doGiveCoupon")
 	@ResponseBody
 	public String doGiveCoupon(String deadLine, int studentId) throws Exception {
@@ -637,20 +658,26 @@ public class ProjectMemberController {
 			return Util.jsReplace("존재하지 않는 학생입니다.", "givecoupon");
 		}
 		
+		// 쿠폰 테이블에서 이미 쿠폰 준적 있는지 확인하기
 		Coupon coupon = couponService.getCouponByStudentId(studentId);
 		
 		if (coupon != null) {
 			return Util.jsReplace(Util.f("%s 학생에게는 이미 쿠폰이 있습니다.", member.getName()) , "givecoupon");
 		}
 		
-		ResultData notifyTempCouponByMessageRd =  memberService.notifyTempCouponByMessage(member, deadLine, studentId);
+		// 없으면 쿠폰 지급
+		// 쿠폰은 난수를 발생시켜 문자로 지급할것임!! 
+		ResultData notifyTempCouponByMessageRd =  memberService.notifyTempCouponByMessage(member, deadLine);
 		
 		return Util.jsReplace(notifyTempCouponByMessageRd.getMsg(), "/");
 	}
 	
 	
-	// 학생이 적은 쿠폰번호 맞는지 확인하기
-	
+	/**
+	 * 학생이 적은 쿠폰번호 맞는지 확인하기
+	 * @param couponPassword 학생이 입력한 쿠폰번호
+	 * @return 쿠폰 등록 성공 여부 (type : resultdata)
+	 */
 	@RequestMapping("/project/member/verifyPassword")
 	@ResponseBody
 	public ResultData verifyPassword(String couponPassword) {

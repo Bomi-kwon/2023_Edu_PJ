@@ -102,21 +102,35 @@ public class MemberService {
 		memberRepository.doPasswordModify(member.getId(), Util.sha256(tempPassword));
 	}
 	
-	public ResultData notifyTempCouponByMessage(Member member, String deadLine, int studentId) throws Exception {
+	/**
+	 * 6자리 무작위 문자조합 쿠폰번호를 학생의 핸드폰 번호로 문자보내는 기능
+	 * @param member 어떤 학생에게 줄건지
+	 * @param deadLine 쿠폰 유효기간
+	 * @return 쿠폰 발행 성공 여부와 메시지 (type : resultdata)
+	 * @throws Exception
+	 * @todo 쿠폰 사용 여부를 table에 column으로 추가해서 쿠폰 여러장 받을 수 있도록 바꾸기
+	 */
+	public ResultData notifyTempCouponByMessage(Member member, String deadLine) throws Exception {
+		
+		// 쿠폰번호로 6자리 문자+숫자 무작위 조합 만들어냄
 		String couponPassword = Util.getTempPassword(6);
 		
+		// 문자 메시지 내용 build하기
 		MessageDTO messageDTO = MessageDTO.builder()
 				.to(member.getCellphoneNum())
-				.content(Util.f("쿠폰 번호는 %s 입니다.", couponPassword))
+				.content(Util.f("안녕하세요 %s님^^ 수강신청을 위한 쿠폰 번호는 %s 입니다.", member.getName(), couponPassword))
 				.build();
 		
+		// 문자 보내고 난 결과를 받아옴 (결과에는 성공 여부도 담겨있음)
 		SmsResponseDTO response = messageService.sendMessage(messageDTO);
 		
 		if(response.getStatusName().equals("success") == false) {
 			return ResultData.from("F-1", "쿠폰번호 문자 전송에 실패하였습니다.");
 		}
 		
-		couponService.doGiveCoupon(deadLine, studentId, couponPassword);
+		// 문자 성공적으로 보냈으면 쿠폰 테이블에 insert 하기
+		// 한번 쿠폰 받으면 다시 못 받음.
+		couponService.doGiveCoupon(deadLine, member.getId(), couponPassword);
 		
 		return ResultData.from("S-1", Util.f("쿠폰번호를 %s 학생에게 문자로 보냈습니다.", member.getName()));
 	}

@@ -34,7 +34,7 @@
             crossorigin="anonymous"></script>
 
     <title>My Spring WebSocket Chatting</title>
-    <link rel="stylesheet" href="/css/chatroom/main.css"/> 
+    <link rel="stylesheet" href="/css/chat/chatroom.css"/> 
    </head>
 <body>
 <noscript>
@@ -91,6 +91,6 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-<script src="/js/chatroom/socket.js"></script>
+<script src="/js/chat/socket.js"></script>
 </body>
 </html>

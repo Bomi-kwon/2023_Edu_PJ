@@ -5,11 +5,12 @@
 
 <%@ include file="../common/head.jsp" %>
 
-<!-- 결제창 연동 라이브러리 추가 -->
+<!-- 결제창 연동 라이브러리(아임포트) 추가 -->
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
 
 <script>
 	var IMP = window.IMP; 
+	// 가맹점 식별코드 (내 식별코드)
 	IMP.init("imp71714386"); 
   
     var today = new Date();   
@@ -20,20 +21,23 @@
     var makeMerchantUid = hours +  minutes + seconds + milliseconds;
     var paymentComplete;
 	
+    // 원하는 PG사로 KG이니시스를 선택
+    // 테스트모드를 on 해야 결제가 자정 전에 취소된다.
 	function requestPay() {
 	    IMP.request_pay({
 	      pg: "kcp.INIBillTst",
 	      pay_method: "card",
-	      merchant_uid: "IMP" + makeMerchantUid,   // 주문번호
-	      name: "인터넷강의 수강신청",
+	      merchant_uid: "IMP" + makeMerchantUid,   // 주문번호 안 겹치게 시간 이용
+	      name: "스폰지에듀 인강 수강신청",
 	      amount: 500,                         // 숫자 타입
 	      buyer_email: "rnjsqhal51@naver.com",
 	      buyer_name: "권보미",
 	      buyer_tel: "010-9748-0218",
 	      buyer_addr: "대전광역시 서구 둔산동",
 	      buyer_postcode: "35205"
-	    }, function (rsp) { // callback
-	      //rsp.imp_uid 값으로 결제 단건조회 API를 호출하여 결제결과를 판단합니다.
+	    }, function (rsp) { 
+	    	// callback
+	        // rsp.imp_uid 값으로 결제 단건조회 API를 호출하여 결제결과를 판단합니다.
 	    	  console.log(rsp);
 	      if(rsp.success) {
 	    	  alert('결제가 완료되었습니다.');
@@ -43,20 +47,19 @@
 	    	  paymentComplete = false;
 	      }
 	      
+	      // 결제 끝났으니 수강신청 해줘야함
 	      $.get('doRegisterAfterPayment', {
 				classId : ${group.id},
 				paymentComplete : paymentComplete
 			}, function(data) {
+				// 수강신청 성공 여부 알려준뒤 메인으로 페이지 이동
 				alert(data);
 				location.replace('/');
+				// 리턴타입 resultData 아니고 String이라서 형식 text로 바꿔야됨
 			}, 'text');
 	      
 	    });
 	  }
-	
-		
-	
-		
 	
 	
 </script>
@@ -242,6 +245,7 @@
 		
 		var couponPWVal = $('#CouponPassworkChktable').val();
 		
+		// 쿠폰번호 잘 입력했는지 확인하는 ajax 함수
 		$.get('verifyPassword', {
 			couponPassword : couponPWVal
 		}, function(data) {

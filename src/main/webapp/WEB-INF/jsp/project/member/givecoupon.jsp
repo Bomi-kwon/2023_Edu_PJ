@@ -9,6 +9,7 @@
 	
 	let deadLineVal;
 	
+	// 학생 이름 검색하기
 	function getStudentsByNameKeyWord() {
 		
 		$('#studentlisthavingkeyword').html(``);
@@ -42,6 +43,7 @@
 		
 	}
 	
+	// 쿠폰주는 함수. 유효기간과 어떤 학생인지가 인자로 넘어가야함.
 	function selectstudent(id) {
 		
 		console.log(deadLineVal);

@@ -47,7 +47,13 @@ public class ArticleService {
 		articleRepository.addYouTubeLink(id, youTubeLink);
 	}
 
+	/**
+	 * 체크박스로 게시물 여러개 한꺼번에 삭제
+	 * @param articleIds 삭제할 게시물 번호 모은 리스트
+	 */
 	public void deleteArticles(List<Integer> articleIds) {
+		
+		// 리스트 돌면서 번호 하나씩 꺼내서 삭제해주기!!
 		for (int articleId : articleIds) {
 			Article article = getArticleById(articleId);
 			
