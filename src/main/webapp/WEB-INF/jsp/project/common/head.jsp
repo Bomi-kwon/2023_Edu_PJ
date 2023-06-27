@@ -99,6 +99,7 @@
 	        <ul>
 	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/home/timer"><span>모의고사 시계</span></a></li>
 	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/list?boardId=5"><span>공부 인증</span></a></li>
+	          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/home/voice"><span>음성인식필기</span></a></li>
 	        </ul>
 	      </li>
 	      <li>
@@ -147,6 +148,7 @@
         <ul>
           <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/home/timer"><span>모의고사 시계</span></a></li>
           <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/article/list?boardId=5"><span>공부 인증</span></a></li>
+          <li class="hover:underline"><a class="h-full px-3 flex items-center" href="/project/home/voice"><span>음성인식필기</span></a></li>
         </ul>
       </li>
     </ul>

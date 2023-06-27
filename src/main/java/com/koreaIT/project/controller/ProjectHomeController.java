@@ -39,8 +39,6 @@ public class ProjectHomeController {
 	private MemberService memberService;
 	private AttendanceService attendanceService;
 	
-	
-
 	@Autowired
 	public ProjectHomeController(FileService fileService, GroupService groupService, 
 			MemberService memberService, AttendanceService attendanceService) {
@@ -82,6 +80,14 @@ public class ProjectHomeController {
 	@RequestMapping("/project/home/setqrurl")
 	public String setqrurl() {
 		return "project/home/setqrurl";
+	}
+	
+	
+	// 음성 인식 필기 기능
+	
+	@RequestMapping("/project/home/voice")
+	public String voice() {
+		return "project/home/voice";
 	}
 	
 	
@@ -172,8 +178,6 @@ public class ProjectHomeController {
 		
 		return Util.jsReplace(Util.f("%s 학생 출석체크 완료되었습니다.", name), "/");
 	}
-	
-	
 	
 	
 	/**
