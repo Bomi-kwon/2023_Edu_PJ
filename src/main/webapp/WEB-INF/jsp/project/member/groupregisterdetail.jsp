@@ -166,23 +166,23 @@
 
 
  <!-- 쿠폰번호 입력 모달창 -->
-<div class="CouponPassworkChkmodal-bg"></div>
-<div class="CouponPassworkChkmodal">
+<div class="CouponPasswordChkmodal-bg"></div>
+<div class="CouponPasswordChkmodal">
 	<h1>쿠폰번호 입력</h1>
 	<a class="close-btn"><i class="fa-regular fa-circle-xmark"></i></a>
  	<div class="flex">
-	 	<input class="input input-bordered input-success w-full" type="text" name="" id="CouponPassworkChktable"/>
-	 	<button class="CouponPassworkChkmodal-btn btn btn-success">입력</button>
+	 	<input class="input input-bordered input-success w-full" type="text" name="" id="CouponPasswordChktable"/>
+	 	<button class="CouponPasswordChkmodal-btn btn btn-success">입력</button>
  	</div>
 	
 </div>
 
 <style>
 	/* 쿠폰번호 입력 모달창 커스텀 */
-.CouponPassworkChkmodal-bg, .CouponPassworkChkmodal {
+.CouponPasswordChkmodal-bg, .CouponPasswordChkmodal {
 	display: none;
 }
-.CouponPassworkChkmodal-bg {
+.CouponPasswordChkmodal-bg {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -191,7 +191,7 @@
 	background-color: rgba(0,0,0,0.5);
 	z-index: 10;
 }
-.CouponPassworkChkmodal {
+.CouponPasswordChkmodal {
 	position: absolute;
 	height: 200px;
 	width: 500px;
@@ -203,7 +203,7 @@
 	z-index: 15;
 	border: 2px solid black;
 }
-.CouponPassworkChkmodal > h1 {
+.CouponPasswordChkmodal > h1 {
 	font-size: 1.5rem;
 	margin-bottom: 30px;
 }
@@ -219,19 +219,19 @@
 	
 <script>
 	$('.close-btn').click(function(){
-		$('.CouponPassworkChkmodal-bg, .CouponPassworkChkmodal').hide();
-		$('#CouponPassworkChktable').html("");
+		$('.CouponPasswordChkmodal-bg, .CouponPasswordChkmodal').hide();
+		$('#CouponPasswordChktable').html("");
 	});
 	
-	$('.CouponPassworkChkmodal-bg').click(function(){
-		$('.CouponPassworkChkmodal-bg, .CouponPassworkChkmodal').hide();
-		$('#CouponPassworkChktable').html("");
+	$('.CouponPasswordChkmodal-bg').click(function(){
+		$('.CouponPasswordChkmodal-bg, .CouponPasswordChkmodal').hide();
+		$('#CouponPasswordChktable').html("");
 	});
 	
 	$('.couponChk').change(function() {
 		
 		if($('.couponChk').is(':checked')) {
-			$('.CouponPassworkChkmodal-bg, .CouponPassworkChkmodal').show();
+			$('.CouponPasswordChkmodal-bg, .CouponPasswordChkmodal').show();
 		} else {
 			$('.couponprice').html('0원');
 			$('.totalprice').html('200,000원');
@@ -241,9 +241,9 @@
 		
 	})
 	
-	$('.CouponPassworkChkmodal-btn').click(function() {
+	$('.CouponPasswordChkmodal-btn').click(function() {
 		
-		var couponPWVal = $('#CouponPassworkChktable').val();
+		var couponPWVal = $('#CouponPasswordChktable').val();
 		
 		// 쿠폰번호 잘 입력했는지 확인하는 ajax 함수
 		$.get('verifyPassword', {
@@ -252,8 +252,8 @@
 			console.log(data);
 			
 			if(data.success) {
-				$('.CouponPassworkChkmodal-bg, .CouponPassworkChkmodal').hide();
-				$('#CouponPassworkChktable').val("");
+				$('.CouponPasswordChkmodal-bg, .CouponPasswordChkmodal').hide();
+				$('#CouponPasswordChktable').val("");
 				$('.couponprice').html('200,000원');
 				$('.totalprice').html('0원');
 				$('.payBtn').hide();

@@ -156,6 +156,18 @@ CREATE TABLE reply (
 	replybody TEXT NOT NULL
 );
 
+# visitHistory 테이블 생성
+# truncate table visitHistory;
+# drop table visitHistory;
+
+#visitHistory 테이블 생성
+CREATE TABLE visitHistory (
+	id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	regDate DATETIME NOT NULL,
+	memberId INT UNSIGNED NOT NULL,
+	articleId INT UNSIGNED NOT NULL COMMENT '게시물 번호'
+);
+
 # 테이블 구조 확인
 DESC article;
 DESC `member`;
@@ -168,6 +180,7 @@ DESC coupon;
 DESC attendance;
 DESC reactionPoint;
 DESC reply;
+DESC visitHistory;
 
 # article 테스트 데이터
 INSERT INTO article
@@ -471,13 +484,9 @@ WHERE studentId = 16;
 SELECT *
 FROM attendance;
 
+SELECT *
+FROM reactionPoint;
 
-SELECT R.*, M.name AS writerName, F.id AS fileId
-		FROM reply AS R
-		INNER JOIN `member` AS M
-		ON R.replymemberId = M.id
-		LEFT JOIN `file` AS F
-		ON M.id = F.relId
-		AND F.relTypecode = 'profile'
-		WHERE R.relTypecode = 'article'
-		AND R.relId = 74
+SELECT *
+FROM visitHistory;
+

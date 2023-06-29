@@ -32,7 +32,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/Edu_PJ?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull
     username: root
-    password: 
+    password: root
 mybatis:
   type-aliases-package: com.koreaIT.project.vo
 custom:

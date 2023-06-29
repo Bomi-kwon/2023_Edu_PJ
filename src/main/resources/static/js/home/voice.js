@@ -6,23 +6,22 @@ const recognition = new SpeechRecognition();
 // true면 음절을 연속적으로 인식하나 false면 한 음절만 기록함
 recognition.interimResults = true;
 
-// 값이 없으면 HTML의 <html lang="en">을 참고합니다. ko-KR, en-US
+// 값이 없으면 HTML의 <html lang="~~">을 참고함. 한국어 : ko-KR, 영어 : en-US
 recognition.lang = "ko-KR";
 
 // true means continuous, and false means not continuous (single result each time.)
-// true면 음성 인식이 안 끝나고 계속 됩니다.
+// true면 음성 인식이 안 끝나고 계속 됨.
 recognition.continuous = true;
 
-// 숫자가 작을수록 발음대로 적고, 크면 문장의 적합도에 따라 알맞은 단어로 대체합니다.
-// maxAlternatives가 크면 이상한 단어도 문장에 적합하게 알아서 수정합니다.
+// 숫자가 작을수록 발음대로 적고, 크면 문장의 적합도에 따라 알맞은 단어로 대체함.
+// maxAlternatives가 크면 이상한 단어도 문장에 적합하게 알아서 수정함.
 recognition.maxAlternatives = 10000;
 
-// 말을 시작하면 paragraph를 만들고 말을 멈추면 다시 paragraph를 끝낸다.
+// 말을 시작하면 paragraph를 만들고 말을 멈추면 다시 paragraph를 끝냄.
 let p = document.createElement("p");
 p.classList.add("para");
 let words = document.querySelector(".words");
 words.appendChild(p);
-
 
 let mic = document.querySelector("#circlein");
 let speechToText = "";
@@ -46,21 +45,20 @@ recognition.addEventListener("result", (e) => {
     }
   }
   
+  // 음성인식이 끝나면 마이크 배경 없애기
   recognition.addEventListener('soundend', () => {
     mic.style.backgroundColor = null;
   });
   
-  
   document.querySelector(".para").innerHTML = speechToText + interimTranscript;
-  
   
 });
 
-// 음성인식이 끝나면 자동으로 재시작합니다.
-// 이걸 막아두면 음성인식이 끝나고 마이크가 알아서 꺼집니다.
+// 음성인식이 끝나면 자동으로 재시작한다.
+// 이걸 막아두면 음성인식이 끝나면 마이크가 알아서 꺼진다.
 // recognition.addEventListener("end", recognition.start);
 
-// 음성 인식 시작
+// 마이크 버튼을 누르면 음성 인식 시작
 mic.addEventListener("click", () => {
   recognition.start();
   mic.style.backgroundColor = "#6BD6E1"
@@ -73,9 +71,10 @@ var content = $('.para').html();
 
 navigator.clipboard.writeText(content)
     .then(() => {
-    alert("Text copied to clipboard...");
+    alert("필기 내용이 복사되었습니다.");
 })
     .catch(err => {
+	alert('필기 내용 복사에 실패했습니다.');
     console.log('Something went wrong', err);
 })
 
