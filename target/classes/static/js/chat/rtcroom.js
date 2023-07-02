@@ -52,8 +52,8 @@ function start() {
     socket.onmessage = function(msg) {
         let message = JSON.parse(msg.data);
         switch (message.type) {
-
             case "offer":
+			    // 두번째 참여자 입장하면 바로 OFFER signal
                 console.log('Signal OFFER received');
                 handleOfferMessage(message);
                 break;
@@ -64,6 +64,7 @@ function start() {
                 break;
 
             case "ice":
+				// OFFER signal 관련 함수 다 실행되기 전에 ICE signal
                 console.log('Signal ICE Candidate received');
                 handleNewICECandidateMessage(message);
                 break;
@@ -127,11 +128,20 @@ function start() {
     }
 
 
-    // add an event listener to get to know when a connection is open
-    // 웹 소켓 연결 되었을 때 (open 상태)일때 이벤트 처리
+    /**
+	 * add an event listener to get to know when a connection is open
+	 * 웹 소켓 연결 되었을 때 (open 상태)일때 이벤트 처리
+	 * 소켓 열리자마자 가장 먼저 실행되는 함수!!
+	 * 웹 콘솔창에 두번째로 찍히는 로그 (첫번째꺼는 화면 공유 열린거라
+	 * 사실상 이게 가장 처음 실행되는 것임)
+	 */
     socket.onopen = function() {
         console.log('WebSocket connection opened to Room: #' + localRoom);
-        // send a message to the server to join selected room with Web Socket
+        /**
+		 * send a message to the server to join selected room with Web Socket
+		 * 여기서 방에 들어가고 나서 웹소켓이 서버한테 join이라고
+		 * 메시지 보내는 거였음!!! 이제 signalhandler가 웹소켓 통신 처리
+		 */
         sendToServer({
             from: localUserName,
             type: 'join',
@@ -160,6 +170,7 @@ window.addEventListener('unload', stop);
 window.onhashchange = function(){
     stop();
 }
+
 
 function stop() {
     // send a message to the server to remove this client from the room clients list
@@ -246,13 +257,18 @@ function handleErrorMessage(message) {
     console.error(message);
 }
 
-// use JSON format to send WebSocket message
+/**
+ * JSON 포맷을 사용해서 WebSocket 메시지를
+ * 서버로 보내기
+ */
 function sendToServer(msg) {
     let msgJSON = JSON.stringify(msg);
     socket.send(msgJSON);
 }
 
-// initialize media stream
+/**
+ * media stream(오디오, 비디오) 시작
+ */
 function getMedia(constraints) {
     if (localStream) {
         localStream.getTracks().forEach(track => {
@@ -270,7 +286,7 @@ function handlePeerConnection(message) {
 	
     createPeerConnection();
 
-	// vedio와 audio
+	// media stream(vedio와 audio) 생성
     getMedia(mediaConstraints);
 
     if (message.data === "true") {
@@ -278,6 +294,9 @@ function handlePeerConnection(message) {
     }
 }
 
+/**
+ * 상대방 peer와 연결
+ */
 function createPeerConnection() {
     myPeerConnection = new RTCPeerConnection(peerConnectionConfig);
 
@@ -293,8 +312,9 @@ function createPeerConnection() {
     // myPeerConnection.onsignalingstatechange = handleSignalingStateChangeEvent;
 }
 
+
 /** peerConnection 과 관련된 이벤트 처리
- * 다른 peer 와 연결되었을 때 remote_video show 상태로로, 끊졌을때는 remote_video 를 hide 상태로 변경
+ * 다른 peer 와 연결되었을 때는 remote_video show 상태로, 끊어졌을때는 remote_video 를 hide 상태로 변경
  * **/
 function handleICEConnectionStateChangeEvent(){
     let status = myPeerConnection.iceConnectionState;
@@ -309,7 +329,10 @@ function handleICEConnectionStateChangeEvent(){
 }
 
 
-// add MediaStream to local video element and to the Peer
+/**
+ * 내 local media stream을
+ * 나와 상대방에게 양방향 전송
+ */
 function getLocalMediaStream(mediaStream) {
     localStream = mediaStream;
     localVideo.srcObject = mediaStream;
@@ -337,7 +360,9 @@ function handleGetUserMediaError(error) {
     stop();
 }
 
-// send ICE candidate to the peer through the server
+/**
+ * 최적의 ICE candidate(주소)를 서버를 통해 상대방에게 보냄
+ */
 function handleICECandidateEvent(event) {
     if (event.candidate) {
         sendToServer({
@@ -379,18 +404,39 @@ function handleNegotiationNeededEvent() {
         });
 }
 
+
+// 두번째 참여자 막 입장했을 때
 function handleOfferMessage(message) {
     console.log('Accepting Offer Message');
     console.log(message);
     let desc = new RTCSessionDescription(message.sdp);
-    //TODO test this
+
     if (desc != null && message.sdp != null) {
         console.log('RTC Signalling state: ' + myPeerConnection.signalingState);
+        
+        /**
+		 * 이 아래 함수 실행 전에 signal ICE 보냄
+		 * 각 peer가 ICE 후보중 최적의 경로를 협상
+		 * 
+		 * SDP(Session Description Protocol)란?
+		 * WebRTC에서 스트리밍 미디어의 해상도나 형식, 코덱 등의 멀티미디어 컨텐츠의 초기 인수를 설명하기 위한 프로토콜
+		 * 비디오의 해상도, 오디오 전송 또는 수신 여부 등을 송수신 할 수 있음
+		 * 
+		 * 어떤 peer가 media stream 교환하자고 제안하면 상대방으로부터 수신 응답을 기다리고
+		 * 응답을 받으면 최적의 ICE를 선정한 뒤 가장 지연 시간이 적고 안정적인 경로를 찾는다
+		 * 이 과정이 끝나면 peer간 P2P 연결이 완전하게 설정되고 활성화됨.
+		 * 각 peer에 의해 local media stream의 end point가 생성되고
+		 * webscket을 사용하여 양방향으로 전송한다.
+		 */
         myPeerConnection.setRemoteDescription(desc).then(function () {
+        	
+        	// 상대방(두번째 peer)의 local media stream 설정
             console.log("Set up local media stream");
             return navigator.mediaDevices.getUserMedia(mediaConstraints);
         })
             .then(function (stream) {
+				
+	        	// 상대방에게 그 사람 본인의 local media stream 띄우기
                 console.log("-- Local video stream obtained");
                 localStream = stream;
                 try {
@@ -398,26 +444,26 @@ function handleOfferMessage(message) {
                 } catch (error) {
                     localVideo.src = window.URL.createObjectURL(stream);
                 }
-
+                
+				// 우리 서로 media stream 교환하자~! 하고 요청
                 console.log("-- Adding stream to the RTCPeerConnection");
                 localStream.getTracks().forEach(track => myPeerConnection.addTrack(track, localStream));
             })
             .then(function () {
+				
+				// 상대방 peer가 그래 좋아!라고 응답
                 console.log("-- Creating answer");
-                // Now that we've successfully set the remote description, we need to
-                // start our stream up locally then create an SDP answer. This SDP
-                // data describes the local end of our call, including the codec
-                // information, options agreed upon, and so forth.
                 return myPeerConnection.createAnswer();
             })
             .then(function (answer) {
+				
+				// SDP(media와 관련된 초기 정보) 세팅
                 console.log("-- Setting local description after creating answer");
-                // We now have our answer, so establish that as the local description.
-                // This actually configures our end of the call to match the settings
-                // specified in the SDP.
                 return myPeerConnection.setLocalDescription(answer);
             })
             .then(function () {
+				
+				// 상대방 peer에게 내 media streem 전달 (양방향 통신 가능)
                 console.log("Sending answer packet back to other peer");
                 sendToServer({
                     from: localUserName,
@@ -441,26 +487,57 @@ function handleAnswerMessage(message) {
     myPeerConnection.setRemoteDescription(message.sdp).catch(handleErrorMessage);
 }
 
+
+/**
+ * 두번째 참여자 입장하면 OFFER -> ICE 순으로 signal 보냄
+ * ICE signal에서 이어지는 함수
+ * 
+ * ICE란?
+ * 
+ * ICE는 Client가 통신 가능한 모든 주소를 식별하는 것.
+ * 클라이언트가 STUN 메시지를 TURN 서버로 요청하고 응답받으면서 3가지 주소 확인 가능
+ * 1. Relayed Address : TURN 서버가 패킷 릴레이를 위해 할당하는 주소
+ * 2. Server Reflexive Address : NAT 가 매핑한 클라이언트의 공인망(Public IP, Port)
+ * 3. Local Address : 클라이언트의 사설주소(Private IP, Port)
+ * 
+ * 여기서 Candidate란?
+ * 
+ * IP와 포트의 조합으로 표시된 주소. 이제 이 확보된 것을 통해 연결을 한다.
+ * Direct Connection : Host 같의 직접적인 미디어 송수신
+ * Server Reflexive Connection : Server Reflexive Candidate를 이용한 미디어 송수신
+ * TURN Relay Connection : Relay Candidate를 이용한 미디어 송수신
+ * 이렇게 확보된 3개의 주소들의 우선순위를 정하여 SDP내에 포함시켜 전송한다.
+ * Connection 체크 후 Connection이 완료되면 RTP 및 RTCP 패킷을 전송하여 통화가 가능하게 된다.
+ */
 function handleNewICECandidateMessage(message) {
     let candidate = new RTCIceCandidate(message.candidate);
+    
+    // 웹사이트 관리자모드 콘솔창에 세가지 주소들이 전부 기록된다.
+    // 연결을 끊지 않는 한
+    // 통신할 수 있는 주소를 계속해서 찾아냄 (최적의 주소로 통신하려고)
     console.log("Adding received ICE candidate: " + JSON.stringify(candidate));
     myPeerConnection.addIceCandidate(candidate).catch(handleErrorMessage);
 }
 
-/*  화면 공유 */
+/**
+ * 화면 공유
+ */
 const screenHandler = new ScreenHandler();
 let shareView = null;
 
 /**
  * ScreenHandler
  * @constructor
+ * 화면 공유기능 관리 함수
  */
 function ScreenHandler() {
     // let localStream = null;
 
+	// 웹콘솔창에 가장 먼저 찍히는 로그
     log('Loaded ScreenHandler', arguments);
 
     // REF https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints#Properties_of_shared_screen_tracks
+    // 나 자신의 비디오 설정
     const constraints = {
         audio: true,
         video: {
@@ -471,7 +548,7 @@ function ScreenHandler() {
     };
 
     /**
-     * 스크린캡쳐 API를 브라우저 호환성 맞게 리턴합니다.
+     * 스크린캡쳐 API를 브라우저 호환성 맞게 리턴.
      * navigator.mediaDevices.getDisplayMedia 호출 (크롬 72 이상 지원)
      * navigator.getDisplayMedia 호출 (크롬 70 ~ 71 실험실기능 활성화 or Edge)
      */
@@ -484,7 +561,7 @@ function ScreenHandler() {
     }
 
     /**
-     * 스크린캡쳐 API를 호출합니다.
+     * 스크린캡쳐 API를 호출.
      * @returns shareView
      */
     async function start() {
@@ -499,7 +576,7 @@ function ScreenHandler() {
     }
 
     /**
-     * 스트림의 트렉을 stop()시켜 스트림이 전송을 중지합니다.
+     * 스트림의 트렉을 stop()시켜 스트림이 전송을 중지.
      */
     function end() {
 

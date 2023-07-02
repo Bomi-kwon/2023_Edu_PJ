@@ -13,11 +13,11 @@ recognition.lang = "ko-KR";
 // true면 음성 인식이 안 끝나고 계속 됨.
 recognition.continuous = true;
 
-// 숫자가 작을수록 발음대로 적고, 크면 문장의 적합도에 따라 알맞은 단어로 대체함.
-// maxAlternatives가 크면 이상한 단어도 문장에 적합하게 알아서 수정함.
+// 숫자가 작으면 발음대로 적고, 크면 문장의 적합도에 따라 알맞은 단어로 대체함.
+// 즉 maxAlternatives가 크면 이상한 단어도 문장에 적합하게 알아서 수정함.
 recognition.maxAlternatives = 10000;
 
-// 말을 시작하면 paragraph를 만들고 말을 멈추면 다시 paragraph를 끝냄.
+// 말을 시작하면 paragraph(class가 "para"인 p태그)를 만들고 말을 멈추면 paragraph를 끝냄.
 let p = document.createElement("p");
 p.classList.add("para");
 let words = document.querySelector(".words");

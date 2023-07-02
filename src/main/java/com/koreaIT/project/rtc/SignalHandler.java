@@ -26,7 +26,7 @@ public class SignalHandler extends TextWebSocketHandler{
 	// WebSocketSession : 연결될 때 생기는 연결정보를 담고있는 객체
     // => 핸들러에서 웹소켓 통신에대한 처리를 하기위해 이 세션들을 자바의 컬렉션으로 관리하는 경우가 많다.
     // 연결이 맺어질때 컬렉션에 WebSocketSession 을 추가하고, 연결이 끊어질때 제거하도록 구현을 해놓았다.
-    // 이렇게 세션을 관리하면, 모든 클라이언트들에게 메시지를 보내는 것과 같은 처리를 할 수 있게됩니다.
+    // 이렇게 세션을 관리하면, 모든 클라이언트들에게 메시지를 보내는 것과 같은 처리를 할 수 있게된다.
 
     private final RtcChatService rtcChatService;
     private final ChatServiceMain chatServiceMain;

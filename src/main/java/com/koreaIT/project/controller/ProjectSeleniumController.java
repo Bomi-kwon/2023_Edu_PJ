@@ -74,7 +74,6 @@ public class ProjectSeleniumController {
 
 		Thread.sleep(1000);
 		
-		
 		// iframe 태그에 갇혀있는 요소들 데려오려면 거기로 switch 해줘야함!!
 		driver.switchTo().frame(driver.findElement(By.cssSelector("iframe#cafe_main")));
 		
