@@ -168,6 +168,20 @@ CREATE TABLE visitHistory (
 	articleId INT UNSIGNED NOT NULL COMMENT '게시물 번호'
 );
 
+# notification 테이블 생성
+# truncate table notification;
+# drop table notification;
+
+#notification 테이블 생성
+CREATE TABLE notification (
+	id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	regDate DATETIME NOT NULL,
+	title VARCHAR(100) NOT NULL,
+	`body` TEXT NOT NULL,
+	link TEXT,
+	checked TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '알림확인여부 (확인 전 = 0, 확인 후 = 1)'
+);
+
 # 테이블 구조 확인
 DESC article;
 DESC `member`;
@@ -181,6 +195,7 @@ DESC attendance;
 DESC reactionPoint;
 DESC reply;
 DESC visitHistory;
+DESC notification;
 
 # article 테스트 데이터
 INSERT INTO article
@@ -447,12 +462,7 @@ FROM `member`;
 
 UPDATE `member`
 SET classId = 0
-WHERE id = 21
-
-SELECT *
-FROM `member`
-WHERE 
-AND `name` LIKE '%스%'
+WHERE id = 21;
 
 SELECT *
 FROM board;
@@ -489,4 +499,7 @@ FROM reactionPoint;
 
 SELECT *
 FROM visitHistory;
+
+SELECT *
+FROM notification;
 

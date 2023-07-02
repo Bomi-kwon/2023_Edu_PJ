@@ -9,6 +9,7 @@
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
 
 <script>
+	// 신용카드 결제창
 	var IMP = window.IMP; 
 	// 가맹점 식별코드 (내 식별코드)
 	IMP.init("imp71714386"); 
@@ -59,8 +60,8 @@
 			}, 'text');
 	      
 	    });
-	  }
-	
+	  };
+    
 	
 </script>
 
@@ -157,7 +158,7 @@
 		
 		
 		<div class="flex justify-end">
-			<a class="btn btn-success mr-2 payBtn" onclick="requestPay()">결제하기</a>
+			<a class="PaySelectmodal-btn btn btn-success mr-2">결제하기</a>
 			<a style="display:none;" class="btn btn-success mr-2 registerBtn" href="doRegister?classId=${group.id }">수강신청하기</a>
 			<a href="list" class="btn btn-success" >목록</a>
 		</div>
@@ -177,12 +178,25 @@
 	
 </div>
 
+
+ <!-- 결제형식 고르기 모달창 -->
+<div class="PaySelectmodal-bg"></div>
+<div class="PaySelectmodal">
+	<h1>어떤 방식으로 결제할까요?</h1>
+	<a class="PaySelectmodal-close-btn"><i class="fa-regular fa-circle-xmark"></i></a>
+	<div class="flex">
+		<a class="btn btn-success mr-2" onclick="requestPay();">신용카드 결제</a>
+		<a class="cursor-pointer" onclick="kakaoPay();"><img class="" src="/resource/images/kakaopay.png"/></a>
+	</div>
+</div>
+
+
 <style>
 	/* 쿠폰번호 입력 모달창 커스텀 */
-.CouponPasswordChkmodal-bg, .CouponPasswordChkmodal {
+.CouponPasswordChkmodal-bg, .CouponPasswordChkmodal, .PaySelectmodal, .PaySelectmodal-bg {
 	display: none;
 }
-.CouponPasswordChkmodal-bg {
+.CouponPasswordChkmodal-bg, .PaySelectmodal-bg {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -191,7 +205,7 @@
 	background-color: rgba(0,0,0,0.5);
 	z-index: 10;
 }
-.CouponPasswordChkmodal {
+.CouponPasswordChkmodal, .PaySelectmodal {
 	position: absolute;
 	height: 200px;
 	width: 500px;
@@ -203,11 +217,11 @@
 	z-index: 15;
 	border: 2px solid black;
 }
-.CouponPasswordChkmodal > h1 {
+.CouponPasswordChkmodal > h1, .PaySelectmodal > h1 {
 	font-size: 1.5rem;
 	margin-bottom: 30px;
 }
-.close-btn {
+.close-btn, .PaySelectmodal-close-btn {
 	position: absolute;
 	top:20px;
 	right: 20px;
@@ -218,6 +232,7 @@
 	
 	
 <script>
+	// 쿠폰번호 확인 모달창
 	$('.close-btn').click(function(){
 		$('.CouponPasswordChkmodal-bg, .CouponPasswordChkmodal').hide();
 		$('#CouponPasswordChktable').html("");
@@ -267,6 +282,46 @@
 		}, 'json');
 		
 	})
+	
+	// 결제방식 선택하기 모달창
+	$('.PaySelectmodal-close-btn').click(function(){
+		$('.PaySelectmodal-bg, .PaySelectmodal').hide();
+	});
+	
+	$('.PaySelectmodal-bg').click(function(){
+		$('.PaySelectmodal-bg, .PaySelectmodal').hide();
+	});
+	
+	$('.PaySelectmodal-btn').click(function(){
+		$('.PaySelectmodal-bg, .PaySelectmodal').show();
+	});
+	
+	
+	// 카카오페이 결제
+
+	function kakaoPay() {
+		$.ajax({
+			url:"kakaopay",
+			data:{
+				classId:${group.id}
+			},
+			dataType:"json"
+		}).done(function(resp){
+			if(resp.status === 500){
+				alert("카카오페이결제를 실패하였습니다.")
+			} else{
+				 // alert(resp.tid); //결제 고유 번호
+				var box = resp.next_redirect_pc_url;
+				location.href = box;
+			}
+		
+		}).fail(function(error){
+			alert(JSON.stringify(error));
+		}); 
+		
+		
+	};
+	
 </script>
 	
 	

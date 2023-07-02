@@ -11,7 +11,7 @@
 				
 				<!-- 카카오 api 불러오기 -->
 				<!-- 맵 생성후 https 주소도 추가해줌 -->
-				<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=36ad0dce027e7f00d0cf41818b68dc45"></script>
+				<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=3cd0bf471b4db0d6b9dbe54cae524038"></script>
 				
 				<script>
 				var mapContainer = document.getElementById('map'), // 지도를 표시할 div 

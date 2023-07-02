@@ -23,11 +23,9 @@
 
 </head>
 
-<body>
-
 <style>
 	body {
-	height: 100%;
+	  height: 100%;
 	  background: linear-gradient(90deg, rgba(141,194,111,1) 0%, rgba(118,184,82,1) 50%);
 	  background-size: cover;
 	  background-position: center;
@@ -36,6 +34,8 @@
 		height: 100%;
 	}
 </style>
+<body>
+
 
 <section class="login-page">
 	<div class="form">
@@ -43,11 +43,15 @@
 				<input class="" type="text" name="loginID" placeholder="아이디를 입력해주세요." required/>
 				<input class="" type="password" name="loginPW" placeholder="비밀번호를 입력해주세요." required/>
 				<button class="">로그인</button>
+				
 				<p class="message">아직 회원가입을 안 했나요? <a href="memberjoin">회원가입하기</a></p>
 				<p class="message">아이디/비밀번호를 잊었나요? <a href="findLoginID">아이디/비밀번호 찾기</a></p>
 			</form>
 		</div>
 </section>
+
+
+
 	
 	
 	
