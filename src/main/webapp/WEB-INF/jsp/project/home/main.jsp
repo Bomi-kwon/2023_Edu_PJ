@@ -5,21 +5,38 @@
 <%@ include file="../common/head.jsp" %>
 
 	<section class="mainphoto-bg">
-		<div class="container mx-auto px-3 h-full">
-			<img class="mainphoto" src="/resource/images/mainphoto.png"/>
+		<div class="container main-container mx-auto px-3 h-full">
+			<img class="mainphoto" src="/resource/images/mainphoto2.png"/>
 			<div class="maintextbox">
-				<div><span class="maintext-1">수학은 암기 과목이 아니다!</span></div>
-				<div class="flex">
-					<span class="maintext-2 mr-5">순도 100%</span>
-					<span class="maintext-3">원리강의!</span>
+				<div><span class="maintext-1 text-gray-200">자신감을 키우는 수학 학습,</span></div>
+				<div class="">
+					<div>
+						<span class="maintext-2 mr-1">스폰지 에듀</span>
+						<span class="maintext-3 text-gray-200">에서</span>
+					</div>
+					<div class="maintext-3 text-gray-200">시작하세요!</div>
 				</div>
 			</div>
-			<div class="mainiconbox flex justify-around">
-				<div class="mainicon-1"><img class="mb-1" src="/resource/images/education.png"/><span>각 단원별 원론을<br />심도있게 공부한다!</span></div>
-				<div class="mainicon-2"><img class="mb-1" src="/resource/images/think.png"/><span>오직 개념만으로<br />모든 문제를 푼다!</span></div>
-				<div class="mainicon-3"><img class="mb-1" src="/resource/images/logarithm.png"/><span>단순 암기식 문제풀이<br />철저히 배제!</span></div>
-				<div class="mainicon-4"><img class="mb-1" src="/resource/images/teaching.png"/><span>스스로 풀도록하는<br />1:1 첨삭 시스템!</span></div>
+			
+		</div>
+	</section>
+	
+	<section class="mainphoto-bg-2">
+		<div class="container main-container-2 mx-auto px-3 h-full">
+			<div class="mainiconbox flex justify-between">
+				<div class="mainicon-1"><img class="" src="/resource/images/videoclass.jpg"/></div>
+				<div class="mainicon-2"><img class="" src="/resource/images/consulting.jpg"/></div>
+				<div class="mainicon-3"><img class="" src="/resource/images/selfstudy.jpg"/></div>
 			</div>
+		</div>
+	</section>
+	
+	<section class="mainphoto-bg-3">
+		<div class="main-container-3 container mx-auto px-3 h-full">
+			<div class="mainiconbox-3">
+				<img class="" src="/resource/images/mathstudying.jpg"/>
+			</div>
+			<div class="mainiconbox-3-text">수학의 세계로, 함께 성장하세요.</div>
 		</div>
 	</section>
 

@@ -162,49 +162,141 @@ html.active .menu-box-3 > ul > li > ul > li > a {
   letter-spacing:-1px;
 }
 
-/*메인페이지 홍보사진 커스텀*/
+/*맨 위 메인페이지 홍보사진 커스텀*/
 .mainphoto-bg {
 	width: 100%;
 	height: 612px;
-	background-color: rgba(15, 82, 55, 0.9);
+	background-color: black;
 	position: relative;
 	top:-12px;
 }
-.mainphoto-bg .mainphoto {
+.main-container {
+	position: relative;
+}
+.mainphoto {
 	position: absolute;
+	width: 900px;
+	right: -5%;
 	bottom: 0;
 }
 .maintextbox {
 	position: absolute;
-	top: 10%;
-	left: 35%;
+	top: 60px;
+	left: 5%;
 }
 .maintext-1 {
 	font-size: 4rem;
-	color:white;
 }
 .maintext-2 {
-	font-size: 7rem;
-	color: gold;
+	font-size: 8rem;
+	color: #00664F;
 }
 .maintext-3 {
-	font-size: 7rem;
-	color:white;
+	font-size: 6rem;
+}
+
+
+/*두번째 메인페이지 사진 커스텀*/
+.mainphoto-bg-2 {
+	width: 100%;
+	height: 500px;
+	background-color: #0F5237;
+	position: relative;
+	top:-12px;
+}
+.main-container-2 {
+	position: relative;
+	box-sizing: border-box;
 }
 .mainiconbox {
-	width: 50%;
-	height: 200px;
 	position: absolute;
-	top: 330px;
-	left: 35%;
+	width: 100%;
+	height: 300px;
+	top: 50%;
+	transform: translateY(-50%);
+	left: 0;
 	z-index:9;
 }
 .mainiconbox > div {
-	width: 150px;
-	height: 150px;
+	width: 480px;
 	text-align: center;
 	color: #afafaf;
+	font-size: 1.5rem;
+	overflow: hidden;
+	position: relative;
 }
+.mainiconbox > div:hover > img {
+	transform:scale(1.3);
+	transition: transform 0.5s;
+	filter: brightness(50%);
+}
+.mainiconbox > .mainicon-1:hover::after {
+	content:"언제든 비대면 수업가능";
+	width: 100%;
+	color: white;
+	font-weight: bold;
+	position: absolute;
+	top:50%;
+    left:50%;
+    transform:translatex(-50%) translatey(-50%);
+    z-index: 11;
+}
+.mainiconbox > .mainicon-2:hover::after {
+	content:"24시간 가능한 온라인 상담";
+	width: 100%;
+	color: white;
+	font-weight: bold;
+	position: absolute;
+	top:50%;
+    left:50%;
+    transform:translatex(-50%) translatey(-50%);
+    z-index: 11;
+}
+.mainiconbox > .mainicon-3:hover::after {
+	content:"자기주도적 학습 유도";
+	width: 100%;
+	color: white;
+	font-weight: bold;
+	position: absolute;
+	top:50%;
+    left:50%;
+    transform:translatex(-50%) translatey(-50%);
+    z-index: 11;
+}
+
+
+/*세번째 메인페이지 사진 커스텀*/
+.mainphoto-bg-3 {
+	width: 100%;
+	height: 900px;
+	position: relative;
+	background-color: black;
+	top:-12px;
+}
+.main-container-3 {
+	position: relative;
+}
+.mainiconbox-3 {
+	width:100%;
+	height: 700px;
+	filter: brightness(50%);
+	position: absolute;
+	top: 50%;
+	left:50%;
+    transform:translatex(-50%) translatey(-50%);
+	overflow: hidden;
+}
+.mainiconbox-3-text {
+	position: absolute;
+	color:white;
+	top: 50%;
+	left:50%;
+    transform:translatex(-50%) translatey(-50%);
+    z-index:10;
+    font-size: 3rem;
+    font-weight: bold;
+}
+
 
 /*풋 커스텀*/
 .foot {
