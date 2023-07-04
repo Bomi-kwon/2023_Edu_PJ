@@ -55,7 +55,7 @@
 			}, function(data) {
 				// 수강신청 성공 여부 알려준뒤 메인으로 페이지 이동
 				alert(data);
-				location.replace('/');
+				location.replace('groupregistration');
 				// 리턴타입 resultData 아니고 String이라서 형식 text로 바꿔야됨
 			}, 'text');
 	      
@@ -160,7 +160,7 @@
 		<div class="flex justify-end">
 			<a class="PaySelectmodal-btn btn btn-success mr-2">결제하기</a>
 			<a style="display:none;" class="btn btn-success mr-2 registerBtn" href="doRegister?classId=${group.id }">수강신청하기</a>
-			<a href="list" class="btn btn-success" >목록</a>
+			<a href="groupregistration" class="btn btn-success" >목록</a>
 		</div>
 	</div>
 </section>

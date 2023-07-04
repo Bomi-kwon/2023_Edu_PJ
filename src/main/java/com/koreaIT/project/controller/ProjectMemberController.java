@@ -885,4 +885,20 @@ public class ProjectMemberController {
 	}
 	
 	
+	// 카카오페이 실패시 보여줄 화면
+	
+	@RequestMapping("/project/member/fail")
+	public String fail() {
+		return "project/member/fail";
+	}
+	
+	
+	// 카카오페이 결제 취소시 보여줄 화면
+	
+	@RequestMapping("/project/member/stop")
+	public String stop() {
+		return "project/member/stop";
+	}
+	
+	
 }

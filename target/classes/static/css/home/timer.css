@@ -4,7 +4,7 @@
 	position: absolute;
 	width: 500px;
 	text-align: center;
-	top: 103%;
+	top: 110%;
 	left: 50%;
 	transform: translateX(-50%);
 }
@@ -14,8 +14,8 @@
 	background-color: rgba(199, 252, 194, 0.3);
 	border-radius: 60px;
 	position: absolute;
-	top: 20%;
-	left: 20%;
+	top: 18%;
+	left: 15%;
 }
 .clock {
 	width: 400px;
@@ -63,6 +63,6 @@
 	width: 500px;
 	height: 500px;
 	position: absolute;
-	top:22%;
-	left:55%;
+	top:17%;
+	right:15%;
 }

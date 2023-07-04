@@ -9,7 +9,7 @@
 
 
 <section class="mt-8 mx-auto text-xl">
-	<div class="container mx-auto px-3">
+	<div class="container mx-auto px-3 relative">
 	    <div class="clock-container">
 		    <div class="clock">
 		    	<div class="hour"></div>
@@ -21,7 +21,7 @@
 	    	</div>
 	    </div>
 	    <div class="timertest text-center">
-	    	<div class="mb-5">시간 이벤트 테스트</div>
+	    	<div class="mb-3">시간 이벤트 테스트</div>
 	    	<div class="table-box-type-1">
 	    	<table class="w-full">
 	    		<thead>
@@ -75,7 +75,7 @@
 			    </tbody>
 	    	</table>
 	    	<div>
-	    		<div class="my-5">재생할 파일과 시간</div>
+	    		<div class="my-2">재생할 파일과 시간</div>
 	    		<div class="">
 		    		<form id="fileForm" method="post" enctype="multipart/form-data">
 		    			<span class="">파일 : </span>
@@ -85,9 +85,9 @@
 	    		<div><span>날짜 : </span><input class="input input-bordered input-success w-96" id="reserveDate" type="date" min="2022-06-01" max="2023-07-31"/></div>
 	    		<div><span>시간 : </span><input class="input input-bordered input-success w-96" id="reserveTime" type="time" /></div>
 	    	</div>
-	    	<button id="reserve-button" class="btn btn-active btn-ghost">예약</button>
-	    	<button id="play-button" class="btn btn-active btn-ghost"><i class="fa-regular fa-circle-play"></i></button>
-	    	<button id="stop-button" class="btn btn-active btn-ghost"><i class="fa-regular fa-circle-pause"></i></button>
+	    	<button id="reserve-button" class="btn btn-active btn-ghost mt-1">예약</button>
+	    	<button id="play-button" class="btn btn-active btn-ghost mt-1"><i class="fa-regular fa-circle-play"></i></button>
+	    	<button id="stop-button" class="btn btn-active btn-ghost mt-1"><i class="fa-regular fa-circle-pause"></i></button>
 	    	</div>
 	    	</div>
     </div>

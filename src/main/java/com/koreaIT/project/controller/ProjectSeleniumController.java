@@ -52,11 +52,12 @@ public class ProjectSeleniumController {
 		// 크롬 브라우저를 가져올 때 적용할 옵션들
 		ChromeOptions options = new ChromeOptions();
 		
+		/*
 		options.addArguments("--disable-popup-blocking");   // 팝업 안띄움
         options.addArguments("headless");   // 브라우저 안띄움
         options.addArguments("--disable-gpu");  // gpu 비활성화
         options.addArguments("--blink-settings=imagesEnabled=false");   // 이미지 로딩 안함
-        
+        */
 		options.addArguments("--remote-allow-origins=*");
 
 		// 웹 어플리케이션을 테스팅할 때 사용할 수 있는 무료 도구.
@@ -116,7 +117,7 @@ public class ProjectSeleniumController {
 		}
 
 		// driver 꺼주기
-		driver.quit();
+		// driver.quit();
 
 		return "project/home/entranceinfo";
 	}
