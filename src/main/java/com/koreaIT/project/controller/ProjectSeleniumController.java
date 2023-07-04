@@ -20,7 +20,7 @@ import com.koreaIT.project.vo.Rq;
 
 @Controller
 public class ProjectSeleniumController {
-	
+	 
 	private Rq rq;
 	private String url = null;
 	
