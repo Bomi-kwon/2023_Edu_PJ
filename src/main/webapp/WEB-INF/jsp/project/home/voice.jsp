@@ -7,6 +7,7 @@
 <style>
 body {
     background-color: black;
+    height: 100%;
     color: white;
 }
 #circlein {
@@ -35,11 +36,8 @@ body {
 .words {
 	border:1px solid black;
 	width : 100%;
-	height : 500px;
+	height : 735px;
     font-size: 30px;
-}
-.copy-btn {
-	
 }
 
 </style>
@@ -71,4 +69,3 @@ body {
 	
 <script src="/js/home/voice.js"></script>
 
-<%@ include file="../common/foot.jsp" %>
