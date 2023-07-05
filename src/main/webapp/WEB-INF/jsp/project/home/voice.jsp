@@ -37,7 +37,7 @@ body {
 	border:1px solid black;
 	width : 100%;
 	height : 735px;
-    font-size: 30px;
+    font-size: 50px;
 }
 
 </style>

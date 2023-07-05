@@ -112,7 +112,7 @@ public class ProjectHomeController {
 		// 대신 이 장소의 ip 주소가 주기적으로 바뀌므로 시연하기 직전에
 		// Window + R -> cmd -> ipconfig로 ipv4 주소 확인후
 		// 이 url을 업데이트 해줘야함 꼭!!!
-		String url = Util.f("http://192.168.200.21:8081/project/home/attendanceChk?todayDate=%s&classId=%d", todayDate, classId);
+		String url = Util.f("http://192.168.200.25:8081/project/home/attendanceChk?todayDate=%s&classId=%d", todayDate, classId);
 		
 		// zxing 라이브러리를 이용해 바코드 또는 QR코드를 생성할 수 있음!!
 		// url을 특정 높이와 너비의 bitmatrix로 생성한 후

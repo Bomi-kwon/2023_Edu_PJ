@@ -232,6 +232,7 @@ html.active .menu-box-3 > ul > li > ul > li > a {
 }
 .mainiconbox > .mainicon-1:hover::after {
 	content:"언제든 비대면 수업가능";
+	font-size: 40px;
 	width: 100%;
 	color: white;
 	font-weight: bold;
@@ -243,6 +244,7 @@ html.active .menu-box-3 > ul > li > ul > li > a {
 }
 .mainiconbox > .mainicon-2:hover::after {
 	content:"24시간 가능한 온라인 상담";
+	font-size: 40px;
 	width: 100%;
 	color: white;
 	font-weight: bold;
@@ -254,6 +256,7 @@ html.active .menu-box-3 > ul > li > ul > li > a {
 }
 .mainiconbox > .mainicon-3:hover::after {
 	content:"자기주도적 학습 유도";
+	font-size: 40px;
 	width: 100%;
 	color: white;
 	font-weight: bold;
